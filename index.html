@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JADI-SALUD | Centro Médico</title>
+    <script src="https://cdn.tailwindcss.com"></script> <style>
+        .banner-principal { height: 400px; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1000'); background-size: cover; background-position: center; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <nav class="bg-blue-700 p-4 text-white flex justify-between items-center shadow-lg">
+        <h1 class="text-2xl font-bold">JADI-SALUD</h1>
+        <div>
+            <a href="#registro" class="bg-yellow-400 text-blue-900 px-4 py-2 rounded font-bold">RESERVAR CITA</a>
+        </div>
+    </nav>
+
+    <header class="banner-principal flex items-center justify-center text-center text-white p-6">
+        <div>
+            <h2 class="text-4xl md:text-6xl font-extrabold mb-4">Cuidamos tu salud con expertos</h2>
+            <p class="text-xl">Traumatología • Fisioterapia • Odontología</p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto py-10 px-4 grid grid-cols-1 md:grid-cols-4 gap-6">
+        
+        <div class="md:col-span-3">
+            <h3 class="text-2xl font-bold border-b-4 border-blue-600 inline-block mb-6">Nuestros Servicios</h3>
+            <div id="contenedor-servicios" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-4 shadow rounded">
+                    <img src="https://via.placeholder.com/300x200" class="w-full h-40 object-cover rounded">
+                    <h4 class="font-bold mt-2">Medicina General</h4>
+                </div>
+            </div>
+        </div>
+
+        <aside class="space-y-4">
+            <h3 class="text-xl font-bold">Sponsors</h3>
+            <div class="bg-white p-2 border-2 border-dashed border-gray-300 text-center text-gray-400">
+                Publicidad Aquí
+            </div>
+            <div class="bg-white shadow p-2">
+                <img src="https://via.placeholder.com/200x400?text=Promo+Mes+Salud" class="w-full">
+            </div>
+        </aside>
+    </main>
+
+    <section id="registro" class="bg-white max-w-2xl mx-auto my-10 p-8 rounded-xl shadow-2xl">
+        <h3 class="text-3xl font-bold text-center text-blue-800 mb-6">Registro de Pacientes</h3>
+        <form id="formRegistro" class="space-y-4">
+            <input type="text" id="nombre" placeholder="Nombre completo" class="w-full p-3 border rounded" required>
+            <select id="servicio" class="w-full p-3 border rounded">
+                <option value="Traumatología">Traumatología</option>
+                <option value="Fisioterapia">Fisioterapia</option>
+                <option value="Medicina General">Medicina General</option>
+                <option value="Médico Ocupacional">Médico Ocupacional</option>
+                <option value="Odontología">Odontología</option>
+            </select>
+            <input type="tel" id="telefono" placeholder="WhatsApp" class="w-full p-3 border rounded" required>
+            <button class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-lg transition">ENVIAR DATOS A COORDINACIÓN</button>
+        </form>
+    </section>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "TU_API_KEY",
+            authDomain: "TU_ID.firebaseapp.com",
+            projectId: "TU_ID",
+            storageBucket: "TU_ID.appspot.com",
+            messagingSenderId: "TU_SENDER",
+            appId: "TU_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Registro de paciente
+        document.getElementById('formRegistro').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                await addDoc(collection(db, "pacientes"), {
+                    nombre: document.getElementById('nombre').value,
+                    servicio: document.getElementById('servicio').value,
+                    telefono: document.getElementById('telefono').value,
+                    fecha: new Date().toLocaleString()
+                });
+                alert("¡Datos enviados con éxito! Te contactaremos pronto.");
+                e.target.reset();
+            } catch (err) { alert("Error al conectar"); }
+        });
+    </script>
+</body>
+</html>
