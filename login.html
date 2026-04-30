@@ -13,97 +13,80 @@
             background: linear-gradient(to right, #00d2ff, #3a7bd5);
             box-shadow: 0 4px 15px rgba(58, 123, 213, 0.4);
         }
+        .input-focus:focus { border-bottom-color: #3a7bd5; outline: none; }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
 
     <div class="max-w-md w-full bg-white p-8 rounded-3xl shadow-2xl border border-gray-100">
         <div class="text-center mb-8">
-            <h2 class="tech-font text-2xl font-bold text-blue-900 uppercase">Acceso Élite</h2>
-            <p class="text-gray-500 text-sm">Azucena Medical Center</p>
+            <h2 class="tech-font text-2xl font-bold text-blue-900 uppercase tracking-tighter">Acceso Élite</h2>
+            <p class="text-gray-400 text-xs mt-1 italic">Azucena Medical Center</p>
         </div>
 
         <form id="loginForm" class="space-y-6">
             <div>
-                <label class="block text-xs font-bold text-blue-900 tech-font mb-1">USUARIO / EMAIL</label>
-                <input type="text" id="email" class="w-full p-3 border-b-2 border-gray-200 focus:border-blue-500 outline-none transition" placeholder="ejemplo@medico.com" required>
+                <label class="block text-xs font-bold text-blue-900 tech-font mb-1 uppercase">Usuario / Email</label>
+                <input type="email" id="email" class="w-full p-3 border-b-2 border-gray-100 input-focus transition" placeholder="admin@azucena.com" required>
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-blue-900 tech-font mb-1">CONTRASEÑA</label>
+                <label class="block text-xs font-bold text-blue-900 tech-font mb-1 uppercase">Contraseña</label>
                 <div class="relative">
-                    <input type="password" id="password" class="w-full p-3 border-b-2 border-gray-200 focus:border-blue-500 outline-none transition" placeholder="••••••••" required>
-                    <button type="button" onclick="togglePassword()" class="absolute right-3 top-3 text-gray-400">
+                    <input type="password" id="password" class="w-full p-3 border-b-2 border-gray-100 input-focus transition" placeholder="••••••••" required>
+                    <button type="button" onclick="togglePassword()" class="absolute right-3 top-3 text-xl">
                         <span id="eyeIcon">👁️</span>
                     </button>
                 </div>
             </div>
 
-            <button type="submit" class="w-full glow-button text-white py-3 rounded-xl tech-font font-bold tracking-widest hover:scale-105 transition">
+            <button type="submit" class="w-full glow-button text-white py-4 rounded-xl tech-font font-bold tracking-widest hover:scale-[1.02] transition active:scale-95">
                 ENTRAR
             </button>
         </form>
 
         <div class="relative my-8">
-            <div class="absolute inset-0 flex items-center"><span class="w-full border-t border-gray-200"></span></div>
-            <div class="relative flex justify-center text-xs uppercase"><span class="bg-white px-2 text-gray-400 tech-font">O accede con</span></div>
+            <div class="absolute inset-0 flex items-center"><span class="w-full border-t border-gray-100"></span></div>
+            <div class="relative flex justify-center text-xs uppercase"><span class="bg-white px-4 text-gray-400 tech-font">O ingresa con</span></div>
         </div>
 
-        <button id="googleBtn" class="w-full border-2 border-gray-100 flex items-center justify-center gap-3 py-3 rounded-xl hover:bg-gray-50 transition font-bold text-gray-700">
+        <button id="googleBtn" class="w-full border-2 border-gray-100 flex items-center justify-center gap-3 py-3 rounded-xl hover:bg-gray-50 transition font-bold text-gray-700 active:bg-gray-100">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/action/google.svg" class="w-5" alt="Google">
-            Ingresar con Google
+            Google Account
         </button>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { 
+            getAuth, 
+            GoogleAuthProvider, 
+            signInWithRedirect, 
+            getRedirectResult 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // Reemplaza con tus datos de Firebase Console
+        // CONFIGURACIÓN: Pega tus datos aquí
         const firebaseConfig = {
             apiKey: "TU_API_KEY",
-            authDomain: "TU_PROYECTO.firebaseapp.com",
-            projectId: "TU_PROYECTO_ID",
-            storageBucket: "TU_PROYECTO.appspot.com",
-            messagingSenderId: "TU_ID",
+            authDomain: "jadi-salud.firebaseapp.com",
+            projectId: "jadi-salud",
+            storageBucket: "jadi-salud.appspot.com",
+            messagingSenderId: "TU_SENDER_ID",
             appId: "TU_APP_ID"
         };
 
+        // Inicializar
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
-        // 1. LOGIN MANUAL
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            // Por ahora, simulamos el acceso exitoso enviando al dashboard
-            window.location.href = "dashboard.html";
-        });
-
-        // 2. LOGIN CON GOOGLE
-        document.getElementById('googleBtn').addEventListener('click', async () => {
-            try {
-                await signInWithPopup(auth, provider);
-                window.location.href = "dashboard.html";
-            } catch (error) {
-                console.error("Error en Google Login:", error);
-                alert("Error al ingresar con Google");
-            }
-        });
-    </script>
-
-    <script>
-        function togglePassword() {
-            const passInput = document.getElementById('password');
-            const icon = document.getElementById('eyeIcon');
-            if (passInput.type === 'password') {
-                passInput.type = 'text';
-                icon.innerText = '👓';
-            } else {
-                passInput.type = 'password';
-                icon.innerText = '👁️';
-            }
-        }
-    </script>
-</body>
-</html>
+        // 1. Verificar si el usuario viene regresando de Google
+        getRedirectResult(auth)
+            .then((result) => {
+                if (result) {
+                    // El usuario se logueó con éxito
+                    console.log("Sesión iniciada con Google");
+                    window.location.href = "dashboard.html";
+                }
+            })
+            .catch((
