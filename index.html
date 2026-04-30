@@ -3,119 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AZUCENA MEDICAL CENTER | Portal Oficial</title>
+    <title>Azucena Medical Center | Tech Médica</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        html { scroll-behavior: smooth; }
-        /* Estilo para la imagen de fondo principal */
-        .banner-principal { 
-            height: 450px; 
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200'); 
-            background-size: cover; 
-            background-position: center; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
+        body { font-family: 'Roboto', sans-serif; background-color: #ffffff; }
+        .tech-font { font-family: 'Orbitron', sans-serif; }
+        
+        /* Estilo de las tarjetas a la derecha (inspirado en tu imagen) */
+        .service-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #0056b3;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
-        .banner-servicio { 
-            height: 250px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            color: white; 
-            font-size: 1.8rem; 
-            font-weight: bold;
-            margin-bottom: 20px;
-            border-radius: 12px;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-            background-size: cover;
-            background-position: center;
+        .service-card:hover {
+            transform: translateX(10px);
+            background: #f8fafc;
+            border-left: 4px solid #ef4444; /* Rojo como el logo */
+        }
+        
+        .glow-button {
+            background: #00d2ff;
+            background: linear-gradient(to right, #00d2ff, #3a7bd5);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
         }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
 
-    <nav class="bg-white border-b-4 border-blue-700 p-4 sticky top-0 z-50 shadow-md">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-black text-blue-900 tracking-tighter">AZUCENA <span class="text-red-600">MEDICAL CENTER</span></h1>
-            <a href="login.html" class="bg-blue-700 hover:bg-blue-800 text-white px-8 py-2 rounded-full font-bold shadow-lg transition transform hover:scale-105">RESERVAR CITA</a>
-        </div>
-    </nav>
-
-    <header class="banner-principal">
-        <div class="px-4">
-            <h2 class="text-4xl md:text-6xl font-extrabold uppercase tracking-widest mb-2">Excelencia en Salud</h2>
-            <p class="text-xl md:text-2xl font-light italic text-yellow-400">Atención integral para toda tu familia</p>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto py-10 px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div class="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         
-        <aside class="md:col-span-1">
-            <div class="bg-white p-6 rounded-xl shadow-xl sticky top-24 border-l-8 border-blue-700">
-                <h3 class="text-xl font-black mb-6 text-blue-900 border-b pb-2">NUESTROS SERVICIOS</h3>
-                <nav class="flex flex-col space-y-2">
-                    <a href="#fisioterapia" class="p-3 bg-gray-50 hover:bg-blue-700 hover:text-white rounded-lg transition duration-300 font-bold text-gray-700">Fisioterapia</a>
-                    <a href="#ocupacional" class="p-3 bg-gray-50 hover:bg-blue-700 hover:text-white rounded-lg transition duration-300 font-bold text-gray-700">Medicina Ocupacional</a>
-                    <a href="#general" class="p-3 bg-gray-50 hover:bg-blue-700 hover:text-white rounded-lg transition duration-300 font-bold text-gray-700">Medicina General</a>
-                    <a href="#traumatologia" class="p-3 bg-gray-100 hover:bg-blue-700 hover:text-white rounded-lg transition duration-300 font-bold text-gray-700">Traumatología</a>
-                    <a href="#odontologia" class="p-3 bg-gray-100 hover:bg-blue-700 hover:text-white rounded-lg transition duration-300 font-bold text-gray-700">Odontología</a>
-                </nav>
-            </div>
-
-            <div class="mt-8 space-y-4">
-                <div class="bg-red-600 text-white p-4 rounded-lg text-center animate-pulse">
-                    <p class="text-sm font-bold uppercase">Emergencias 24/7</p>
-                    <p class="text-xl font-black">098-XXX-XXXX</p>
-                </div>
-            </div>
-        </aside>
-
-        <div class="md:col-span-3 space-y-10">
+        <div class="flex flex-col items-center text-center">
+            <img src="https://i.ibb.co/Xf8P7D0/azucena-logo.jpg" alt="Azucena Medical Center" class="w-full max-w-md rounded-2xl shadow-sm mb-6">
+            <h1 class="tech-font text-2xl font-bold text-blue-900 tracking-tighter uppercase">Azucena Medical Center</h1>
+            <p class="text-gray-500 italic mt-2">"Su salud, nuestra razón de ser"</p>
             
-            <div id="fisioterapia">
-                <div class="banner-servicio" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800');">
-                    FISIOTERAPIA
+            <a href="login.html" class="mt-8 glow-button text-white px-10 py-4 rounded-full tech-font font-bold text-lg hover:scale-105 transition">
+                ¡RESERVAR CITA AHORA!
+            </a>
+        </div>
+
+        <div class="space-y-4">
+            
+            <div class="service-card p-4 rounded-xl shadow-sm flex items-center gap-4">
+                <div class="text-3xl">🦾</div>
+                <div>
+                    <h3 class="font-bold text-blue-900 tech-font text-sm uppercase">Fisioterapia</h3>
+                    <p class="text-xs text-gray-600">Rehabilitación integral para recuperar tu movilidad máxima.</p>
                 </div>
-                <p class="text-gray-600 mb-4 px-2 italic">Rehabilitación física avanzada y recuperación deportiva.</p>
             </div>
 
-            <div id="ocupacional">
-                <div class="banner-servicio" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1581595224492-38411d82fc07?auto=format&fit=crop&w=800');">
-                    MEDICINA OCUPACIONAL
+            <div class="service-card p-4 rounded-xl shadow-sm flex items-center gap-4">
+                <div class="text-3xl">🏢</div>
+                <div>
+                    <h3 class="font-bold text-blue-900 tech-font text-sm uppercase">Medicina Ocupacional</h3>
+                    <p class="text-xs text-gray-600">Prevención y salud para el trabajador y empresas de éxito.</p>
                 </div>
-                <p class="text-gray-600 mb-4 px-2 italic">Exámenes médicos para empresas y salud laboral.</p>
             </div>
 
-            <div id="general">
-                <div class="banner-servicio" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1505751172107-573967a4f917?auto=format&fit=crop&w=800');">
-                    MEDICINA GENERAL
+            <div class="service-card p-4 rounded-xl shadow-sm flex items-center gap-4">
+                <div class="text-3xl">🩺</div>
+                <div>
+                    <h3 class="font-bold text-blue-900 tech-font text-sm uppercase">Medicina General</h3>
+                    <p class="text-xs text-gray-600">Atención primaria con diagnóstico preventivo avanzado.</p>
                 </div>
-                <p class="text-gray-600 mb-4 px-2 italic">Consulta médica primaria para todas las edades.</p>
             </div>
 
-            <div id="traumatologia">
-                <div class="banner-servicio" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1512678080530-7760d81faba6?auto=format&fit=crop&w=800');">
-                    TRAUMATOLOGÍA
+            <div class="service-card p-4 rounded-xl shadow-sm flex items-center gap-4">
+                <div class="text-3xl">🦴</div>
+                <div>
+                    <h3 class="font-bold text-blue-900 tech-font text-sm uppercase">Traumatología</h3>
+                    <p class="text-xs text-gray-600">Especialistas en lesiones óseas y sistema músculo-esquelético.</p>
                 </div>
-                <p class="text-gray-600 mb-4 px-2 italic">Especialistas en huesos y articulaciones.</p>
             </div>
 
-            <div id="odontologia">
-                <div class="banner-servicio" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=800');">
-                    ODONTOLOGÍA
+            <div class="service-card p-4 rounded-xl shadow-sm flex items-center gap-4">
+                <div class="text-3xl">🦷</div>
+                <div>
+                    <h3 class="font-bold text-blue-900 tech-font text-sm uppercase">Odontología</h3>
+                    <p class="text-xs text-gray-600">Estética y salud dental con tecnología de punta.</p>
                 </div>
-                <p class="text-gray-600 mb-4 px-2 italic">Cuidado dental integral y estética dental.</p>
             </div>
 
         </div>
-    </main>
+    </div>
 
-    <footer class="bg-blue-900 text-white text-center py-12 mt-10">
-        <h3 class="text-xl font-bold">AZUCENA MEDICAL CENTER</h3>
-        <p class="opacity-60 text-sm mt-2">© 2026 Todos los derechos reservados.</p>
+    <footer class="mt-16 text-gray-400 text-xs tech-font">
+        &copy; 2026 AZUCENA MEDICAL CENTER | TECH MÉDICA DE ÉLITE
     </footer>
 
 </body>
