@@ -3,96 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azucena Medical Center | Tech Médica</title>
+    <title>Azucena Medical Center | Salud y Bienestar</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Roboto', sans-serif; background-color: #ffffff; }
+        body { font-family: 'Roboto', sans-serif; scroll-behavior: smooth; }
         .tech-font { font-family: 'Orbitron', sans-serif; }
-        
-        /* Estilo de las tarjetas a la derecha (inspirado en tu imagen) */
-        .service-card {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid #e2e8f0;
-            border-left: 4px solid #0056b3;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .service-card:hover {
-            transform: translateX(10px);
-            background: #f8fafc;
-            border-left: 4px solid #ef4444; /* Rojo como el logo */
-        }
-        
-        .glow-button {
-            background: #00d2ff;
-            background: linear-gradient(to right, #00d2ff, #3a7bd5);
-            box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
-        }
+        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4">
+<body class="bg-white text-gray-800">
 
-    <div class="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        
-        <div class="flex flex-col items-center text-center">
-            <img src="https://i.ibb.co/Xf8P7D0/azucena-logo.jpg" alt="Azucena Medical Center" class="w-full max-w-md rounded-2xl shadow-sm mb-6">
-            <h1 class="tech-font text-2xl font-bold text-blue-900 tracking-tighter uppercase">Azucena Medical Center</h1>
-            <p class="text-gray-500 italic mt-2">"Su salud, nuestra razón de ser"</p>
-            
-            <a href="login.html" class="mt-8 glow-button text-white px-10 py-4 rounded-full tech-font font-bold text-lg hover:scale-105 transition">
-                ¡RESERVAR CITA AHORA!
+    <nav class="fixed w-full z-50 p-4">
+        <div class="max-w-7xl mx-auto glass rounded-2xl shadow-lg p-4 flex justify-between items-center border border-blue-100">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white font-bold tech-font">AM</div>
+                <span class="tech-font font-bold text-blue-900 tracking-tighter">AZUCENA MEDICAL</span>
+            </div>
+            <div class="hidden md:flex gap-6 font-medium text-sm">
+                <a href="#servicios" class="hover:text-blue-600 transition">Servicios</a>
+                <a href="#promociones" class="hover:text-blue-600 transition">Promociones</a>
+                <a href="#contacto" class="hover:text-blue-600 transition">Contacto</a>
+            </div>
+            <a href="login.html" class="text-[10px] tech-font bg-blue-900 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition">
+                ACCESO STAFF
             </a>
         </div>
+    </nav>
 
-        <div class="space-y-4">
-            
-            <div class="service-card p-4 rounded-xl shadow-sm flex items-center gap-4">
-                <div class="text-3xl">🦾</div>
-                <div>
-                    <h3 class="font-bold text-blue-900 tech-font text-sm uppercase">Fisioterapia</h3>
-                    <p class="text-xs text-gray-600">Rehabilitación integral para recuperar tu movilidad máxima.</p>
-                </div>
-            </div>
-
-            <div class="service-card p-4 rounded-xl shadow-sm flex items-center gap-4">
-                <div class="text-3xl">🏢</div>
-                <div>
-                    <h3 class="font-bold text-blue-900 tech-font text-sm uppercase">Medicina Ocupacional</h3>
-                    <p class="text-xs text-gray-600">Prevención y salud para el trabajador y empresas de éxito.</p>
-                </div>
-            </div>
-
-            <div class="service-card p-4 rounded-xl shadow-sm flex items-center gap-4">
-                <div class="text-3xl">🩺</div>
-                <div>
-                    <h3 class="font-bold text-blue-900 tech-font text-sm uppercase">Medicina General</h3>
-                    <p class="text-xs text-gray-600">Atención primaria con diagnóstico preventivo avanzado.</p>
-                </div>
-            </div>
-
-            <div class="service-card p-4 rounded-xl shadow-sm flex items-center gap-4">
-                <div class="text-3xl">🦴</div>
-                <div>
-                    <h3 class="font-bold text-blue-900 tech-font text-sm uppercase">Traumatología</h3>
-                    <p class="text-xs text-gray-600">Especialistas en lesiones óseas y sistema músculo-esquelético.</p>
-                </div>
-            </div>
-
-            <div class="service-card p-4 rounded-xl shadow-sm flex items-center gap-4">
-                <div class="text-3xl">🦷</div>
-                <div>
-                    <h3 class="font-bold text-blue-900 tech-font text-sm uppercase">Odontología</h3>
-                    <p class="text-xs text-gray-600">Estética y salud dental con tecnología de punta.</p>
-                </div>
-            </div>
-
+    <section class="relative h-screen flex items-center justify-center bg-blue-50 overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <img src="https://www.transparenttextures.com/patterns/cubes.png" alt="pattern">
         </div>
-    </div>
+        <div class="relative z-10 text-center px-4">
+            <h1 id="pub-titulo" class="text-5xl md:text-7xl font-bold text-blue-900 mb-4 tech-font uppercase tracking-tighter">
+                Cuidamos tu salud
+            </h1>
+            <p id="pub-subtitulo" class="text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto font-light">
+                Tecnología médica avanzada y atención humana en el corazón de tu ciudad.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="https://wa.me/tu-numero" class="bg-green-500 text-white px-8 py-4 rounded-2xl font-bold shadow-xl hover:bg-green-600 transition flex items-center gap-2">
+                    <span>Agendar Cita (WhatsApp)</span>
+                </a>
+                <a href="#servicios" class="bg-white text-blue-900 px-8 py-4 rounded-2xl font-bold shadow-lg hover:bg-gray-50 transition border border-blue-100">
+                    Ver Especialidades
+                </a>
+            </div>
+        </div>
+    </section>
 
-    <footer class="mt-16 text-gray-400 text-xs tech-font">
-        &copy; 2026 AZUCENA MEDICAL CENTER | TECH MÉDICA DE ÉLITE
+    <section id="promociones" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center gap-4 mb-12">
+                <h2 class="tech-font text-2xl font-bold text-blue-900">OFERTAS DEL MES</h2>
+                <div class="h-1 flex-1 bg-blue-100 rounded-full"></div>
+            </div>
+            <div id="contenedor-promos" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-8 border-2 border-dashed border-gray-200 rounded-3xl flex flex-center text-center text-gray-400">
+                    Cargando ofertas increíbles...
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contacto" class="bg-blue-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="tech-font text-xs tracking-widest opacity-50 mb-4">AZUCENA MEDICAL CENTER</p>
+            <div class="flex justify-center gap-6 mb-8">
+                <a href="#" class="hover:text-blue-400 underline">Facebook</a>
+                <a href="#" class="hover:text-blue-400 underline">Instagram</a>
+                <a href="#" class="hover:text-blue-400 underline">TikTok</a>
+            </div>
+            <p class="text-[10px] opacity-30 uppercase">&copy; 2026 Todos los derechos reservados.</p>
+        </div>
     </footer>
 
+    <script type="module" src="./public/js/publicidad-view.js"></script>
 </body>
 </html>
