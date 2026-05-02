@@ -13,12 +13,9 @@ const firebaseConfig = {
   measurementId: "G-GWBSTLYJ3C"
 };
 
-// Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 
-// Exportar las herramientas que usaremos en otros archivos
+// Exportamos lo necesario para Auth y Base de Datos
 export const auth = getAuth(app);
-export const db = getFirestore(app);
+export const db = getFirestore(app); // Este es el que crea los documentos
 export const googleProvider = new GoogleAuthProvider();
-
-console.log("Cerebro de Firebase conectado con éxito");
