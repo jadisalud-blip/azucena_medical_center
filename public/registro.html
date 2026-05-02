@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta | Azucena Medical Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --neon: #00FFFF; --dark: #1A1A1A; --white: #FFFFFF; }
+        
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            background: #F4F7F6; 
+        }
+
+        .card { 
+            width: 100%; 
+            max-width: 400px; 
+            padding: 40px; 
+            background: var(--white); 
+            border-radius: 25px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05); 
+            text-align: center; 
+            box-sizing: border-box;
+        }
+
+        h2 { 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            margin-bottom: 10px; 
+            color: var(--dark);
+        }
+
+        p { 
+            font-size: 0.9rem; 
+            color: #777; 
+            margin-bottom: 30px; 
+        }
+
+        .form-group { text-align: left; margin-bottom: 15px; }
+
+        label { 
+            font-size: 0.75rem; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            color: #555; 
+            margin-left: 5px;
+        }
+
+        input { 
+            width: 100%; 
+            padding: 14px; 
+            margin-top: 5px; 
+            border-radius: 12px; 
+            border: 1px solid #E0E0E0; 
+            box-sizing: border-box; 
+            font-family: inherit;
+            transition: 0.3s;
+        }
+
+        input:focus { 
+            outline: none; 
+            border-color: var(--neon); 
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.2); 
+        }
+
+        .btn-reg { 
+            width: 100%; 
+            background: var(--neon); 
+            border: none; 
+            padding: 16px; 
+            border-radius: 50px; 
+            font-weight: 900; 
+            font-size: 1rem;
+            cursor: pointer; 
+            margin-top: 20px; 
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+        }
+
+        .btn-reg:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 255, 255, 0.4); }
+
+        .back-link { 
+            display: block; 
+            margin-top: 25px; 
+            font-size: 0.85rem; 
+            color: #888; 
+            text-decoration: none; 
+            font-weight: 700;
+        }
+
+        .back-link:hover { color: var(--dark); }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Registro</h2>
+        <p>Completa tus datos para tu ficha médica en Azucena.</p>
+        
+        <form id="registroForm">
+            <div class="form-group">
+                <label>Nombre Completo</label>
+                <input type="text" id="regNombre" placeholder="Ej: Juan Pérez" required>
+            </div>
+
+            <div class="form-group">
+                <label>Correo Electrónico</label>
+                <input type="email" id="regEmail" placeholder="usuario@correo.com" required>
+            </div>
+
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" id="regPass" placeholder="Crea una clave segura" required>
+            </div>
+
+            <button type="submit" class="btn-reg">CREAR CUENTA</button>
+        </form>
+
+        <a href="../login.html" class="back-link">← Ya tengo cuenta, quiero ingresar</a>
+    </div>
+
+    <!-- Scripts desde la carpeta js que está al mismo nivel que este archivo -->
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/auth.js"></script>
+
+</body>
+</html>
