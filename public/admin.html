@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrativo | Azucena</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --neon: #00FFFF; --dark: #1A1A1A; --bg: #F4F7F6; }
+        body { font-family: 'Montserrat', sans-serif; margin: 0; background: var(--bg); display: none; }
+        .wrapper { display: flex; min-height: 100vh; }
+        
+        /* Sidebar */
+        .sidebar { width: 260px; background: var(--dark); color: white; padding: 30px; display: flex; flex-direction: column; }
+        .sidebar h2 { font-weight: 900; color: var(--neon); font-size: 1.2rem; margin-bottom: 40px; }
+        .menu-item { color: #BBB; text-decoration: none; padding: 15px; border-radius: 10px; margin-bottom: 10px; font-weight: 700; transition: 0.3s; display: block; }
+        .menu-item:hover, .menu-item.active { background: rgba(0, 255, 255, 0.1); color: var(--neon); }
+        
+        /* Contenido */
+        .main { flex-grow: 1; padding: 40px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .stat-card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-left: 5px solid var(--neon); }
+        .stat-card h3 { margin: 0; font-size: 2rem; }
+        .btn-logout { background: #ff4444; color: white; border: none; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: 800; margin-top: auto; }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="sidebar">
+            <h2>AZUCENA ADMIN</h2>
+            <a href="#" class="menu-item active">Dashboard</a>
+            <a href="#" class="menu-item">Inventario</a>
+            <a href="#" class="menu-item">Pacientes</a>
+            <a href="#" class="menu-item">Citas</a>
+            <button id="btnSalir" class="btn-logout">Cerrar Sesión</button>
+        </nav>
+        <main class="main">
+            <div class="header">
+                <h1 id="txtBienvenida">Cargando...</h1>
+                <div style="background: var(--dark); color: var(--neon); padding: 5px 15px; border-radius: 20px; font-weight: 900; font-size: 0.8rem;">ADMINISTRADOR</div>
+            </div>
+            <div class="card-grid">
+                <div class="stat-card"><h3>0</h3><p>Pacientes hoy</p></div>
+                <div class="stat-card"><h3>0</h3><p>Stock Bajo</p></div>
+                <div class="stat-card"><h3>0</h3><p>Citas Pendientes</p></div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { auth, db } from './js/firebase-config.js';
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const docRef = doc(db, "usuarios", user.uid);
+                const docSnap = await getDoc(docRef);
+                
+                if (docSnap.exists() && (docSnap.data().rol === "admin" || docSnap.data().rol === "programador" || docSnap.data().rol === "dueño")) {
+                    document.body.style.display = "block";
+                    document.getElementById('txtBienvenida').innerText = `Bienvenido, ${docSnap.data().nombre}`;
+                } else {
+                    alert("Acceso no autorizado.");
+                    window.location.href = "paciente.html";
+                }
+            } else {
+                window.location.href = "../login.html";
+            }
+        });
+
+        document.getElementById('btnSalir').addEventListener('click', () => {
+            signOut(auth).then(() => window.location.href = "../login.html");
+        });
+    </script>
+</body>
+</html>
