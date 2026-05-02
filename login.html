@@ -1,29 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Élite | Azucena Medical Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #FFFFFF;
+            --main-neon: #00FFFF; 
+            --main-neon-glow: rgba(0, 255, 255, 0.5);
+            --text-color: #1A1A1A;
+            --input-bg: #F9F9F9;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            text-align: center;
+            border-radius: 25px;
+            background: white;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            position: relative;
+        }
+
+        .logo-login {
+            font-weight: 900; font-size: 1.8rem; letter-spacing: 4px;
+            text-transform: uppercase; margin-bottom: 5px;
+        }
+
+        .tagline {
+            color: #888; font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 3px; margin-bottom: 35px;
+        }
+
+        .form-group { margin-bottom: 20px; text-align: left; }
+
+        label {
+            display: block; font-size: 0.7rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 8px; color: #555;
+        }
+
+        input {
+            width: 100%; padding: 15px; border-radius: 12px;
+            border: 1px solid #EEE; background-color: var(--input-bg);
+            box-sizing: border-box; font-family: 'Montserrat', sans-serif;
+        }
+
+        input:focus {
+            outline: none; border-color: var(--main-neon);
+            box-shadow: 0 0 15px var(--main-neon-glow);
+        }
+
+        .btn-access {
+            width: 100%; background-color: var(--main-neon); color: #000;
+            padding: 18px; border: none; border-radius: 50px;
+            font-weight: 900; text-transform: uppercase; cursor: pointer;
+            box-shadow: 0 8px 25px var(--main-neon-glow);
+        }
+
+        .btn-google {
+            width: 100%; background: white; color: #555; padding: 14px;
+            border: 1px solid #DDD; border-radius: 50px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            gap: 10px; cursor: pointer; margin-top: 15px;
+        }
+
+        .divider {
+            margin: 25px 0; font-size: 0.7rem; color: #BBB;
+            text-transform: uppercase; display: flex; align-items: center; gap: 10px;
+        }
+        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #EEE; }
+
+        .register-link {
+            margin-top: 25px; display: block; font-size: 0.8rem;
+            font-weight: 800; color: var(--main-neon); text-decoration: none;
+        }
+    </style>
+</head>
 <body>
+
     <div class="login-container">
         <div class="logo-login">Azucena</div>
         <div class="tagline">Tech Médica de Élite</div>
 
         <form id="loginForm">
             <div class="form-group">
-                <label>Identificación / Email</label>
-                <input type="email" id="email" placeholder="correo@ejemplo.com" required>
+                <label>Email Corporativo</label>
+                <input type="email" id="email" placeholder="usuario@azucena.com" required>
             </div>
             <div class="form-group">
                 <label>Contraseña</label>
                 <input type="password" id="password" placeholder="••••••••" required>
             </div>
-            <button type="submit" class="btn-access">Entrar al Sistema</button>
+            <button type="submit" class="btn-access">Ingresar</button>
         </form>
 
-        <button id="googleLogin" class="btn-google" style="margin-top: 15px; width: 100%; padding: 12px; border-radius: 50px; border: 1px solid #ddd; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; gap: 10px;">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/action/google.svg" width="20">
-            Ingresar con Google
+        <div class="divider">o accede con</div>
+
+        <button id="googleLogin" class="btn-google">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/action/google.svg" width="18">
+            Google Workspace
         </button>
 
-        <a href="registro_usuario.html" class="forgot-pass" style="color: var(--main-neon); font-weight: bold; margin-top: 20px;">REGISTRARSE</a>
+        <a href="registro_usuario.html" class="register-link">REGISTRAR NUEVO USUARIO</a>
     </div>
 
-    <script src="firebase-config.js"></script>
-    <script src="auth.js"></script>
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/auth.js"></script>
+
 </body>
 </html>
