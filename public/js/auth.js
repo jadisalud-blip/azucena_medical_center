@@ -62,11 +62,18 @@ if (loginForm) {
     });
 }
 
-// 4. REGISTRO MANUAL DE NUEVOS PACIENTES
+// 4. REGISTRO MANUAL DE NUEVOS PACIENTES (CORREGIDO)
 const registroForm = document.getElementById('registroForm');
 if (registroForm) {
     registroForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        // Bloqueamos el botón para evitar múltiples clics
+        const submitBtn = registroForm.querySelector('button');
+        const originalText = submitBtn.innerText;
+        submitBtn.disabled = true;
+        submitBtn.innerText = "PROCESANDO...";
+
         const nombre = document.getElementById('regNombre').value;
         const email = document.getElementById('regEmail').value;
         const pass = document.getElementById('regPass').value;
@@ -75,8 +82,17 @@ if (registroForm) {
             const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
             // Al registrar, pasamos el nombre manual que escribió el paciente
             await procesarAcceso(userCredential.user, nombre);
+            
         } catch (error) {
-            alert("Error al crear cuenta: " + error.message);
+            // Si hay error, reactivamos el botón para que pueda corregir
+            submitBtn.disabled = false;
+            submitBtn.innerText = originalText;
+
+            if (error.code === 'auth/email-already-in-use') {
+                alert("Este correo ya está registrado. Intenta iniciar sesión.");
+            } else {
+                alert("Error al crear cuenta: " + error.message);
+            }
         }
     });
 }
