@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Salud | Azucena</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --neon: #00FFFF; --dark: #1A1A1A; }
+        body { font-family: 'Montserrat', sans-serif; margin: 0; background: #F8F9FA; display: none; }
+        .container { max-width: 600px; margin: 40px auto; padding: 20px; }
+        .welcome-card { background: var(--dark); color: white; padding: 30px; border-radius: 25px; text-align: center; margin-bottom: 20px; }
+        .welcome-card h1 { margin: 0; font-size: 1.5rem; color: var(--neon); }
+        .action-card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 15px; display: flex; align-items: center; gap: 15px; }
+        .icon { font-size: 1.5rem; }
+        .btn-wa { display: block; background: #25D366; color: white; text-align: center; padding: 15px; border-radius: 50px; text-decoration: none; font-weight: 800; margin-top: 20px; }
+        .logout { text-align: center; margin-top: 30px; }
+        .logout a { color: #888; text-decoration: none; font-size: 0.8rem; font-weight: 700; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-card">
+            <p>Hola de nuevo,</p>
+            <h1 id="userHello">Paciente</h1>
+        </div>
+
+        <div class="action-card">
+            <span class="icon">📅</span>
+            <div>
+                <strong>Próxima Cita</strong>
+                <p style="margin: 0; font-size: 0.85rem; color: #666;">No tienes citas programadas.</p>
+            </div>
+        </div>
+
+        <div class="action-card">
+            <span class="icon">💊</span>
+            <div>
+                <strong>Mis Recetas</strong>
+                <p style="margin: 0; font-size: 0.85rem; color: #666;">Consulta tus indicaciones aquí.</p>
+            </div>
+        </div>
+
+        <a href="https://wa.me/TUNUMERO" class="btn-wa">AGENDAR POR WHATSAPP</a>
+
+        <div class="logout">
+            <a href="#" id="linkSalir">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, db } from './js/firebase-config.js';
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const docRef = doc(db, "usuarios", user.uid);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    document.getElementById('userHello').innerText = docSnap.data().nombre;
+                }
+                document.body.style.display = "block";
+            } else {
+                window.location.href = "../login.html";
+            }
+        });
+
+        document.getElementById('linkSalir').addEventListener('click', (e) => {
+            e.preventDefault();
+            signOut(auth).then(() => window.location.href = "../login.html");
+        });
+    </script>
+</body>
+</html>
