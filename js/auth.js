@@ -13,7 +13,7 @@ async function guardarUsuarioEnBD(user) {
             email: user.email,
             foto: user.photoURL || "",
             ultimaConexion: serverTimestamp(),
-            rol: "admin" // Por defecto como admin para tus pruebas
+            rol: "paciente" // Por defecto como admin para tus pruebas
         }, { merge: true }); // 'merge' evita borrar datos viejos si el usuario ya existe
         console.log("Registro guardado en Firestore");
     } catch (error) {
