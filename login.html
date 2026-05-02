@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Azucena Medical Center Tech</title>
+    <style>
+        /* ESTILO LOGIN ÉLITE - MODO CLARO NEÓN */
+        :root {
+            --bg-color: #FFFFFF;
+            --main-neon: #00FFFF; 
+            --main-neon-glow: rgba(0, 255, 255, 0.5);
+            --text-color: #1A1A1A;
+            --input-bg: #F9F9F9;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* CONTENEDOR PRINCIPAL DEL LOGIN */
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            text-align: center;
+            border-radius: 20px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, var(--main-neon), transparent);
+            z-index: -1;
+            border-radius: 22px;
+            filter: blur(10px);
+            opacity: 0.3;
+        }
+
+        .logo-login {
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            color: #888;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+        }
+
+        /* FORMULARIO */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            color: #444;
+            padding-left: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #EEE;
+            background-color: var(--input-bg);
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--main-neon);
+            box-shadow: 0 0 15px var(--main-neon-glow);
+        }
+
+        /* BOTÓN DE ACCESO ÓVALO */
+        .btn-access {
+            width: 100%;
+            background-color: var(--main-neon);
+            color: #000;
+            padding: 18px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 5px 20px var(--main-neon-glow);
+            transition: transform 0.2s;
+        }
+
+        .btn-access:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px var(--main-neon);
+        }
+
+        .forgot-pass {
+            margin-top: 25px;
+            font-size: 0.75rem;
+            color: #AAA;
+            text-decoration: none;
+            display: block;
+        }
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="logo-login">Azucena</div>
+        <div class="tagline">Tech Médica de Élite</div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Identificación / Email</label>
+                <input type="text" id="userInput" placeholder="Ingresa tu credencial" required>
+            </div>
+
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" id="passInput" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn-access">Entrar al Sistema</button>
+        </form>
+
+        <a href="#" class="forgot-pass">¿Problemas con tu acceso? Contacta al Admin</a>
+    </div>
+
+    <script>
+        // Pana, aquí luego conectaremos con Firebase Auth
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log("Intentando conectar con el cerebro de Firebase...");
+        });
+    </script>
+
+</body>
+</html>
