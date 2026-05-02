@@ -1,68 +1,54 @@
 // js/auth.js
+import { auth, db, googleProvider } from './firebase-config.js';
+import { signInWithPopup, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Importamos las herramientas desde tu archivo de configuración
-import { auth, googleProvider } from './firebase-config.js';
-import { 
-    signInWithPopup, 
-    signInWithEmailAndPassword, 
-    onAuthStateChanged 
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+// Función maestra para guardar o actualizar el usuario en Firestore
+async function guardarUsuarioEnBD(user) {
+    try {
+        // Creamos un documento en la colección 'usuarios' con el ID del usuario
+        await setDoc(doc(db, "usuarios", user.uid), {
+            uid: user.uid,
+            nombre: user.displayName || "Usuario Nuevo",
+            email: user.email,
+            foto: user.photoURL || "",
+            ultimaConexion: serverTimestamp(),
+            rol: "admin" // Por defecto como admin para tus pruebas
+        }, { merge: true }); // 'merge' evita borrar datos viejos si el usuario ya existe
+        console.log("Registro guardado en Firestore");
+    } catch (error) {
+        console.error("Error al guardar en base de datos:", error);
+    }
+}
 
-/**
- * 1. LÓGICA PARA INGRESO CON GOOGLE
- */
+// Botón de Google
 const googleBtn = document.getElementById('googleLogin');
-
 if (googleBtn) {
     googleBtn.addEventListener('click', async () => {
         try {
             const result = await signInWithPopup(auth, googleProvider);
-            // Si el login es exitoso, Firebase nos devuelve el usuario
-            console.log("Usuario detectado:", result.user.displayName);
-            
-            // Redireccionamos al Dashboard de Administración
+            await guardarUsuarioEnBD(result.user); // AQUÍ SE CREA EL DOC EN LA BD
             window.location.href = "admin.html";
         } catch (error) {
-            console.error("Error en Google Auth:", error);
-            alert("No se pudo ingresar con Google. Verifica tu conexión.");
+            alert("Error con Google: " + error.message);
         }
     });
 }
 
-/**
- * 2. LÓGICA PARA LOGIN TRADICIONAL (Email/Password)
- */
+// Formulario Tradicional
 const loginForm = document.getElementById('loginForm');
-
 if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault(); // Evita que la página se recargue
-
+        e.preventDefault();
         const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+        const pass = document.getElementById('password').value;
 
         try {
-            await signInWithEmailAndPassword(auth, email, password);
-            console.log("Acceso concedido");
+            const result = await signInWithEmailAndPassword(auth, email, pass);
+            await guardarUsuarioEnBD(result.user); // AQUÍ SE CREA EL DOC EN LA BD
             window.location.href = "admin.html";
         } catch (error) {
-            console.error("Error de credenciales:", error.code);
-            // Mensajes amigables para el usuario
-            if (error.code === 'auth/invalid-credential') {
-                alert("Usuario o contraseña incorrectos.");
-            } else {
-                alert("Error al intentar ingresar. Intenta de nuevo.");
-            }
+            alert("Credenciales incorrectas o usuario no registrado.");
         }
     });
 }
-
-/**
- * 3. OBSERVADOR DE ESTADO (Opcional pero recomendado)
- * Verifica si el usuario ya está logueado para mandarlo directo al admin
- */
-onAuthStateChanged(auth, (user) => {
-    if (user && window.location.pathname.includes('login.html')) {
-        window.location.href = "admin.html";
-    }
-});
