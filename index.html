@@ -3,78 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azucena Medical Center - Tu Salud, Nuestra Prioridad</title>
+    <title>Azucena Medical Center | Tech Médica de Élite</title>
     <style>
-        /* CSS BÁSICO PARA QUE SE VEA BIEN (EL VESTIDO) */
+        /* ESTILO JADI SALUD CLARO - NEÓN VIBRANTE */
+        :root {
+            --bg-color: #FFFFFF; /* FONDO BLANCO PURO */
+            --main-neon: #00FFFF; /* CELESTE NEÓN */
+            --main-neon-glow: rgba(0, 255, 255, 0.4);
+            --text-color: #1A1A1A; /* Texto casi negro para contraste */
+            --subtitle-color: #666666;
+            --card-bg: #F5F5F5; /* Gris muy claro para tarjetas */
+        }
+
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: white;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
         }
 
-        /* IMAGEN DE FONDO PRINCIPAL */
-        .hero-bg {
-            /* PANA: Aquí debes poner el link de la imagen que creamos abajo */
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('assets/fondo_medico.jpg');
-            height: 100vh;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .hero-content {
-            z-index: 1;
-            padding: 20px;
-        }
-
-        /* BANNER GIRATORIO (TEXTO QUE CAMBIA) */
-        #banner-giratorio {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            min-height: 1.2em; /* Mantiene el espacio */
-        }
-
-        /* BOTÓN LLAMATIVO DE RESERVA */
-        .btn-reservar {
-            background-color: #25D366; /* Verde WhatsApp */
-            color: white;
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: transform 0.2s, background-color 0.2s;
-            display: inline-block;
-        }
-
-        .btn-reservar:hover {
-            background-color: #128C7E;
-            transform: scale(1.05);
-        }
-
-        /* MENÚ SIMPLE DE NAVEGACIÓN (OPCIONAL) */
+        /* BARRA DE NAVEGACIÓN DISCRETA (EN BLANCO) */
         .navbar {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            padding: 20px;
+            padding: 20px 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: absolute;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+        .logo { 
+            font-size: 1.2rem; 
+            font-weight: 800; 
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* SECCIÓN PRINCIPAL (HERO) - FONDO BLANCO */
+        .hero {
+            display: flex;
+            height: 100vh;
+            align-items: center;
+            padding: 0 50px;
             box-sizing: border-box;
         }
-        .logo { font-size: 1.5rem; font-weight: bold; }
+
+        /* COLUMNA DE IMAGEN CON FILTRO CLARO Y GLOW CELESTE */
+        .hero-image-side {
+            flex: 1;
+            height: 80%;
+            /* PANA: Aquí debes poner el link de la imagen médica que crearemos */
+            background-image: url('assets/medico_elite_light.jpg'); 
+            background-size: cover;
+            background-position: center;
+            border-right: 4px solid var(--main-neon);
+            box-shadow: 20px 0 80px -20px var(--main-neon-glow);
+            position: relative;
+        }
+
+        /* COLUMNA DE TEXTO Y BOTÓN JADI STYLE */
+        .hero-text-side {
+            flex: 1;
+            padding-left: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .title-jadi {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .subtitle-jadi {
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 5px;
+            margin: 10px 0 50px 0;
+            text-transform: uppercase;
+            color: var(--subtitle-color);
+        }
+
+        /* EL GRAN BOTÓN ÓVALO CELESTE NEÓN */
+        .btn-jadi {
+            background-color: var(--main-neon);
+            color: #000000; /* Texto negro para contraste */
+            padding: 25px 60px;
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-decoration: none;
+            border-radius: 100px; /* Óvalo perfecto */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 40px var(--main-neon-glow);
+            transition: all 0.3s ease;
+        }
+
+        .btn-jadi:hover {
+            box-shadow: 0 15px 60px var(--main-neon);
+            transform: translateY(-5px);
+        }
+
+        /* BANNER GIRATORIO ABAJO - DISCRETO EN GRIS */
+        .servicios-bar {
+            position: absolute;
+            bottom: 30px;
+            right: 50px;
+            color: var(--subtitle-color);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -82,38 +131,16 @@
         <div class="logo">Azucena Medical Center</div>
     </div>
 
-    <div class="hero-bg">
-        <div class="hero-content">
-            <p>Bienvenido a</p>
-            <h1>Azucena Medical Center</h1>
-            
-            <div id="banner-giratorio">Especialistas en Salud</div>
+    <div class="hero">
+        <div class="hero-image-side"></div>
 
-            <a href="citas.html" class="btn-reservar">¡RESERVAR CITA AHORA!</a>
+        <div class="hero-text-side">
+            <h1 class="title-jadi">Azucena<br>Salud</h1>
+            <p class="subtitle-jadi">Tech Médica de Élite</p>
+            
+            <a href="citas.html" class="btn-jadi">¡Reserva Ahora!</a>
         </div>
     </div>
-
-    <script>
-        // LÓGICA DEL BANNER GIRATORIO (EL SISTEMA NERVIOSO)
-        const servicios = [
-            "Medicina General para toda la Familia",
-            "Fisioterapia y Rehabilitación Integral",
-            "Odontología Moderna y Sonrisas Saludables",
-            "Atención Médica de Calidad en un solo lugar"
-        ];
-        
-        let index = 0;
-        const bannerElement = document.getElementById('banner-giratorio');
-
-        function cambiarTexto() {
-            bannerElement.innerHTML = servicios[index];
-            index = (index + 1) % servicios.length; // Ciclo infinito
-        }
-
-        // Cambia el texto cada 3 segundos (3000 milisegundos)
-        cambiarTexto(); // Primera ejecución
-        setInterval(cambiarTexto, 3000);
-    </script>
 
 </body>
 </html>
