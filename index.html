@@ -9,158 +9,220 @@
         :root {
             --bg-color: #FFFFFF;
             --main-neon: #00FFFF;
+            --main-neon-glow: rgba(0, 255, 255, 0.4);
             --text-color: #1A1A1A;
-            --card-bg: #F5F5F5;
+            --subtitle-color: #666666;
+            --card-bg: #F8F9FA;
+            --dark: #1A1A1A;
         }
 
-        body { margin: 0; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+        body, html {
+            margin: 0; padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
 
-        /* CARRUSEL DE PUBLICIDAD */
-        .banner-container {
+        /* NAVBAR */
+        .navbar {
+            padding: 25px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
             width: 100%;
-            height: 60vh;
-            background: #000;
+            box-sizing: border-box;
+            z-index: 1000;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(10px);
+        }
+        .logo { font-size: 1.2rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: var(--dark); }
+        .nav-links a { text-decoration: none; color: var(--dark); font-weight: 700; margin-left: 20px; font-size: 0.8rem; text-transform: uppercase; }
+
+        /* HERO / BANNER SLIDER DINÁMICO */
+        .hero-slider {
+            width: 100%;
+            height: 90vh;
+            background: #EEE;
             position: relative;
             overflow: hidden;
         }
         .slide {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             position: absolute;
             background-size: cover;
             background-position: center;
-            display: none;
-            transition: 0.5s ease-in-out;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .slide.active { display: block; }
+        .slide.active { opacity: 1; z-index: 10; }
         .slide-overlay {
-            background: rgba(0,0,0,0.4);
             width: 100%; height: 100%;
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            color: white; text-align: center;
+            text-align: center;
+            padding: 0 20px;
         }
 
-        /* SECCIÓN SERVICIOS DINÁMICOS */
+        .title-jadi { font-size: 4rem; font-weight: 900; text-transform: uppercase; margin: 0; letter-spacing: -2px; }
+        .btn-jadi {
+            margin-top: 30px;
+            background-color: var(--main-neon);
+            color: #000;
+            padding: 20px 50px;
+            font-size: 1.2rem;
+            font-weight: 900;
+            text-decoration: none;
+            border-radius: 100px;
+            text-transform: uppercase;
+            box-shadow: 0 10px 30px var(--main-neon-glow);
+            transition: 0.3s;
+        }
+        .btn-jadi:hover { transform: translateY(-5px); box-shadow: 0 15px 40px var(--main-neon); }
+
+        /* SECCIÓN SERVICIOS */
+        .section-title { text-align: center; padding: 80px 0 40px; }
+        .section-title h2 { font-size: 2.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: -1px; }
+        
         .servicios-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
-            padding: 50px;
-            background: white;
+            padding: 0 50px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
         .servicio-card {
             background: var(--card-bg);
-            padding: 30px;
-            border-radius: 25px;
+            padding: 40px;
+            border-radius: 30px;
             text-align: center;
-            transition: 0.3s;
-            border-bottom: 5px solid transparent;
+            transition: 0.4s;
+            border: 1px solid #EEE;
         }
-        .servicio-card:hover {
-            border-bottom: 5px solid var(--main-neon);
-            transform: translateY(-10px);
-        }
-        .icon-box { font-size: 3rem; margin-bottom: 15px; }
+        .servicio-card:hover { background: white; transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); border-color: var(--main-neon); }
+        .icon-box { font-size: 3.5rem; margin-bottom: 20px; display: block; }
 
-        /* FOOTER REDES Y UBICACIÓN */
-        footer {
-            background: var(--dark);
-            background-color: #1a1a1a;
-            color: white;
-            padding: 50px;
-            text-align: center;
-        }
-        .social-links a {
-            color: var(--main-neon);
-            margin: 0 15px;
-            text-decoration: none;
-            font-weight: 900;
-        }
+        /* FOOTER / CONTACTO */
+        footer { background: var(--dark); color: white; padding: 80px 50px; text-align: center; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 50px; }
+        .social-links a { color: var(--main-neon); margin: 0 15px; text-decoration: none; font-weight: 900; font-size: 1.2rem; }
+        .copy { font-size: 0.8rem; color: #555; margin-top: 40px; }
+
     </style>
 </head>
 <body>
 
-    <div class="banner-container" id="bannerSlider">
-        <div class="slide active">
-            <div class="slide-overlay">
-                <h1 style="font-size: 3rem; font-weight: 900;">AZUCENA MEDICAL CENTER</h1>
-                <p>Innovación Médica a tu Alcance</p>
-                <a href="login.html" style="background:var(--main-neon); padding:15px 40px; border-radius:50px; color:black; text-decoration:none; font-weight:900; margin-top:20px;">RESERVAR CITA</a>
+    <nav class="navbar">
+        <div class="logo">Azucena</div>
+        <div class="nav-links">
+            <a href="#servicios">Servicios</a>
+            <a href="public/login.html">Ingresar</a>
+            <a href="public/registro.html" style="color: var(--main-neon);">Registrarse</a>
+        </div>
+    </nav>
+
+    <section class="hero-slider" id="bannerSlider">
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=1600');">
+            <div class="slide-overlay" style="background: rgba(255,255,255,0.6); color: var(--dark);">
+                <h1 class="title-jadi">Azucena<br>Salud</h1>
+                <p style="letter-spacing: 5px; font-weight: 300; text-transform: uppercase;">Tech Médica de Élite</p>
+                <a href="public/login.html" class="btn-jadi">Reserva Ahora</a>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div style="text-align: center; padding-top: 50px;">
-        <h2 style="font-weight: 900; letter-spacing: 3px;">NUESTROS SERVICIOS</h2>
-    </div>
-    <div class="servicios-grid" id="serviciosPublicos">
+    <section id="servicios">
+        <div class="section-title">
+            <h2>Nuestra Especialidad</h2>
+            <p style="color: #888;">Servicios de alta calidad gestionados por expertos.</p>
         </div>
+        <div class="servicios-grid" id="contenedorServicios">
+            </div>
+    </section>
 
     <footer>
-        <div style="margin-bottom: 30px;">
-            <h3>Encuéntranos</h3>
-            <p>Av. Principal, Edificio Médico Azucena, Planta Baja</p>
+        <div class="footer-grid">
+            <div>
+                <h3>Ubicación</h3>
+                <p>Centro Médico Azucena<br>Sector Principal, Edif. A1</p>
             </div>
-        <div class="social-links">
-            <a href="#">FACEBOOK</a>
-            <a href="#">INSTAGRAM</a>
-            <a href="https://wa.me/TUNUMERO">WHATSAPP</a>
+            <div>
+                <h3>Contacto</h3>
+                <p>WhatsApp: +593 XXX XXX XXX<br>Email: info@azucenasalud.com</p>
+            </div>
+            <div>
+                <h3>Síguenos</h3>
+                <div class="social-links">
+                    <a href="#">FB</a> <a href="#">IG</a> <a href="#">WA</a>
+                </div>
+            </div>
         </div>
-        <p style="margin-top: 40px; font-size: 0.7rem; color: #555;">&copy; 2024 JADI SALUD - Powered by Tech Élite</p>
+        <p class="copy">© 2024 JADI SALUD | Azucena Medical Center</p>
     </footer>
 
-    <script type="module" src="public/js/firebase-config.js"></script>
     <script type="module">
         import { db } from './public/js/firebase-config.js';
-        import { collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // CARGAR SERVICIOS
+        // 1. CARGAR SERVICIOS DESDE ADMIN
+        const contenedor = document.getElementById('contenedorServicios');
         onSnapshot(collection(db, "servicios"), (snapshot) => {
-            const container = document.getElementById('serviciosPublicos');
-            container.innerHTML = "";
-            snapshot.forEach(doc => {
-                const s = doc.data();
-                container.innerHTML += `
+            contenedor.innerHTML = "";
+            snapshot.forEach(docSnap => {
+                const s = docSnap.data();
+                contenedor.innerHTML += `
                     <div class="servicio-card">
-                        <div class="icon-box">${s.icono || '🩺'}</div>
+                        <span class="icon-box">${s.icono || '🩺'}</span>
                         <h3>${s.nombre}</h3>
-                        <p style="color:#666; font-size:0.9rem;">${s.desc}</p>
+                        <p>${s.desc}</p>
                     </div>
                 `;
             });
         });
 
-        // CARGAR PUBLICIDAD (BANNERS)
+        // 2. CARGAR PUBLICIDAD (BANNERS) DESDE ADMIN
+        const slider = document.getElementById('bannerSlider');
         onSnapshot(collection(db, "publicidad"), (snapshot) => {
-            const slider = document.getElementById('bannerSlider');
-            // Mantener el primer slide por defecto y añadir los nuevos
-            snapshot.forEach(doc => {
-                const p = doc.data();
-                const newSlide = document.createElement('div');
-                newSlide.className = 'slide';
-                newSlide.style.backgroundImage = `url('${p.imagen}')`;
-                newSlide.innerHTML = `
-                    <div class="slide-overlay">
-                        <h2 style="font-size:2.5rem; font-weight:900;">${p.titulo}</h2>
-                        <a href="login.html" style="border:2px solid var(--main-neon); padding:10px 30px; color:white; text-decoration:none; border-radius:50px;">SABER MÁS</a>
+            if (snapshot.empty) return;
+
+            // Limpiamos slider pero mantenemos la estructura
+            slider.innerHTML = "";
+            snapshot.forEach((docSnap, index) => {
+                const p = docSnap.data();
+                const esClaro = p.estilo === 'claro';
+                const bgOverlay = esClaro ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.6)';
+                const colorTexto = esClaro ? '#1A1A1A' : '#FFFFFF';
+
+                const slideDiv = document.createElement('div');
+                slideDiv.className = `slide ${index === 0 ? 'active' : ''}`;
+                slideDiv.style.backgroundImage = `url('${p.imagen}')`;
+                slideDiv.innerHTML = `
+                    <div class="slide-overlay" style="background:${bgOverlay}; color:${colorTexto};">
+                        <h2 class="title-jadi">${p.titulo}</h2>
+                        <a href="public/login.html" class="btn-jadi" style="${!esClaro ? 'background: #00FFFF; color: #000;' : ''}">Saber Más</a>
                     </div>
                 `;
-                slider.appendChild(newSlide);
+                slider.appendChild(slideDiv);
             });
-            iniciarSlider();
+            iniciarCicloSlider();
         });
 
-        function iniciarSlider() {
+        function iniciarCicloSlider() {
+            let slides = document.querySelectorAll('.slide');
             let current = 0;
-            const slides = document.querySelectorAll('.slide');
-            if(slides.length <= 1) return;
-            
+            if (slides.length <= 1) return;
+
             setInterval(() => {
                 slides[current].classList.remove('active');
                 current = (current + 1) % slides.length;
                 slides[current].classList.add('active');
-            }, 5000); // Cambia cada 5 segundos
+            }, 6000); // Cambia cada 6 segundos
         }
     </script>
 </body>
