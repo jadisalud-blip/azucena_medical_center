@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Azucena Medical Center | Tech Médica de Élite</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #FFFFFF;
             --main-neon: #00FFFF;
             --main-neon-glow: rgba(0, 255, 255, 0.4);
             --text-color: #1A1A1A;
-            --subtitle-color: #666666;
-            --card-bg: #F8F9FA;
             --dark: #1A1A1A;
+            --card-bg: #F8F9FA;
         }
 
         body, html {
@@ -27,7 +26,7 @@
 
         /* NAVBAR */
         .navbar {
-            padding: 25px 50px;
+            padding: 20px 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -37,18 +36,14 @@
             z-index: 1000;
             background: rgba(255,255,255,0.8);
             backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .logo { font-size: 1.2rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: var(--dark); }
-        .nav-links a { text-decoration: none; color: var(--dark); font-weight: 700; margin-left: 20px; font-size: 0.8rem; text-transform: uppercase; }
+        .logo { font-size: 1.4rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: var(--dark); }
+        .nav-links a { text-decoration: none; color: var(--dark); font-weight: 700; margin-left: 20px; font-size: 0.8rem; text-transform: uppercase; transition: 0.3s; }
+        .nav-links a:hover { color: var(--main-neon); }
 
-        /* HERO / BANNER SLIDER DINÁMICO */
-        .hero-slider {
-            width: 100%;
-            height: 90vh;
-            background: #EEE;
-            position: relative;
-            overflow: hidden;
-        }
+        /* HERO / SLIDER */
+        .hero-slider { width: 100%; height: 90vh; background: #111; position: relative; overflow: hidden; }
         .slide {
             width: 100%; height: 100%;
             position: absolute;
@@ -68,162 +63,38 @@
             text-align: center;
             padding: 0 20px;
         }
-
-        .title-jadi { font-size: 4rem; font-weight: 900; text-transform: uppercase; margin: 0; letter-spacing: -2px; }
+        .title-jadi { font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 900; text-transform: uppercase; margin: 0; line-height: 0.9; }
         .btn-jadi {
             margin-top: 30px;
             background-color: var(--main-neon);
             color: #000;
-            padding: 20px 50px;
-            font-size: 1.2rem;
+            padding: 18px 45px;
+            font-size: 1rem;
             font-weight: 900;
             text-decoration: none;
             border-radius: 100px;
             text-transform: uppercase;
-            box-shadow: 0 10px 30px var(--main-neon-glow);
+            box-shadow: 0 10px 25px var(--main-neon-glow);
             transition: 0.3s;
         }
-        .btn-jadi:hover { transform: translateY(-5px); box-shadow: 0 15px 40px var(--main-neon); }
 
-        /* SECCIÓN SERVICIOS */
-        .section-title { text-align: center; padding: 80px 0 40px; }
-        .section-title h2 { font-size: 2.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: -1px; }
-        
+        /* SECCIONES */
+        .container { max-width: 1200px; margin: 0 auto; padding: 80px 20px; }
+        .section-title { text-align: center; margin-bottom: 50px; }
+        .section-title h2 { font-size: 2.5rem; font-weight: 900; text-transform: uppercase; }
+
+        /* SERVICIOS GRID */
         .servicios-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            padding: 0 50px 80px;
-            max-width: 1400px;
-            margin: 0 auto;
+            gap: 25px;
         }
         .servicio-card {
             background: var(--card-bg);
             padding: 40px;
             border-radius: 30px;
             text-align: center;
-            transition: 0.4s;
             border: 1px solid #EEE;
+            transition: 0.3s;
         }
-        .servicio-card:hover { background: white; transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); border-color: var(--main-neon); }
-        .icon-box { font-size: 3.5rem; margin-bottom: 20px; display: block; }
-
-        /* FOOTER / CONTACTO */
-        footer { background: var(--dark); color: white; padding: 80px 50px; text-align: center; }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 50px; }
-        .social-links a { color: var(--main-neon); margin: 0 15px; text-decoration: none; font-weight: 900; font-size: 1.2rem; }
-        .copy { font-size: 0.8rem; color: #555; margin-top: 40px; }
-
-    </style>
-</head>
-<body>
-
-    <nav class="navbar">
-        <div class="logo">Azucena</div>
-        <div class="nav-links">
-            <a href="#servicios">Servicios</a>
-            <a href="login.html">Ingresar</a>
-            <a href="public/registro.html" style="color: var(--main-neon);">Registrarse</a>
-        </div>
-    </nav>
-
-    <section class="hero-slider" id="bannerSlider">
-        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=1600');">
-            <div class="slide-overlay" style="background: rgba(255,255,255,0.6); color: var(--dark);">
-                <h1 class="title-jadi">Azucena<br>Salud</h1>
-                <p style="letter-spacing: 5px; font-weight: 300; text-transform: uppercase;">Tech Médica de Élite</p>
-                <a href="login.html" class="btn-jadi">Reserva Ahora</a>
-            </div>
-        </div>
-    </section>
-
-    <section id="servicios">
-        <div class="section-title">
-            <h2>Nuestra Especialidad</h2>
-            <p style="color: #888;">Servicios de alta calidad gestionados por expertos.</p>
-        </div>
-        <div class="servicios-grid" id="contenedorServicios">
-            </div>
-    </section>
-
-    <footer>
-        <div class="footer-grid">
-            <div>
-                <h3>Ubicación</h3>
-                <p>Centro Médico Azucena<br>Sector Principal, Edif. A1</p>
-            </div>
-            <div>
-                <h3>Contacto</h3>
-                <p>WhatsApp: +593 XXX XXX XXX<br>Email: info@azucenasalud.com</p>
-            </div>
-            <div>
-                <h3>Síguenos</h3>
-                <div class="social-links">
-                    <a href="#">FB</a> <a href="#">IG</a> <a href="#">WA</a>
-                </div>
-            </div>
-        </div>
-        <p class="copy">© 2024 JADI SALUD | Azucena Medical Center</p>
-    </footer>
-
-    <script type="module">
-        import { db } from './public/js/firebase-config.js';
-        import { collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        // 1. CARGAR SERVICIOS DESDE ADMIN
-        const contenedor = document.getElementById('contenedorServicios');
-        onSnapshot(collection(db, "servicios"), (snapshot) => {
-            contenedor.innerHTML = "";
-            snapshot.forEach(docSnap => {
-                const s = docSnap.data();
-                contenedor.innerHTML += `
-                    <div class="servicio-card">
-                        <span class="icon-box">${s.icono || '🩺'}</span>
-                        <h3>${s.nombre}</h3>
-                        <p>${s.desc}</p>
-                    </div>
-                `;
-            });
-        });
-
-        // 2. CARGAR PUBLICIDAD (BANNERS) DESDE ADMIN
-        const slider = document.getElementById('bannerSlider');
-        onSnapshot(collection(db, "publicidad"), (snapshot) => {
-            if (snapshot.empty) return;
-
-            // Limpiamos slider pero mantenemos la estructura
-            slider.innerHTML = "";
-            snapshot.forEach((docSnap, index) => {
-                const p = docSnap.data();
-                const esClaro = p.estilo === 'claro';
-                const bgOverlay = esClaro ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.6)';
-                const colorTexto = esClaro ? '#1A1A1A' : '#FFFFFF';
-
-                const slideDiv = document.createElement('div');
-                slideDiv.className = `slide ${index === 0 ? 'active' : ''}`;
-                slideDiv.style.backgroundImage = `url('${p.imagen}')`;
-                slideDiv.innerHTML = `
-                    <div class="slide-overlay" style="background:${bgOverlay}; color:${colorTexto};">
-                        <h2 class="title-jadi">${p.titulo}</h2>
-                        <a href="public/login.html" class="btn-jadi" style="${!esClaro ? 'background: #00FFFF; color: #000;' : ''}">Saber Más</a>
-                    </div>
-                `;
-                slider.appendChild(slideDiv);
-            });
-            iniciarCicloSlider();
-        });
-
-        function iniciarCicloSlider() {
-            let slides = document.querySelectorAll('.slide');
-            let current = 0;
-            if (slides.length <= 1) return;
-
-            setInterval(() => {
-                slides[current].classList.remove('active');
-                current = (current + 1) % slides.length;
-                slides[current].classList.add('active');
-            }, 6000); // Cambia cada 6 segundos
-        }
-    </script>
-</body>
-</html>
+        .servicio-card:hover { transform: translateY(-10px); border-color: var(--main-neon); background
