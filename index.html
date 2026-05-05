@@ -3,98 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azucena Medical Center | Tech Médica de Élite</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700;800;900&display=swap" rel="stylesheet">
+    <title>Azucena Medical Center | Excelencia en Salud</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #FFFFFF;
-            --main-neon: #00FFFF;
-            --main-neon-glow: rgba(0, 255, 255, 0.4);
-            --text-color: #1A1A1A;
+            --neon: #00FFFF;
+            --neon-glow: rgba(0, 255, 255, 0.5);
             --dark: #1A1A1A;
-            --card-bg: #F8F9FA;
+            --white: #FFFFFF;
+            --gray: #F4F7F6;
         }
 
-        body, html {
-            margin: 0; padding: 0;
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
+        body, html { margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; color: var(--dark); scroll-behavior: smooth; }
 
-        /* NAVBAR */
+        /* NAVBAR DINÁMICA */
         .navbar {
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            box-sizing: border-box;
-            z-index: 1000;
-            background: rgba(255,255,255,0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 20px 50px; display: flex; justify-content: space-between; align-items: center;
+            position: fixed; width: 100%; box-sizing: border-box; z-index: 1000;
+            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(15px); border-bottom: 1px solid var(--neon);
         }
-        .logo { font-size: 1.4rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: var(--dark); }
-        .nav-links a { text-decoration: none; color: var(--dark); font-weight: 700; margin-left: 20px; font-size: 0.8rem; text-transform: uppercase; transition: 0.3s; }
-        .nav-links a:hover { color: var(--main-neon); }
+        .logo { font-size: 1.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
+        .logo span { color: var(--neon); text-shadow: 0 0 10px var(--neon); }
 
-        /* HERO / SLIDER */
-        .hero-slider { width: 100%; height: 90vh; background: #111; position: relative; overflow: hidden; }
-        .slide {
-            width: 100%; height: 100%;
-            position: absolute;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* HERO SLIDER */
+        #bannerSlider { width: 100%; height: 85vh; background: #000; position: relative; overflow: hidden; }
+        .slide { 
+            position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 1.5s ease; display: flex; align-items: center; justify-content: center;
         }
         .slide.active { opacity: 1; z-index: 10; }
-        .slide-overlay {
-            width: 100%; height: 100%;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            text-align: center;
-            padding: 0 20px;
+        .overlay { 
+            width: 100%; height: 100%; background: rgba(0,0,0,0.5); 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center;
         }
-        .title-jadi { font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 900; text-transform: uppercase; margin: 0; line-height: 0.9; }
-        .btn-jadi {
-            margin-top: 30px;
-            background-color: var(--main-neon);
-            color: #000;
-            padding: 18px 45px;
-            font-size: 1rem;
-            font-weight: 900;
-            text-decoration: none;
-            border-radius: 100px;
-            text-transform: uppercase;
-            box-shadow: 0 10px 25px var(--main-neon-glow);
-            transition: 0.3s;
+        .overlay h2 { font-size: 4rem; text-transform: uppercase; margin: 0; font-weight: 900; }
+
+        /* SECCIÓN SERVICIOS */
+        .section { padding: 80px 10%; text-align: center; }
+        .section h2 { font-size: 2.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 40px; }
+        .grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .card-servicio { 
+            background: var(--white); padding: 40px; border-radius: 30px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: 0.4s; border: 1px solid transparent;
+        }
+        .card-servicio:hover { border-color: var(--neon); transform: translateY(-10px); box-shadow: 0 15px 40px var(--neon-glow); }
+        .card-servicio span { font-size: 3.5rem; display: block; margin-bottom: 15px; }
+
+        /* CONTACTO Y GPS */
+        .contacto-container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 50px; text-align: left; }
+        .mapa-box iframe { width: 100%; height: 400px; border-radius: 30px; border: 2px solid var(--neon); }
+        
+        /* FOOTER */
+        footer { background: var(--dark); color: white; padding: 60px 10%; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
+        .social-links a { color: var(--neon); text-decoration: none; font-weight: 800; display: block; margin-bottom: 10px; font-size: 1.1rem; }
+        .btn-gps { 
+            display: inline-block; background: var(--neon); color: black; padding: 15px 30px; 
+            border-radius: 50px; text-decoration: none; font-weight: 900; margin-top: 20px;
         }
 
-        /* SECCIONES */
-        .container { max-width: 1200px; margin: 0 auto; padding: 80px 20px; }
-        .section-title { text-align: center; margin-bottom: 50px; }
-        .section-title h2 { font-size: 2.5rem; font-weight: 900; text-transform: uppercase; }
+        @media (max-width: 768px) {
+            .contacto-container { grid-template-columns: 1fr; }
+            .overlay h2 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
 
-        /* SERVICIOS GRID */
-        .servicios-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+    <nav class="navbar">
+        <div class="logo">Azucena<span>Medical</span></div>
+        <div class="nav-links">
+            <a href="#servicios" style="text-decoration:none; color:var(--dark); font-weight:700;">SERVICIOS</a>
+            <a href="login.html" style="margin-left:20px; text-decoration:none; background:var(--neon); padding:10px 20px; border-radius:50px; color:black; font-weight:800;">INGRESAR</a>
+        </div>
+    </nav>
+
+    <section id="bannerSlider">
+        </section>
+
+    <section id="servicios" class="section">
+        <h2>Especialidades Médicas</h2>
+        <div class="grid-servicios" id="contenedorServicios">
+            </div>
+    </section>
+
+    <section id="contacto" class="section" style="background: var(--gray);">
+        <h2>Contacto y Ubicación</h2>
+        <div class="contacto-container">
+            <div class="info-texto">
+                <h3 style="color: var(--dark);">Atención Inmediata</h3>
+                <p>📍 <strong>Dirección:</strong> <span id="txtDireccion">Cargando...</span></p>
+                <p>📞 <strong>Teléfono:</strong> <span id="txtTelefono">...</span></p>
+                <p>📱 <strong>WhatsApp:</strong> <span id="txtWhatsapp">...</span></p>
+                <a href="#" id="linkGps" class="btn-gps" target="_blank">📍 CÓMO LLEGAR (GPS)</a>
+            </div>
+            <div class="mapa-box">
+                <iframe id="mapaIframe" src="" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h3>Azucena Medical</h3>
+                <p>Innovación y calidez en cada latido.</p>
+            </div>
+            <div>
+                <h3>Redes Sociales</h3>
+                <a href="#" id="linkFB">FACEBOOK</a>
+                <a href="#" id="linkIG">INSTAGRAM</a>
+                <a href="#" id="linkTK">TIKTOK</a>
+            </div>
+            <div>
+                <h3>Horarios</h3>
+                <p>Lunes - Viernes: 08:00 - 19:00</p>
+                <p>Sábados: 09:00 - 14:00</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { db } from './public/js/firebase-config.js';
+        import { collection, onSnapshot, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // 1. CARGAR BANNERS
+        const slider = document.getElementById('bannerSlider');
+        onSnapshot(collection(db, "publicidad"), (snap) => {
+            slider.innerHTML = "";
+            snap.forEach((d, i) => {
+                const p = d.data();
+                const div = document.createElement('div');
+                div.className = `slide ${i === 0 ? 'active' : ''}`;
+                div.style.backgroundImage = `url('${p.imagen}')`;
+                div.innerHTML = `<div class="overlay"><h2>${p.titulo}</h2></div>`;
+                slider.appendChild(div);
+            });
+            iniciarSlider();
+        });
+
+        // 2. CARGAR SERVICIOS (Medicina General, Traumatología, etc)
+        const contServ = document.getElementById('contenedorServicios');
+        onSnapshot(collection(db, "servicios"), (snap) => {
+            contServ.innerHTML = "";
+            snap.forEach(d => {
+                const s = d.data();
+                contServ.innerHTML += `
+                    <div class="card-servicio">
+                        <span>${s.icono}</span>
+                        <h3>${s.nombre}</h3>
+                        <p>${s.desc}</p>
+                    </div>`;
+            });
+        });
+
+        // 3. CARGAR CONTACTO Y GPS DINÁMICO
+        onSnapshot(doc(db, "configuracion", "contacto"), (d) => {
+            if (d.exists()) {
+                const c = d.data();
+                document.getElementById('txtDireccion').innerText = c.direccion;
+                document.getElementById('txtTelefono').innerText = c.telefono || "Sin número";
+                document.getElementById('txtWhatsapp').innerText = c.whatsapp;
+                document.getElementById('linkFB').href = c.facebook;
+                document.getElementById('linkIG').href = c.instagram;
+                document.getElementById('linkTK').href = c.tiktok;
+                
+                // Configurar el mapa y botón GPS
+                const mapFrame = document.getElementById('mapaIframe');
+                if(c.mapa) mapFrame.src = c.mapa; 
+                document.getElementById('linkGps').href = c.linkGps; // Link directo a Google Maps
+            }
+        });
+
+        function iniciarSlider() {
+            let slides = document.querySelectorAll('.slide');
+            let cur = 0;
+            if(slides.length <= 1) return;
+            setInterval(() => {
+                slides[cur].classList.remove('active');
+                cur = (cur + 1) % slides.length;
+                slides[cur].classList.add('active');
+            }, 5000);
         }
-        .servicio-card {
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 30px;
-            text-align: center;
-            border: 1px solid #EEE;
-            transition: 0.3s;
-        }
-        .servicio-card:hover { transform: translateY(-10px); border-color: var(--main-neon); background
+    </script>
+</body>
+</html>
