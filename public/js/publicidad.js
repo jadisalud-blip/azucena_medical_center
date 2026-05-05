@@ -44,3 +44,21 @@ btnExtra.onclick = async () => {
     await addDoc(collection(db, "publicidad_extra"), { imagen: img, enlace: link, fecha: serverTimestamp() });
     alert("Publicidad extra cargada.");
 };
+
+// ... (Otras funciones se mantienen)
+
+btnCont.onclick = async () => {
+    const datos = {
+        whatsapp: document.getElementById('confWhatsapp').value,
+        telefono: document.getElementById('confTelefono').value, // Nuevo
+        direccion: document.getElementById('confDireccion').value,
+        facebook: document.getElementById('confFacebook').value,
+        instagram: document.getElementById('confInstagram').value,
+        tiktok: document.getElementById('confTiktok').value,     // Nuevo
+        mapa: document.getElementById('confMapaIframe').value,  // El link del iframe
+        linkGps: document.getElementById('confLinkGps').value,  // El link para "Cómo llegar"
+        ultimaActualizacion: new Date()
+    };
+    await setDoc(doc(db, "configuracion", "contacto"), datos);
+    alert("🚀 ¡Toda la web de Azucena ha sido actualizada!");
+};
