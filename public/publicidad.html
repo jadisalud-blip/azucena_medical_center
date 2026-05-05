@@ -1,160 +1,28 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marketing Hub | Azucena Elite</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root { 
-            --neon: #00FFFF; 
-            --dark-bg: #0a0a0a; 
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --glass: rgba(255, 255, 255, 0.1);
-        }
-
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background-color: var(--dark-bg); 
-            background-image: radial-gradient(circle at top right, #003333, transparent);
-            color: white; 
-            margin: 0; 
-            padding: 20px;
-            min-height: 100vh;
-        }
-
-        .container { max-width: 1100px; margin: 0 auto; }
-
-        .header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 40px 0;
-        }
-
-        h1 { font-weight: 900; text-transform: uppercase; letter-spacing: -2px; font-size: 2.5rem; margin: 0; }
-        h1 span { color: var(--neon); text-shadow: 0 0 20px var(--neon); }
-
-        .btn-back { 
-            text-decoration: none; color: white; border: 1px solid var(--neon); 
-            padding: 10px 25px; border-radius: 100px; font-size: 0.8rem; font-weight: 700;
-            transition: 0.3s; backdrop-filter: blur(5px);
-        }
-        .btn-back:hover { background: var(--neon); color: black; box-shadow: 0 0 20px var(--neon); }
-
-        .grid-marketing { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-            gap: 25px; 
-        }
-
-        .card { 
-            background: var(--card-bg); 
-            backdrop-filter: blur(15px); 
-            border: 1px solid var(--glass);
-            padding: 30px; 
-            border-radius: 30px; 
-            position: relative;
-            overflow: hidden;
-            transition: 0.4s;
-        }
-        .card:hover { border-color: var(--neon); transform: translateY(-5px); }
-
-        .card h2 { 
-            font-weight: 900; text-transform: uppercase; font-size: 1rem; 
-            margin-bottom: 25px; color: var(--neon); letter-spacing: 1px;
-        }
-
-        label { font-size: 0.7rem; text-transform: uppercase; opacity: 0.6; font-weight: 700; margin-left: 5px; }
-
-        input, textarea, select { 
-            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass);
-            padding: 15px; margin: 8px 0 20px; border-radius: 15px; color: white;
-            font-family: inherit; font-size: 0.9rem; outline: none; box-sizing: border-box;
-        }
-        input:focus { border-color: var(--neon); background: rgba(0,255,255,0.05); }
-
-        .btn-save { 
-            width: 100%; background: var(--neon); color: black; border: none; 
-            padding: 18px; border-radius: 15px; font-weight: 900; 
-            text-transform: uppercase; cursor: pointer; transition: 0.3s;
-        }
-        .btn-save:hover { box-shadow: 0 0 30px var(--neon); transform: scale(1.02); }
-
-        /* Estilo especial para la sección de Redes */
-        .card-social { background: linear-gradient(145deg, rgba(0,255,255,0.1), rgba(0,0,0,0)); }
-
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <div class="header">
-            <h1>Marketing<span>Center</span></h1>
-            <a href="admin.html" class="btn-back">VOLVER AL PANEL</a>
-        </div>
-
-        <div class="grid-marketing">
-            
-            <div class="card">
-                <h2>01. Banners Principales</h2>
-                <label>Título del impacto</label>
-                <input type="text" id="pubTitulo" placeholder="Ej: SALUD DE VANGUARDIA">
-                
-                <label>Link de Imagen (GitHub Raw)</label>
-                <input type="text" id="pubLinkGithub" placeholder="https://raw.githubusercontent.com/...">
-                
-                <label>Esquema de color</label>
-                <select id="pubEstilo">
-                    <option value="oscuro">MODO OSCURO (Texto Blanco)</option>
-                    <option value="claro">MODO CLARO (Texto Negro)</option>
-                </select>
-                
-                <button class="btn-save" id="btnGuardarPub">Actualizar Slider</button>
-            </div>
-
-            <div class="card">
-                <h2>02. Especialidades</h2>
-                <label>Nombre del servicio</label>
-                <input type="text" id="servNombre" placeholder="Ej: ODONTOLOGÍA">
-                
-                <label>Descripción breve</label>
-                <textarea id="servDesc" rows="3" placeholder="Describe el beneficio..."></textarea>
-                
-                <label>Icono / Emoji</label>
-                <input type="text" id="servIcono" placeholder="🩺">
-                
-                <button class="btn-save" id="btnGuardarServicio">Publicar Servicio</button>
-            </div>
-
-            <div class="card card-social">
-                <h2>03. Canales y Redes</h2>
-                <label>WhatsApp Business</label>
-                <input type="text" id="confWhatsapp" placeholder="593...">
-                
-                <label>Instagram Link</label>
-                <input type="text" id="confInstagram" placeholder="https://instagram.com/...">
-                
-                <label>Dirección Física</label>
-                <input type="text" id="confDireccion" placeholder="Sector El Inca, Edif...">
-                
-                <button class="btn-save" id="btnGuardarContacto">Guardar Cambios</button>
-            </div>
-
-            <div class="card">
-                <h2>04. Publicidad Extra</h2>
-                <label>Imagen Promocional (GitHub)</label>
-                <input type="text" id="extraImg" placeholder="Link de la promo...">
-                
-                <label>URL de destino (Opcional)</label>
-                <input type="text" id="extraLink" placeholder="¿A dónde va el clic?">
-                
-                <button class="btn-save" id="btnGuardarExtra" style="background: transparent; border: 2px solid var(--neon); color: white;">Subir Promo</button>
-            </div>
-
-        </div>
+<div class="grid-marketing">
+    <div class="card">
+        <h2>Editar Slider</h2>
+        <input type="text" id="pubTitulo" placeholder="Título (Ej: Salud Total)">
+        <input type="text" id="pubLinkGithub" placeholder="Link de Foto GitHub">
+        <button class="btn-save" id="btnGuardarPub">Actualizar Slider</button>
     </div>
 
-    <script type="module" src="public/js/publicidad.js"></script>
-</body>
-</html>
+    <div class="card">
+        <h2>Añadir Especialidad</h2>
+        <input type="text" id="servNombre" placeholder="Ej: Ginecología">
+        <input type="text" id="servDesc" placeholder="Breve descripción">
+        <input type="text" id="servIcono" placeholder="Clase de FontAwesome (Ej: fa-solid fa-heart)">
+        <button class="btn-save" id="btnGuardarServicio">Publicar Servicio</button>
+    </div>
+
+    <div class="card">
+        <h2>GPS y Redes</h2>
+        <input type="text" id="confDireccion" placeholder="Dirección Escrita">
+        <input type="text" id="confWhatsapp" placeholder="WhatsApp (Ej: 593...)">
+        <input type="text" id="confLinkGps" placeholder="Link 'Cómo llegar' de Maps">
+        <input type="text" id="confMapaIframe" placeholder="Link del IFRAME (src)">
+        <input type="text" id="confFacebook" placeholder="Link Facebook">
+        <input type="text" id="confInstagram" placeholder="Link Instagram">
+        <input type="text" id="confTiktok" placeholder="Link TikTok">
+        <button class="btn-save" id="btnGuardarContacto">Sincronizar Web</button>
+    </div>
+</div>
