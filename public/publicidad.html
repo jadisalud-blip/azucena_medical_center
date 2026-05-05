@@ -1,28 +1,201 @@
-<div class="grid-marketing">
-    <div class="card">
-        <h2>Editar Slider</h2>
-        <input type="text" id="pubTitulo" placeholder="Título (Ej: Salud Total)">
-        <input type="text" id="pubLinkGithub" placeholder="Link de Foto GitHub">
-        <button class="btn-save" id="btnGuardarPub">Actualizar Slider</button>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Marketing | Azucena Medical Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --neon: #00FFFF;
+            --neon-glow: rgba(0, 255, 255, 0.4);
+            --bg: #F4F7F6;
+            --white: #FFFFFF;
+            --dark: #1A1A1A;
+            --border: #E0E0E0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg);
+            color: var(--dark);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        /* HEADER */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 0;
+            border-bottom: 2px solid var(--neon);
+            margin-bottom: 40px;
+        }
+        .header h1 { font-weight: 900; text-transform: uppercase; margin: 0; font-size: 1.8rem; }
+        .header h1 span { color: var(--neon); text-shadow: 0 0 10px var(--neon-glow); }
+        
+        .btn-back {
+            text-decoration: none; color: var(--dark); font-weight: 700;
+            padding: 10px 20px; border: 1px solid var(--dark); border-radius: 50px;
+            transition: 0.3s;
+        }
+        .btn-back:hover { background: var(--dark); color: white; }
+
+        /* GRID DE TARJETAS */
+        .grid-admin {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            font-weight: 900;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            color: #555;
+        }
+        .card h2 i { margin-right: 10px; color: var(--neon); }
+
+        /* FORMULARIOS */
+        label { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; opacity: 0.7; display: block; margin-bottom: 5px; margin-left: 5px; }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-family: inherit;
+            box-sizing: border-box;
+            background: #FAFAFA;
+            outline: none;
+            transition: 0.3s;
+        }
+        input:focus { border-color: var(--neon); background: white; box-shadow: 0 0 10px var(--neon-glow); }
+
+        .btn-save {
+            width: 100%;
+            padding: 18px;
+            background: var(--neon);
+            color: #000;
+            border: none;
+            border-radius: 15px;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+            letter-spacing: 1px;
+        }
+        .btn-save:hover { transform: scale(1.02); box-shadow: 0 10px 20px var(--neon-glow); }
+
+        .hint { font-size: 0.7rem; color: #888; margin-top: -15px; margin-bottom: 20px; display: block; }
+
+        @media (max-width: 600px) {
+            .header { flex-direction: column; text-align: center; gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Gestión<span>Marketing</span></h1>
+            <a href="admin.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver al Panel</a>
+        </div>
+
+        <div class="grid-admin">
+            
+            <div class="card">
+                <h2><i class="fa-solid fa-images"></i> Banners Slider</h2>
+                <label>Título del Banner</label>
+                <input type="text" id="pubTitulo" placeholder="Ej: Excelencia en Traumatología">
+                
+                <label>Link de Imagen (GitHub Raw)</label>
+                <input type="text" id="pubLinkGithub" placeholder="https://raw.githubusercontent.com/...">
+                
+                <label>Estilo de Texto</label>
+                <select id="pubEstilo">
+                    <option value="oscuro">Texto Blanco (Para fondos oscuros)</option>
+                    <option value="claro">Texto Negro (Para fondos claros)</option>
+                </select>
+                
+                <button class="btn-save" id="btnGuardarPub">Actualizar Slider</button>
+            </div>
+
+            <div class="card">
+                <h2><i class="fa-solid fa-stethoscope"></i> Especialidades</h2>
+                <label>Nombre del Servicio</label>
+                <input type="text" id="servNombre" placeholder="Ej: Odontología">
+                
+                <label>Descripción Corta</label>
+                <textarea id="servDesc" rows="2" placeholder="Ej: Diseño de sonrisa y salud bucal..."></textarea>
+                
+                <label>Icono (FontAwesome)</label>
+                <input type="text" id="servIcono" placeholder="Ej: fa-solid fa-tooth">
+                <span class="hint">Usa clases de <a href="https://fontawesome.com/search" target="_blank">FontAwesome</a></span>
+                
+                <button class="btn-save" id="btnGuardarServicio">Añadir Especialidad</button>
+            </div>
+
+            <div class="card">
+                <h2><i class="fa-solid fa-address-book"></i> Datos de Contacto</h2>
+                <label>Dirección Física</label>
+                <input type="text" id="confDireccion" placeholder="Av. Amazonas, Quito...">
+                
+                <label>Teléfono Fijo</label>
+                <input type="text" id="confTelefono" placeholder="02-222-333">
+                
+                <label>WhatsApp Business</label>
+                <input type="text" id="confWhatsapp" placeholder="593999888777">
+                
+                <label>Facebook (URL)</label>
+                <input type="text" id="confFacebook" placeholder="https://facebook.com/azucena...">
+                
+                <label>Instagram (URL)</label>
+                <input type="text" id="confInstagram" placeholder="https://instagram.com/azucena...">
+                
+                <label>TikTok (URL)</label>
+                <input type="text" id="confTiktok" placeholder="https://tiktok.com/@azucena...">
+                
+                <button class="btn-save" id="btnGuardarContacto">Sincronizar Datos</button>
+            </div>
+
+            <div class="card">
+                <h2><i class="fa-solid fa-location-dot"></i> GPS y Ubicación</h2>
+                <label>URL del Iframe (src)</label>
+                <input type="text" id="confMapaIframe" placeholder="https://www.google.com/maps/embed?pb=...">
+                <span class="hint">Solo pega el link que está dentro del 'src' del código compartir mapa.</span>
+                
+                <label>Link Directo GPS (Cómo llegar)</label>
+                <input type="text" id="confLinkGps" placeholder="https://goo.gl/maps/...">
+                
+                <label>Publicidad Extra (Imagen Promo)</label>
+                <input type="text" id="extraImg" placeholder="Link de imagen promocional">
+                
+                <label>Link de la Promo (Opcional)</label>
+                <input type="text" id="extraLink" placeholder="https://wa.me/...">
+
+                <button class="btn-save" id="btnGuardarExtra" style="margin-top: 20px; background: transparent; border: 2px solid var(--neon);">Publicar Promo Extra</button>
+            </div>
+
+        </div>
     </div>
 
-    <div class="card">
-        <h2>Añadir Especialidad</h2>
-        <input type="text" id="servNombre" placeholder="Ej: Ginecología">
-        <input type="text" id="servDesc" placeholder="Breve descripción">
-        <input type="text" id="servIcono" placeholder="Clase de FontAwesome (Ej: fa-solid fa-heart)">
-        <button class="btn-save" id="btnGuardarServicio">Publicar Servicio</button>
-    </div>
-
-    <div class="card">
-        <h2>GPS y Redes</h2>
-        <input type="text" id="confDireccion" placeholder="Dirección Escrita">
-        <input type="text" id="confWhatsapp" placeholder="WhatsApp (Ej: 593...)">
-        <input type="text" id="confLinkGps" placeholder="Link 'Cómo llegar' de Maps">
-        <input type="text" id="confMapaIframe" placeholder="Link del IFRAME (src)">
-        <input type="text" id="confFacebook" placeholder="Link Facebook">
-        <input type="text" id="confInstagram" placeholder="Link Instagram">
-        <input type="text" id="confTiktok" placeholder="Link TikTok">
-        <button class="btn-save" id="btnGuardarContacto">Sincronizar Web</button>
-    </div>
-</div>
+    <script type="module" src="js/publicidad.js"></script>
+</body>
+</html>
