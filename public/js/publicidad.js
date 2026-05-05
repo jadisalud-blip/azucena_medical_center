@@ -1,12 +1,13 @@
-import { db } from './firebase-config.js'; // Ajusta la ruta si es necesario
-import { collection, addDoc, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { db } from './firebase-config.js'; 
+import { collection, addDoc, doc, setDoc, serverTimestamp, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // --- REFERENCIAS ---
 const btnPub = document.getElementById('btnGuardarPub');
 const btnServ = document.getElementById('btnGuardarServicio');
 const btnCont = document.getElementById('btnGuardarContacto');
+const btnExtra = document.getElementById('btnGuardarExtra'); // Nuevo botón
 
-// --- 1. GESTIÓN DE BANNERS (IMÁGENES GITHUB) ---
+// --- 1. GESTIÓN DE BANNERS PRINCIPALES (SLIDER HERO) ---
 btnPub.addEventListener('click', async () => {
     const titulo = document.getElementById('pubTitulo').value;
     const imagen = document.getElementById('pubLinkGithub').value;
@@ -18,13 +19,13 @@ btnPub.addEventListener('click', async () => {
         await addDoc(collection(db, "publicidad"), {
             titulo, imagen, estilo, fecha: serverTimestamp()
         });
-        alert("✅ Banner añadido al carrusel del Index.");
+        alert("✅ Banner añadido al Slider Principal.");
         document.getElementById('pubTitulo').value = "";
         document.getElementById('pubLinkGithub').value = "";
     } catch (e) { alert("Error: " + e.message); }
 });
 
-// --- 2. GESTIÓN DE SERVICIOS Y PROMOS ---
+// --- 2. GESTIÓN DE SERVICIOS ---
 btnServ.addEventListener('click', async () => {
     const nombre = document.getElementById('servNombre').value;
     const desc = document.getElementById('servDesc').value;
@@ -36,13 +37,13 @@ btnServ.addEventListener('click', async () => {
         await addDoc(collection(db, "servicios"), {
             nombre, desc, icono: icono || '🩺', fecha: serverTimestamp()
         });
-        alert("✅ Nuevo servicio/promo publicado.");
+        alert("✅ Servicio publicado.");
         document.getElementById('servNombre').value = "";
         document.getElementById('servDesc').value = "";
     } catch (e) { alert("Error: " + e.message); }
 });
 
-// --- 3. REDES, CONTACTO Y UBICACIÓN (DOCUMENTO ÚNICO) ---
+// --- 3. REDES, CONTACTO Y UBICACIÓN ---
 btnCont.addEventListener('click', async () => {
     const datos = {
         whatsapp: document.getElementById('confWhatsapp').value,
@@ -54,8 +55,25 @@ btnCont.addEventListener('click', async () => {
     };
 
     try {
-        // Usamos setDoc con un ID fijo 'info_centro' para que siempre se sobrescriba el mismo
         await setDoc(doc(db, "configuracion", "contacto"), datos);
-        alert("✅ Información de contacto y redes actualizada.");
+        alert("✅ Datos de contacto actualizados.");
+    } catch (e) { alert("Error: " + e.message); }
+});
+
+// --- 4. NUEVA SECCIÓN: PUBLICIDAD EXTRA (IMÁGENES SECUNDARIAS) ---
+btnExtra.addEventListener('click', async () => {
+    const img = document.getElementById('extraImg').value;
+    const link = document.getElementById('extraLink').value;
+
+    if(!img) return alert("Pega al menos el link de la imagen.");
+
+    try {
+        await addDoc(collection(db, "publicidad_extra"), {
+            imagen: img,
+            enlace: link || "#",
+            fecha: serverTimestamp()
+        });
+        alert("✅ Publicidad extra añadida.");
+        document.getElementById('extraImg').value = "";
     } catch (e) { alert("Error: " + e.message); }
 });
