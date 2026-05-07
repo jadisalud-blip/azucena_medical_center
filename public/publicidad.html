@@ -3,113 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Azucena | Control Total</title>
+    <title>Panel de Marketing Pro | Azucena</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root { --neon: #00FFFF; --dark: #1A1A1A; --bg: #F4F7F6; }
-        body { font-family: 'Montserrat', sans-serif; background: var(--bg); padding: 20px; color: var(--dark); }
+        body { font-family: 'Montserrat', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
         .container { max-width: 900px; margin: 0 auto; }
         .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 25px; border-left: 8px solid var(--dark); }
-        h2 { text-transform: uppercase; font-size: 1rem; border-bottom: 2px solid var(--neon); padding-bottom: 10px; }
+        h2 { text-transform: uppercase; font-size: 1rem; border-bottom: 2px solid var(--neon); padding-bottom: 10px; margin-bottom: 15px; }
+        label { display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-top: 15px; opacity: 0.7; }
+        input, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; margin-top: 5px; box-sizing: border-box; font-family: inherit; }
         
-        /* Estilo de la fila que aparece */
-        .fila-dinamica { 
-            display: flex; 
-            gap: 10px; 
-            margin-top: 10px; 
-            padding: 10px; 
-            background: #f9f9f9; 
-            border-radius: 10px; 
-            border: 1px solid #eee;
-            animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-
-        input, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px; box-sizing: border-box; }
-        .btn-add { background: var(--dark); color: var(--neon); border: none; padding: 10px 15px; border-radius: 8px; font-weight: 900; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+        .fila-dinamica { display: flex; gap: 10px; margin-top: 10px; padding: 15px; background: #fafafa; border-radius: 12px; border: 1px dashed #ccc; align-items: center; animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        
+        .btn-add { background: var(--dark); color: var(--neon); border: none; padding: 12px 20px; border-radius: 50px; font-weight: 900; cursor: pointer; text-transform: uppercase; margin-top: 10px; font-size: 0.75rem; }
+        .btn-gps { background: #2ecc71; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: 900; width: 100%; margin-top: 10px; text-transform: uppercase; }
         .btn-del { background: #ff4757; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; }
-        .btn-save { width: 100%; padding: 20px; background: var(--neon); color: black; border: none; border-radius: 15px; font-weight: 900; font-size: 1.2rem; cursor: pointer; margin-top: 30px; }
+        .btn-save { width: 100%; padding: 22px; background: var(--neon); color: black; border: none; border-radius: 18px; font-weight: 900; font-size: 1.3rem; cursor: pointer; margin-top: 30px; box-shadow: 0 10px 25px rgba(0,255,255,0.3); text-transform: uppercase; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1 style="text-align:center; font-weight:900;">ADMINISTRADOR PUBLICITARIO</h1>
+    <h1 style="text-align:center; font-weight:900; text-transform:uppercase; letter-spacing: -1px;">Marketing Manager Azucena</h1>
 
     <div class="card">
-        <h2>1. Encabezado (Menú)</h2>
+        <h2><i class="fa-solid fa-window-restore"></i> 1. Encabezado</h2>
         <label>Nombre del Centro</label>
         <input type="text" id="h_nombre" placeholder="Ej: Azucena Medical Center">
         
-        <label>Servicios que aparecerán en el menú:</label>
-        <div id="lista_menu"></div> <button class="btn-add" onclick="agregarItemMenu()">+ Añadir Servicio al Menú</button>
+        <label>Ítems del Menú de Servicios</label>
+        <div id="cont_menu"></div>
+        <button class="btn-add" onclick="crearItemMenu()">+ Añadir Servicio al Menú</button>
     </div>
 
     <div class="card">
-        <h2>2. Cuerpo y Especialidades</h2>
+        <h2><i class="fa-solid fa-clapperboard"></i> 2. Cuerpo del Index</h2>
         <label>Eslogan</label>
-        <input type="text" id="c_eslogan">
+        <input type="text" id="c_eslogan" placeholder="Ej: Excelencia en cada detalle">
         
-        <label>Detalle de Servicios (Imagen + Texto)</label>
-        <div id="lista_servicios_det"></div> <button class="btn-add" onclick="agregarServicioDetalle()">+ Añadir Detalle Completo</button>
+        <label>URL Logotipo</label>
+        <input type="text" id="c_logo" placeholder="URL de la imagen del logo">
+
+        <label>Detalle de Servicios (Nombre | Texto | Imagen)</label>
+        <div id="cont_servicios"></div>
+        <button class="btn-add" onclick="crearServicioDetalle()">+ Añadir Detalle de Servicio</button>
+
+        <label>Vídeos de YouTube</label>
+        <div id="cont_videos"></div>
+        <button class="btn-add" onclick="crearVideoItem()">+ Añadir Vídeo</button>
+
+        <label>Ubicación GPS</label>
+        <div style="display:flex; gap:10px;">
+            <input type="text" id="loc_lat" placeholder="Latitud" readonly>
+            <input type="text" id="loc_lng" placeholder="Longitud" readonly>
+        </div>
+        <button class="btn-gps" onclick="obtenerGPS()"><i class="fa-solid fa-location-arrow"></i> Capturar Ubicación por GPS</button>
     </div>
 
-    <button class="btn-save" id="btn_final_save">🚀 ACTUALIZAR TODO</button>
+    <div class="card">
+        <h2><i class="fa-solid fa-phone-flip"></i> 3. Pie de Página</h2>
+        <label>WhatsApp (593...)</label>
+        <input type="text" id="f_wa" placeholder="593998887777">
+        <label>Redes Sociales (Links)</label>
+        <input type="text" id="f_tk" placeholder="Link TikTok" style="margin-bottom:5px;">
+        <input type="text" id="f_ig" placeholder="Link Instagram">
+    </div>
+
+    <button class="btn-save" id="main_save_btn">🚀 Actualizar Web Ahora</button>
 </div>
 
 <script>
-    // ESTO VA FUERA DEL MÓDULO PARA QUE LOS BOTONES FUNCIONEN SÍ O SÍ
-    function agregarItemMenu() {
-        const contenedor = document.getElementById('lista_menu');
+    // FUNCIONES DINÁMICAS (FUERA DEL MÓDULO PARA DISPARAR CAJITAS)
+    function crearItemMenu() {
         const div = document.createElement('div');
         div.className = 'fila-dinamica';
-        div.innerHTML = `
-            <input type="text" placeholder="Escribe el servicio aquí..." class="val_menu_item">
-            <button class="btn-del" onclick="this.parentElement.remove()">X</button>
-        `;
-        contenedor.appendChild(div);
+        div.innerHTML = `<input type="text" placeholder="Nombre Servicio" class="m_item_val" style="flex:1">
+                         <button class="btn-del" onclick="this.parentElement.remove()">X</button>`;
+        document.getElementById('cont_menu').appendChild(div);
     }
 
-    function agregarServicioDetalle() {
-        const contenedor = document.getElementById('lista_servicios_det');
+    function crearServicioDetalle() {
         const div = document.createElement('div');
         div.className = 'fila-dinamica';
         div.innerHTML = `
-            <input type="text" placeholder="Servicio" class="det_nom" style="width:30%">
-            <input type="text" placeholder="Descripción corta" class="det_txt" style="width:40%">
-            <input type="text" placeholder="URL Imagen" class="det_img" style="width:30%">
-            <button class="btn-del" onclick="this.parentElement.remove()">X</button>
-        `;
-        contenedor.appendChild(div);
+            <input type="text" placeholder="Servicio" class="s_nom" style="width:25%">
+            <input type="text" placeholder="Descripción" class="s_txt" style="width:40%">
+            <input type="text" placeholder="URL Imagen" class="s_img" style="width:25%">
+            <button class="btn-del" onclick="this.parentElement.remove()">X</button>`;
+        document.getElementById('cont_servicios').appendChild(div);
+    }
+
+    function crearVideoItem() {
+        const div = document.createElement('div');
+        div.className = 'fila-dinamica';
+        div.innerHTML = `<input type="text" placeholder="Link YouTube" class="v_link_val" style="flex:1">
+                         <button class="btn-del" onclick="this.parentElement.remove()">X</button>`;
+        document.getElementById('cont_videos').appendChild(div);
+    }
+
+    function obtenerGPS() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(p => {
+                document.getElementById('loc_lat').value = p.coords.latitude;
+                document.getElementById('loc_lng').value = p.coords.longitude;
+                alert("📍 Coordenadas capturadas.");
+            }, e => alert("Error GPS: Activa la ubicación."));
+        }
     }
 </script>
 
 <script type="module">
     import { db } from './public/js/firebase-config.js';
-    import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    document.getElementById('btn_final_save').onclick = async () => {
+    document.getElementById('main_save_btn').addEventListener('click', async () => {
+        const btn = document.getElementById('main_save_btn');
+        btn.innerText = "⏳ SUBIENDO DATOS...";
+        btn.disabled = true;
+
         try {
-            // Recoger datos del menú
-            const menu = Array.from(document.querySelectorAll('.val_menu_item')).map(i => i.value);
+            // 1. Recolectar Menú
+            const menu = Array.from(document.querySelectorAll('.m_item_val')).map(el => el.value);
             
-            // Recoger datos de servicios
-            const servicios = Array.from(document.querySelectorAll('#lista_servicios_det .fila-dinamica')).map(f => ({
-                nombre: f.querySelector('.det_nom').value,
-                texto: f.querySelector('.det_txt').value,
-                img: f.querySelector('.det_img').value
+            // 2. Recolectar Servicios Detallados
+            const servicios = Array.from(document.querySelectorAll('#cont_servicios .fila-dinamica')).map(f => ({
+                nombre: f.querySelector('.s_nom').value,
+                texto: f.querySelector('.s_txt').value,
+                img: f.querySelector('.s_img').value
             }));
 
-            // Guardar en Firebase
-            await setDoc(doc(db, "publicidad", "encabezado"), { nombre: document.getElementById('h_nombre').value, menu: menu });
-            await setDoc(doc(db, "publicidad", "cuerpo"), { eslogan: document.getElementById('c_eslogan').value, servicios: servicios });
+            // 3. Recolectar Videos
+            const videos = Array.from(document.querySelectorAll('.v_link_val')).map(el => el.value);
 
-            alert("✅ ¡Magia! Datos guardados.");
+            // GUARDAR EN FIREBASE
+            await setDoc(doc(db, "publicidad", "encabezado"), {
+                nombre: document.getElementById('h_nombre').value,
+                servicios_menu: menu
+            });
+
+            await setDoc(doc(db, "publicidad", "cuerpo"), {
+                eslogan: document.getElementById('c_eslogan').value,
+                logo: document.getElementById('c_logo').value,
+                servicios_lista: servicios,
+                videos: videos,
+                lat: document.getElementById('loc_lat').value,
+                lng: document.getElementById('loc_lng').value,
+                actualizado: serverTimestamp()
+            });
+
+            await setDoc(doc(db, "publicidad", "pie"), {
+                whatsapp: document.getElementById('f_wa').value,
+                redes: { tk: document.getElementById('f_tk').value, ig: document.getElementById('f_ig').value }
+            });
+
+            alert("✅ ¡BRUTAL! Base de datos actualizada con éxito.");
         } catch (e) {
-            alert("Error: " + e.message);
+            console.error(e);
+            alert("❌ ERROR: Revisa la consola o tu conexión.");
+        } finally {
+            btn.innerText = "🚀 Actualizar Web Ahora";
+            btn.disabled = false;
         }
-    };
+    });
 </script>
 
 </body>
