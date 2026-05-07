@@ -3,127 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control de Publicidad | Azucena</title>
+    <title>Panel de Marketing | Azucena</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root { --neon: #00FFFF; --bg: #F4F7F6; --white: #FFFFFF; }
-        body { font-family: 'Montserrat', sans-serif; background: var(--bg); padding: 20px; }
-        .grid-admin { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
-        .card { background: var(--white); padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-top: 5px solid var(--neon); }
-        h2 { font-size: 1rem; text-transform: uppercase; font-weight: 900; margin-bottom: 20px; color: #333; }
-        label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; display: block; margin: 10px 0 5px; opacity: 0.7; }
-        input, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-family: inherit; }
-        .btn-sync { width: 100%; padding: 15px; background: var(--neon); border: none; border-radius: 10px; font-weight: 900; cursor: pointer; margin-top: 20px; transition: 0.3s; }
-        .btn-sync:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(0,255,255,0.4); }
-        .status { font-size: 0.7rem; text-align: center; margin-top: 10px; color: #888; }
+        :root { --neon: #00FFFF; --dark: #1A1A1A; --bg: #F4F7F6; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: var(--dark); }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 5px solid var(--dark); }
+        h2 { text-transform: uppercase; font-size: 1.1rem; border-bottom: 2px solid var(--neon); padding-bottom: 10px; margin-bottom: 20px; }
+        label { display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-top: 15px; opacity: 0.7; }
+        input, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; margin-top: 5px; box-sizing: border-box; }
+        
+        /* Estilos para filas dinámicas */
+        .dinamico-row { display: flex; gap: 10px; margin-bottom: 10px; background: #fafafa; padding: 15px; border-radius: 10px; border: 1px dashed #ccc; flex-wrap: wrap; }
+        .btn-add { background: var(--dark); color: var(--neon); border: none; padding: 10px 20px; border-radius: 50px; font-weight: 900; cursor: pointer; margin-top: 10px; font-size: 0.8rem; }
+        .btn-gps { background: #2ecc71; color: white; border: none; padding: 10px; border-radius: 10px; cursor: pointer; font-weight: 700; width: 100%; margin-top: 10px; }
+        
+        .btn-save-all { width: 100%; padding: 20px; background: var(--neon); color: black; border: none; border-radius: 15px; font-weight: 900; font-size: 1.2rem; cursor: pointer; margin-top: 40px; box-shadow: 0 10px 25px rgba(0,255,255,0.3); transition: 0.3s; }
+        .btn-save-all:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,255,255,0.5); }
     </style>
 </head>
 <body>
 
-    <h1 style="text-align:center; text-transform:uppercase; font-weight:900;">Panel de Publicidad Dinámica</h1>
+<div class="container">
+    <h1 style="text-align:center; font-weight:900;">CENTRAL DE PUBLICIDAD</h1>
 
-    <div class="grid-admin">
+    <div class="card">
+        <h2><i class="fa-solid fa-window-maximize"></i> 1. Encabezado</h2>
+        <label>Nombre del Centro Médico</label>
+        <input type="text" id="h_nombre" placeholder="Ej: Azucena Medical Center">
         
-        <div class="card">
-            <h2><i class="fa-solid fa-heading"></i> 1. Encabezado & Botones</h2>
-            <label>Nombre del Centro Médico</label>
-            <input type="text" id="enc_nombre" placeholder="Azucena Medical Center">
-            <label>Texto Botón Acción</label>
-            <input type="text" id="enc_btn_txt" placeholder="Solicitar Cita / Acceso">
-            <label>URL del Botón</label>
-            <input type="text" id="enc_btn_url" placeholder="login.html o link de WhatsApp">
-            <button class="btn-sync" onclick="syncEncabezado()">Actualizar Encabezado</button>
-        </div>
-
-        <div class="card">
-            <h2><i class="fa-solid fa- house-medical"></i> 2. Cuerpo (Slider y Especialidades)</h2>
-            <label>Link Banner 1 (Principal)</label>
-            <input type="text" id="cue_banner1" placeholder="Link de imagen GitHub Raw">
-            <label>Servicio: Medicina General (Icono/Nombre)</label>
-            <input type="text" id="cue_serv1" placeholder="fa-user-md | Medicina General">
-            <label>Servicio: Traumatología (Icono/Nombre)</label>
-            <input type="text" id="cue_serv2" placeholder="fa-bone | Traumatología">
-            <p class="status">Más servicios se pueden añadir por código fácilmente.</p>
-            <button class="btn-sync" onclick="syncCuerpo()">Actualizar Cuerpo</button>
-        </div>
-
-        <div class="card">
-            <h2><i class="fa-solid fa-share-nodes"></i> 3. Redes Sociales</h2>
-            <label>Facebook URL</label>
-            <input type="text" id="red_fb" placeholder="https://facebook.com/...">
-            <label>Instagram URL</label>
-            <input type="text" id="red_ig" placeholder="https://instagram.com/...">
-            <label>TikTok URL</label>
-            <input type="text" id="red_tk" placeholder="https://tiktok.com/@...">
-            <label>Red Social Propia / En Vivo (Futuro)</label>
-            <input type="text" id="red_local" placeholder="Link de streaming o web local">
-            <button class="btn-sync" onclick="syncRedes()">Sincronizar Redes</button>
-        </div>
-
-        <div class="card">
-            <h2><i class="fa-solid fa-location-dot"></i> 4. Contacto y GPS</h2>
-            <label>Dirección Escrita</label>
-            <input type="text" id="con_dir" placeholder="Av. Amazonas y Gaspar de Villarroel">
-            <label>WhatsApp (Formato 593...)</label>
-            <input type="text" id="con_wa" placeholder="593999888777">
-            <label>Google Maps Iframe (src)</label>
-            <input type="text" id="con_mapa" placeholder="Solo el link dentro de src">
-            <label>Link Directo GPS (Waze/Maps)</label>
-            <input type="text" id="con_gps" placeholder="https://goo.gl/maps/...">
-            <button class="btn-sync" onclick="syncContacto()">Actualizar Ubicación</button>
-        </div>
-
+        <label>Servicios del Menú (Ej: Inicio, Odontología, Contacto)</label>
+        <div id="cont_menu_links"></div>
+        <button class="btn-add" id="add_menu">+ Añadir Link al Menú</button>
     </div>
 
-    <script type="module">
-        import { db } from './public/js/firebase-config.js';
-        import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <div class="card">
+        <h2><i class="fa-solid fa-layer-group"></i> 2. Cuerpo del Index</h2>
+        <label>Eslogan Principal</label>
+        <input type="text" id="c_eslogan" placeholder="Ej: Salud de Élite a tu alcance">
+        
+        <label>URL Logotipo (GitHub Raw)</label>
+        <input type="text" id="c_logo_url">
 
-        // FUNCIONES DE SINCRONIZACIÓN
-        window.syncEncabezado = async () => {
-            await setDoc(doc(db, "publicidad", "encabezado"), {
-                nombre: document.getElementById('enc_nombre').value,
-                btn_txt: document.getElementById('enc_btn_txt').value,
-                btn_url: document.getElementById('enc_btn_url').value,
-                fecha: serverTimestamp()
-            });
-            alert("✅ Encabezado actualizado");
-        };
+        <label>Especialidades y Servicios Detallados</label>
+        <div id="cont_servicios"></div>
+        <button class="btn-add" id="add_servicio">+ Añadir Especialidad</button>
 
-        window.syncCuerpo = async () => {
+        <label>Horarios de Atención</label>
+        <textarea id="c_horarios" placeholder="Lunes a Viernes: 08:00 - 18:00..."></textarea>
+
+        <label>Galería de Vídeos (Links de YouTube)</label>
+        <div id="cont_videos"></div>
+        <button class="btn-add" id="add_video">+ Añadir Vídeo</button>
+
+        <label>Ubicación GPS (Latitud y Longitud)</label>
+        <div style="display:flex; gap:10px;">
+            <input type="text" id="loc_lat" placeholder="Latitud" readonly>
+            <input type="text" id="loc_lng" placeholder="Longitud" readonly>
+        </div>
+        <button class="btn-gps" id="btn_gps"><i class="fa-solid fa-location-crosshairs"></i> OBTENER MI UBICACIÓN ACTUAL (GPS)</button>
+    </div>
+
+    <div class="card">
+        <h2><i class="fa-solid fa-address-card"></i> 3. Pie de Página y Contacto</h2>
+        <label>Teléfono Convencional</label>
+        <input type="text" id="f_tel" placeholder="02-222-3333">
+        <label>WhatsApp (Formato 593...)</label>
+        <input type="text" id="f_wa" placeholder="593999888777">
+        <label>Correo Electrónico</label>
+        <input type="text" id="f_mail" placeholder="contacto@azucena.com">
+
+        <label>Redes Sociales (Links Completos)</label>
+        <input type="text" id="f_tk" placeholder="Link TikTok">
+        <input type="text" id="f_ig" placeholder="Link Instagram">
+        <input type="text" id="f_fb" placeholder="Link Facebook">
+        <input type="text" id="f_yt" placeholder="Link YouTube">
+    </div>
+
+    <button class="btn-save-all" id="btn_final_save">🚀 GUARDAR Y ACTUALIZAR WEB</button>
+</div>
+
+<script type="module">
+    import { db } from './public/js/firebase-config.js';
+    import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // --- FUNCIONALIDAD DINÁMICA (OPCIÓN B) ---
+    const crearFila = (contenedor, html) => {
+        const div = document.createElement('div');
+        div.className = 'dinamico-row';
+        div.innerHTML = html + `<button onclick="this.parentElement.remove()" style="background:red; color:white; border:none; border-radius:5px; cursor:pointer;">X</button>`;
+        document.getElementById(contenedor).appendChild(div);
+    };
+
+    document.getElementById('add_menu').onclick = () => crearFila('cont_menu_links', `<input type="text" placeholder="Nombre del Link" class="m_link">`);
+    
+    document.getElementById('add_servicio').onclick = () => crearFila('cont_servicios', `
+        <input type="text" placeholder="Nombre Servicio" class="s_nom" style="width:30%">
+        <input type="text" placeholder="Descripción" class="s_desc" style="width:30%">
+        <input type="text" placeholder="URL Imagen" class="s_img" style="width:30%">
+    `);
+
+    document.getElementById('add_video').onclick = () => crearFila('cont_videos', `<input type="text" placeholder="URL YouTube" class="v_link">`);
+
+    // --- CAPTURA DE GPS ---
+    document.getElementById('btn_gps').onclick = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((pos) => {
+                document.getElementById('loc_lat').value = pos.coords.latitude;
+                document.getElementById('loc_lng').value = pos.coords.longitude;
+                alert("📍 Ubicación capturada con éxito");
+            }, () => alert("Error: Por favor activa el GPS de tu equipo."));
+        }
+    };
+
+    // --- GUARDAR TODO EN FIREBASE ---
+    document.getElementById('btn_final_save').onclick = async () => {
+        try {
+            // Empaquetar Menú
+            const menu = Array.from(document.querySelectorAll('.m_link')).map(i => i.value);
+            // Empaquetar Servicios
+            const servs = Array.from(document.querySelectorAll('.dinamico-row')).filter(r => r.querySelector('.s_nom')).map(r => ({
+                nombre: r.querySelector('.s_nom').value,
+                desc: r.querySelector('.s_desc').value,
+                img: r.querySelector('.s_img').value
+            }));
+            // Empaquetar Videos
+            const vids = Array.from(document.querySelectorAll('.v_link')).map(i => i.value);
+
+            // GUARDAR DOCUMENTOS
+            await setDoc(doc(db, "publicidad", "encabezado"), { nombre: document.getElementById('h_nombre').value, menu: menu });
+            
             await setDoc(doc(db, "publicidad", "cuerpo"), {
-                banners: [document.getElementById('cue_banner1').value],
-                servicios: [
-                    document.getElementById('cue_serv1').value,
-                    document.getElementById('cue_serv2').value
-                ],
-                fecha: serverTimestamp()
+                eslogan: document.getElementById('c_eslogan').value,
+                logo: document.getElementById('c_logo_url').value,
+                servicios: servs,
+                horarios: document.getElementById('c_horarios').value,
+                videos: vids,
+                lat: document.getElementById('loc_lat').value,
+                lng: document.getElementById('loc_lng').value
             });
-            alert("✅ Cuerpo y Banner actualizados");
-        };
 
-        window.syncRedes = async () => {
-            await setDoc(doc(db, "publicidad", "redes"), {
-                fb: document.getElementById('red_fb').value,
-                ig: document.getElementById('red_ig').value,
-                tk: document.getElementById('red_tk').value,
-                local: document.getElementById('red_local').value,
-                fecha: serverTimestamp()
+            await setDoc(doc(db, "publicidad", "pie"), {
+                telefono: document.getElementById('f_tel').value,
+                whatsapp: document.getElementById('f_wa').value,
+                correo: document.getElementById('f_mail').value,
+                redes: { tk: document.getElementById('f_tk').value, ig: document.getElementById('f_ig').value, fb: document.getElementById('f_fb').value, yt: document.getElementById('f_yt').value }
             });
-            alert("✅ Redes sociales sincronizadas");
-        };
 
-        window.syncContacto = async () => {
-            await setDoc(doc(db, "publicidad", "contacto"), {
-                direccion: document.getElementById('con_dir').value,
-                whatsapp: document.getElementById('con_wa').value,
-                mapa: document.getElementById('con_mapa').value,
-                gps: document.getElementById('con_gps').value,
-                fecha: serverTimestamp()
-            });
-            alert("✅ Ubicación y GPS listos");
-        };
-    </script>
+            alert("🔥 ¡WEB ACTUALIZADA! Todos los cambios están en la nube.");
+        } catch (e) { alert("Error al guardar: " + e.message); }
+    };
+</script>
 </body>
 </html>
