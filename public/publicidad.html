@@ -117,10 +117,11 @@
 
 <script type="module">
     // IMPORTACIÓN CORRECTA DESDE TU CORE.JS
-    import { actualizarDatosPublicitarios } from './public/js/core.js';
+    import { actualizarDatosPublicitarios } from './js/core.js';
 
     // CONECTAMOS EL BOTÓN AL MOTOR PROFESIONAL
     document.getElementById('main_save_btn').addEventListener('click', async () => {
+        console.log("Iniciando Guardado...");
         await actualizarDatosPublicitarios();
     });
 </script>
