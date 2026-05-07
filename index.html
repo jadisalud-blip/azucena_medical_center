@@ -1,110 +1,665 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azucena Medical Center</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        :root {
-            --neon: #00FFFF;
-            --dark: #1A1A1A;
-            --white: #FFFFFF;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Centro Médico Salud+</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --teal:       #0a7b74;
+      --teal-light: #0fb3a8;
+      --cream:      #f5f0e8;
+      --charcoal:   #1a1f2e;
+      --gold:       #c9a84c;
+      --white:      #ffffff;
+      --muted:      #6b7280;
+      --radius:     14px;
+    }
 
-        body, html {
-            margin: 0; padding: 0;
-            width: 100%; height: 100%;
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--white);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* FONDO ESTÉTICO */
-        .bg-overlay {
-            position: absolute;
-            width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(0,255,255,0.05) 100%);
-            z-index: 1;
-        }
+    html { scroll-behavior: smooth; }
 
-        .content {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-        }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--charcoal);
+      overflow-x: hidden;
+    }
 
-        .logo {
-            font-size: 3rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            color: var(--dark);
-        }
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw;
+      height: 70px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(10,123,116,.12);
+      animation: slideDown .6s ease both;
+    }
+    @keyframes slideDown { from{transform:translateY(-100%);opacity:0} to{transform:none;opacity:1} }
 
-        .logo span {
-            color: var(--neon);
-            text-shadow: 0 0 15px rgba(0,255,255,0.5);
-        }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--teal);
+      letter-spacing: -.5px;
+    }
+    .logo span { color: var(--gold); }
 
-        .slogan {
-            font-size: 1.2rem;
-            color: #666;
-            margin-bottom: 40px;
-            letter-spacing: 2px;
-        }
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+    nav ul a {
+      text-decoration: none;
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--charcoal);
+      transition: color .2s;
+    }
+    nav ul a:hover { color: var(--teal); }
 
-        /* BOTÓN DE ACCESO ÚNICO */
-        .btn-acceso {
-            display: inline-block;
-            padding: 20px 60px;
-            background-color: var(--dark);
-            color: var(--neon);
-            text-decoration: none;
-            font-weight: 900;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            border: 2px solid var(--neon);
-            transition: 0.4s;
-            box-shadow: 0 10px 30px rgba(0,255,255,0.2);
-            text-transform: uppercase;
-        }
+    .btn-cita {
+      background: var(--teal);
+      color: #fff !important;
+      padding: .55rem 1.3rem;
+      border-radius: 50px;
+      font-size: .85rem !important;
+      transition: background .2s, transform .15s !important;
+    }
+    .btn-cita:hover { background: var(--teal-light) !important; transform: scale(1.04); }
 
-        .btn-acceso:hover {
-            background-color: var(--neon);
-            color: var(--dark);
-            box-shadow: 0 0 40px var(--neon);
-            transform: translateY(-5px);
-        }
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 0 5vw;
+      padding-top: 70px;
+      gap: 3rem;
+      background: linear-gradient(135deg, #f5f0e8 0%, #e8f5f3 100%);
+    }
 
-        /* DECORACIÓN */
-        .circle {
-            position: absolute;
-            border-radius: 50%;
-            background: var(--neon);
-            filter: blur(80px);
-            opacity: 0.1;
-            z-index: 2;
-        }
-    </style>
+    .hero-text { animation: fadeUp .8s .2s ease both; }
+    @keyframes fadeUp { from{transform:translateY(30px);opacity:0} to{transform:none;opacity:1} }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(10,123,116,.1);
+      color: var(--teal);
+      font-size: .78rem; font-weight: 600;
+      padding: .35rem .9rem;
+      border-radius: 50px;
+      margin-bottom: 1.4rem;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+    .hero-badge::before { content:'●'; font-size: .5rem; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+      line-height: 1.15;
+      color: var(--charcoal);
+      margin-bottom: 1.2rem;
+    }
+    h1 em { font-style: normal; color: var(--teal); }
+
+    .hero-desc {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 480px;
+      margin-bottom: 2.2rem;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn-primary {
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      padding: .85rem 2rem;
+      border-radius: 50px;
+      font-size: .95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 8px 24px rgba(10,123,116,.3);
+    }
+    .btn-primary:hover { background: var(--teal-light); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(10,123,116,.4); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--teal);
+      border: 1.5px solid var(--teal);
+      padding: .85rem 2rem;
+      border-radius: 50px;
+      font-size: .95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .btn-outline:hover { background: var(--teal); color: #fff; }
+
+    .hero-stats {
+      display: flex; gap: 2rem; margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(10,123,116,.15);
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--teal);
+    }
+    .stat-lbl { font-size: .78rem; color: var(--muted); margin-top: .2rem; }
+
+    /* Hero image side */
+    .hero-visual {
+      position: relative;
+      animation: fadeUp .8s .4s ease both;
+    }
+    .hero-card-main {
+      background: var(--white);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,.12);
+      aspect-ratio: 4/5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(160deg, #0a7b74 0%, #0fb3a8 100%);
+    }
+    .hero-card-main svg { width: 55%; opacity: .18; }
+
+    .float-card {
+      position: absolute;
+      background: white;
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,.12);
+      display: flex; align-items: center; gap: .75rem;
+    }
+    .float-card.fc1 { bottom: -1.5rem; left: -1.5rem; animation: float1 4s ease-in-out infinite; }
+    .float-card.fc2 { top: 1.5rem; right: -1.5rem; animation: float2 4s 1s ease-in-out infinite; }
+    @keyframes float1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    @keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+    .fc-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .fc-title { font-size: .82rem; font-weight: 600; color: var(--charcoal); }
+    .fc-sub   { font-size: .72rem; color: var(--muted); }
+
+    /* ── AD BANNER ── */
+    #ad-container {
+      width: 100%;
+      background: var(--charcoal);
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    #ad-container::before {
+      content: 'PUBLICIDAD';
+      position: absolute;
+      top: 6px; right: 10px;
+      font-size: .6rem;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,.3);
+    }
+
+    /* ── SERVICIOS ── */
+    #servicios {
+      padding: 6rem 5vw;
+      background: var(--white);
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .section-tag {
+      display: inline-block;
+      background: rgba(10,123,116,.1);
+      color: var(--teal);
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: .3rem .9rem;
+      border-radius: 50px;
+      margin-bottom: .9rem;
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      color: var(--charcoal);
+    }
+    h2 em { font-style: normal; color: var(--teal); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .service-card {
+      background: var(--cream);
+      border-radius: var(--radius);
+      padding: 2rem 1.5rem;
+      transition: transform .25s, box-shadow .25s;
+      cursor: default;
+      border: 1px solid transparent;
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(10,123,116,.12);
+      border-color: rgba(10,123,116,.2);
+    }
+    .svc-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .svc-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      margin-bottom: .5rem;
+      color: var(--charcoal);
+    }
+    .svc-desc { font-size: .83rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── AD INLINE ── */
+    #ad-inline {
+      padding: 2rem 5vw;
+      background: var(--cream);
+    }
+    .ad-wrapper {
+      background: var(--charcoal);
+      border-radius: var(--radius);
+      min-height: 120px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .ad-wrapper::before {
+      content: 'PUBLICIDAD';
+      position: absolute; top: 8px; right: 12px;
+      font-size: .6rem; letter-spacing: 1.5px; color: rgba(255,255,255,.3);
+    }
+
+    /* ── MÉDICOS ── */
+    #medicos {
+      padding: 6rem 5vw;
+      background: var(--white);
+    }
+    .doctors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.8rem;
+      margin-top: 3.5rem;
+    }
+    .doctor-card {
+      background: var(--cream);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .doctor-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,.1); }
+    .doc-photo {
+      height: 180px;
+      background: linear-gradient(135deg, #0a7b74, #0fb3a8);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem;
+    }
+    .doc-info { padding: 1.4rem; }
+    .doc-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      margin-bottom: .25rem;
+    }
+    .doc-spec { font-size: .8rem; color: var(--teal); font-weight: 500; margin-bottom: .75rem; }
+    .doc-rating { font-size: .78rem; color: var(--muted); }
+    .doc-rating span { color: var(--gold); }
+
+    /* ── CITA ── */
+    #cita {
+      padding: 6rem 5vw;
+      background: linear-gradient(135deg, var(--teal) 0%, #0fb3a8 100%);
+      color: white;
+      text-align: center;
+    }
+    #cita h2 { color: white; margin-bottom: 1rem; }
+    #cita p { color: rgba(255,255,255,.8); margin-bottom: 2.5rem; font-size: 1rem; }
+    .cita-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      max-width: 700px;
+      margin: 0 auto;
+      justify-content: center;
+    }
+    .cita-form input, .cita-form select {
+      flex: 1; min-width: 200px;
+      padding: .85rem 1.2rem;
+      border: none;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      outline: none;
+      background: rgba(255,255,255,.15);
+      color: white;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.25);
+    }
+    .cita-form input::placeholder { color: rgba(255,255,255,.7); }
+    .cita-form select option { color: var(--charcoal); }
+    .btn-white {
+      background: white;
+      color: var(--teal);
+      border: none;
+      padding: .85rem 2.2rem;
+      border-radius: 50px;
+      font-size: .95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .2s;
+      box-shadow: 0 8px 24px rgba(0,0,0,.15);
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,.2); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--charcoal);
+      color: rgba(255,255,255,.7);
+      padding: 3rem 5vw 2rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+    }
+    footer .logo { color: white; margin-bottom: 1rem; display: block; }
+    footer p { font-size: .83rem; line-height: 1.7; }
+    footer h4 {
+      font-family: 'Playfair Display', serif;
+      color: white;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+    footer ul { list-style: none; }
+    footer ul li { margin-bottom: .5rem; }
+    footer ul a { color: rgba(255,255,255,.6); text-decoration: none; font-size: .83rem; transition: color .2s; }
+    footer ul a:hover { color: var(--teal-light); }
+    .footer-bottom {
+      background: var(--charcoal);
+      border-top: 1px solid rgba(255,255,255,.08);
+      text-align: center;
+      padding: 1.2rem 5vw;
+      font-size: .75rem;
+      color: rgba(255,255,255,.35);
+    }
+
+    /* ── AD FOOTER ── */
+    #ad-footer {
+      background: #111827;
+      min-height: 80px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    #ad-footer::before {
+      content: 'PUBLICIDAD';
+      position: absolute; top: 6px; right: 12px;
+      font-size: .6rem; letter-spacing: 1.5px; color: rgba(255,255,255,.3);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width: 768px) {
+      #hero { grid-template-columns: 1fr; padding-top: 90px; }
+      .hero-visual { display: none; }
+      footer { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="bg-overlay"></div>
-    
-    <div class="circle" style="width: 400px; height: 400px; top: -100px; left: -100px;"></div>
-    <div class="circle" style="width: 300px; height: 300px; bottom: -50px; right: -50px;"></div>
+<!-- ═══════════════════════════════════════
+     NAVEGACIÓN
+════════════════════════════════════════ -->
+<nav>
+  <div class="logo">Salud<span>+</span></div>
+  <ul>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#medicos">Médicos</a></li>
+    <li><a href="#cita">Citas</a></li>
+    <li><a href="publicidad.html" style="color:var(--gold);font-weight:600;">Publicidad</a></li>
+    <li><a href="#cita" class="btn-cita">Agendar cita</a></li>
+  </ul>
+</nav>
 
-    <div class="content">
-        <div class="logo">Azucena<span>Medical</span></div>
-        <div class="slogan">Excelencia Médica de Élite</div>
-        
-        <a href="login.html" class="btn-acceso">ACCESO</a>
+<!-- ═══════════════════════════════════════
+     BANNER PUBLICITARIO SUPERIOR
+     ← Gestionado por publicidad.html →
+════════════════════════════════════════ -->
+<div id="ad-container" style="margin-top:70px;">
+  <!-- publicidad.html inyectará contenido aquí vía iframe o JS -->
+  <iframe
+    src="publicidad.html?slot=banner-top&width=728&height=90"
+    style="border:none;width:100%;height:90px;"
+    scrolling="no"
+    title="Publicidad banner superior">
+  </iframe>
+</div>
+
+<!-- ═══════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-text">
+    <div class="hero-badge">Centro médico certificado</div>
+    <h1>Tu salud,<br/>nuestra <em>prioridad</em><br/>cada día</h1>
+    <p class="hero-desc">
+      Atención médica de excelencia con especialistas certificados, tecnología de punta y un equipo comprometido con tu bienestar y el de tu familia.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('cita').scrollIntoView({behavior:'smooth'})">
+        Agendar cita →
+      </button>
+      <button class="btn-outline">Conocer más</button>
     </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">15+</div>
+        <div class="stat-lbl">Especialidades</div>
+      </div>
+      <div>
+        <div class="stat-num">8k+</div>
+        <div class="stat-lbl">Pacientes atendidos</div>
+      </div>
+      <div>
+        <div class="stat-num">98%</div>
+        <div class="stat-lbl">Satisfacción</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-card-main">
+      <svg viewBox="0 0 100 100" fill="white">
+        <rect x="40" y="10" width="20" height="80" rx="4"/>
+        <rect x="10" y="40" width="80" height="20" rx="4"/>
+      </svg>
+    </div>
+    <!-- Tarjeta flotante 1 -->
+    <div class="float-card fc1">
+      <div class="fc-icon" style="background:#e8f5f3;">🩺</div>
+      <div>
+        <div class="fc-title">Dr. García disponible</div>
+        <div class="fc-sub">Cardiología · Hoy 3:00 PM</div>
+      </div>
+    </div>
+    <!-- Tarjeta flotante 2 -->
+    <div class="float-card fc2">
+      <div class="fc-icon" style="background:#fff5e0;">⭐</div>
+      <div>
+        <div class="fc-title">4.9 / 5.0</div>
+        <div class="fc-sub">Calificación promedio</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SERVICIOS
+════════════════════════════════════════ -->
+<section id="servicios">
+  <div class="section-header">
+    <span class="section-tag">Especialidades</span>
+    <h2>Servicios que <em>cuidamos</em></h2>
+  </div>
+  <div class="services-grid">
+    <div class="service-card"><span class="svc-icon">❤️</span><div class="svc-title">Cardiología</div><p class="svc-desc">Diagnóstico y tratamiento de enfermedades del corazón con equipo de última generación.</p></div>
+    <div class="service-card"><span class="svc-icon">🧠</span><div class="svc-title">Neurología</div><p class="svc-desc">Atención especializada en el sistema nervioso central y periférico.</p></div>
+    <div class="service-card"><span class="svc-icon">🦴</span><div class="svc-title">Traumatología</div><p class="svc-desc">Tratamiento de lesiones y enfermedades del sistema musculoesquelético.</p></div>
+    <div class="service-card"><span class="svc-icon">👶</span><div class="svc-title">Pediatría</div><p class="svc-desc">Cuidado integral de la salud infantil desde el nacimiento hasta la adolescencia.</p></div>
+    <div class="service-card"><span class="svc-icon">🔬</span><div class="svc-title">Laboratorio</div><p class="svc-desc">Análisis clínicos con resultados en línea a través de tu cuenta de paciente.</p></div>
+    <div class="service-card"><span class="svc-icon">🏥</span><div class="svc-title">Urgencias 24/7</div><p class="svc-desc">Atención de emergencias las 24 horas del día, los 365 días del año.</p></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     PUBLICIDAD INTERMEDIA
+     ← Gestionado por publicidad.html →
+════════════════════════════════════════ -->
+<section id="ad-inline">
+  <div class="ad-wrapper">
+    <iframe
+      src="publicidad.html?slot=banner-mid&width=970&height=120"
+      style="border:none;width:100%;height:120px;"
+      scrolling="no"
+      title="Publicidad banner medio">
+    </iframe>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     MÉDICOS
+════════════════════════════════════════ -->
+<section id="medicos">
+  <div class="section-header">
+    <span class="section-tag">Nuestro equipo</span>
+    <h2>Médicos <em>expertos</em></h2>
+  </div>
+  <div class="doctors-grid">
+    <div class="doctor-card">
+      <div class="doc-photo">👨‍⚕️</div>
+      <div class="doc-info">
+        <div class="doc-name">Dr. Carlos García</div>
+        <div class="doc-spec">Cardiología</div>
+        <div class="doc-rating"><span>★★★★★</span> 4.9 · 320 reseñas</div>
+      </div>
+    </div>
+    <div class="doctor-card">
+      <div class="doc-photo">👩‍⚕️</div>
+      <div class="doc-info">
+        <div class="doc-name">Dra. Ana Martínez</div>
+        <div class="doc-spec">Neurología</div>
+        <div class="doc-rating"><span>★★★★★</span> 4.8 · 245 reseñas</div>
+      </div>
+    </div>
+    <div class="doctor-card">
+      <div class="doc-photo">👨‍⚕️</div>
+      <div class="doc-info">
+        <div class="doc-name">Dr. Luis Ramos</div>
+        <div class="doc-spec">Pediatría</div>
+        <div class="doc-rating"><span>★★★★★</span> 5.0 · 410 reseñas</div>
+      </div>
+    </div>
+    <div class="doctor-card">
+      <div class="doc-photo">👩‍⚕️</div>
+      <div class="doc-info">
+        <div class="doc-name">Dra. Sofía Torres</div>
+        <div class="doc-spec">Traumatología</div>
+        <div class="doc-rating"><span>★★★★☆</span> 4.7 · 198 reseñas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     AGENDAR CITA
+════════════════════════════════════════ -->
+<section id="cita">
+  <div class="section-tag" style="background:rgba(255,255,255,.15);color:white;">Reserva fácil</div>
+  <h2 style="margin-top:.8rem;">Agenda tu cita <em style="color:var(--gold)">en línea</em></h2>
+  <p>Selecciona tu especialidad y horario preferido. Confirmación instantánea.</p>
+  <div class="cita-form">
+    <input type="text" placeholder="Tu nombre completo" />
+    <input type="tel" placeholder="Teléfono / WhatsApp" />
+    <select>
+      <option value="">Especialidad...</option>
+      <option>Cardiología</option>
+      <option>Neurología</option>
+      <option>Pediatría</option>
+      <option>Traumatología</option>
+      <option>Laboratorio</option>
+    </select>
+    <input type="date" />
+    <button class="btn-white">Confirmar cita →</button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer>
+  <div>
+    <span class="logo">Salud<span style="color:var(--gold)">+</span></span>
+    <p>Centro médico comprometido con la salud y bienestar de toda tu familia. Tecnología, experiencia y calidez humana.</p>
+  </div>
+  <div>
+    <h4>Navegación</h4>
+    <ul>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#medicos">Médicos</a></li>
+      <li><a href="#cita">Citas</a></li>
+      <li><a href="publicidad.html">Módulo Publicidad</a></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Contacto</h4>
+    <ul>
+      <li><a href="#">📍 Calle Principal 123</a></li>
+      <li><a href="#">📞 +1 (800) 555-0100</a></li>
+      <li><a href="#">✉️ info@saludmas.com</a></li>
+      <li><a href="#">🕐 Lun–Sáb 7AM–9PM</a></li>
+    </ul>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════
+     PUBLICIDAD PIE DE PÁGINA
+     ← Gestionado por publicidad.html →
+════════════════════════════════════════ -->
+<div id="ad-footer">
+  <iframe
+    src="publicidad.html?slot=banner-footer&width=728&height=90"
+    style="border:none;width:100%;height:80px;"
+    scrolling="no"
+    title="Publicidad pie de página">
+  </iframe>
+</div>
+
+<div class="footer-bottom">
+  © 2026 Centro Médico Salud+ · Todos los derechos reservados ·
+  <a href="publicidad.html" style="color:rgba(255,255,255,.4);text-decoration:none;">Gestión de Publicidad</a>
+</div>
 
 </body>
 </html>
