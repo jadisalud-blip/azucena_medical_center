@@ -11,9 +11,8 @@ const sincronizarIndex = async () => {
             const data = docSnap.data();
             console.log("Datos cargados:", data);
 
-            // 1. CAMBIO DE NOMBRE DINÁMICO (Lo que pediste)
-            // Busca en encabezado.nombre o nombre_centro o nombre
-            const nombreBD = data.nombre_centro || (data.encabezado && data.encabezado.nombre) || data.nombre;
+            // 1. NOMBRE DEL CENTRO
+            const nombreBD = data.nombre_centro || (data.encabezado && data.encabezado.nombre);
             if (nombreBD) {
                 document.title = nombreBD;
                 document.getElementById('view_brand_name').innerText = nombreBD;
@@ -21,13 +20,17 @@ const sincronizarIndex = async () => {
                 document.getElementById('footer_name').innerText = nombreBD;
             }
 
-            // 2. LOGO CENTRAL
-            const urlLogo = data.logo || (data.cuerpo && data.cuerpo.logo) || data.cuerpo_logo;
-            const contenedorLogo = document.getElementById('view_logo_central');
-            if (contenedorLogo && urlLogo) {
-                contenedorLogo.innerHTML = `<img src="${urlLogo}" alt="Logo" style="max-width:250px; height:auto; display:block;">`;
-            } else {
-                contenedorLogo.innerHTML = ""; // Limpia el "Cargando" si no hay logo
+            // --- 2. LOGO COMO FONDO TOTAL (Hero Image) ---
+            const urlLogo = data.logo || (data.cuerpo && data.cuerpo.logo);
+            const headerHero = document.getElementById('view_header_hero');
+            
+            if (headerHero && urlLogo) {
+                // Aplicamos la imagen como fondo usando estilos en línea
+                headerHero.style.backgroundImage = `url('${urlLogo}')`;
+                
+                // Aseguramos que el texto sea blanco para que contraste
+                document.getElementById('view_nombre_main').style.color = "white";
+                document.getElementById('view_eslogan').style.color = "rgba(255,255,255,0.9)";
             }
 
             // 3. ESLOGAN
@@ -52,7 +55,7 @@ const sincronizarIndex = async () => {
             }
 
             // 5. WHATSAPP
-            const telefono = data.f_wa || (data.contacto && data.contacto.whatsapp) || data.whatsapp;
+            const telefono = data.f_wa || (data.contacto && data.contacto.whatsapp);
             if (telefono) {
                 document.getElementById('view_btn_wa').href = `https://wa.me/${telefono}`;
             }
