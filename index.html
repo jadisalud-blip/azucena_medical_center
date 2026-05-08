@@ -7,60 +7,85 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root { --accent: #00FFFF; --dark: #1A1A1A; --bg: #ffffff; }
-        body { font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; color: #333; scroll-behavior: smooth; }
+        :root { 
+            --principal: #0056b3; /* Azul Médico */
+            --celeste: #00FFFF;   /* Tu toque neón */
+            --blanco: #ffffff;
+            --gris-claro: #f8f9fa;
+            --oscuro: #1a1a1a;
+        }
+        body { font-family: 'Montserrat', sans-serif; margin: 0; background: var(--blanco); color: var(--oscuro); scroll-behavior: smooth; }
         
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: white; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 15px rgba(0,0,0,0.1); }
-        .logo { display: flex; align-items: center; gap: 10px; font-weight: 900; text-transform: uppercase; }
+        /* Navbar Blanca */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: var(--blanco); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 15px rgba(0,0,0,0.05); }
+        .logo { display: flex; align-items: center; gap: 10px; font-weight: 900; color: var(--principal); text-transform: uppercase; }
         .logo img { height: 45px; border-radius: 8px; }
-        nav ul { display: flex; list-style: none; gap: 20px; }
-        nav a { text-decoration: none; color: var(--dark); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; }
+        
+        nav ul { display: flex; list-style: none; gap: 20px; margin: 0; padding: 0; }
+        nav a { text-decoration: none; color: var(--oscuro); font-weight: 700; font-size: 0.85rem; }
 
-        header { height: 70vh; background: var(--dark); color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px; }
-        header h1 { font-size: 3.5rem; font-weight: 900; margin: 0; text-transform: uppercase; letter-spacing: -2px; }
-        header p { font-size: 1.3rem; color: var(--accent); font-weight: 400; margin-top: 10px; max-width: 700px; }
+        /* Header Blanco/Azul */
+        header { 
+            height: 60vh; 
+            background: linear-gradient(135deg, var(--blanco) 0%, var(--gris-claro) 100%); 
+            color: var(--principal); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            border-bottom: 5px solid var(--principal);
+        }
+        header h1 { font-size: 3.5rem; font-weight: 900; margin: 0; letter-spacing: -2px; }
+        header p { font-size: 1.3rem; color: var(--oscuro); margin-top: 10px; opacity: 0.8; }
 
-        #servicios { padding: 100px 5%; background: #f4f7f6; }
+        /* Servicios */
+        #servicios { padding: 80px 5%; background: var(--gris-claro); }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .card-servicio { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: 0.3s; }
-        .card-servicio:hover { transform: translateY(-10px); }
+        .card-servicio { background: var(--blanco); border-radius: 20px; overflow: hidden; border-bottom: 4px solid var(--principal); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         .card-servicio img { width: 100%; height: 250px; object-fit: cover; }
-        .card-servicio h3 { padding: 20px 20px 5px; margin: 0; text-transform: uppercase; font-size: 1.2rem; }
-        .card-servicio p { padding: 0 20px 25px; color: #666; font-size: 0.9rem; line-height: 1.6; }
+        .card-servicio h3 { padding: 20px; color: var(--principal); text-transform: uppercase; }
 
-        .btn-wa { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 35px; box-shadow: 0 10px 20px rgba(37,211,102,0.3); z-index: 1000; text-decoration: none; }
+        /* Botón Acceso (Login está en la raíz) */
+        .btn-login { 
+            background: var(--principal); 
+            color: white; 
+            text-decoration: none; 
+            padding: 10px 20px; 
+            border-radius: 50px; 
+            font-weight: 800; 
+            font-size: 0.7rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
 
-        footer { background: var(--dark); color: white; padding: 50px 5%; text-align: center; }
+        .btn-wa { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 35px; text-decoration: none; }
     </style>
 </head>
 <body>
 
     <nav>
         <div class="logo">
-            <img id="view_logo" src="https://via.placeholder.com/150" alt="Logo">
+            <img id="view_logo" src="" alt="Logo">
             <span id="view_brand_name">JADI SALUD</span>
         </div>
-        <ul id="view_menu">
-            <li><a href="#servicios">Servicios</a></li>
-        </ul>
+        <div style="display:flex; align-items:center; gap:25px;">
+            <ul id="view_menu"></ul>
+            <a href="login.html" class="btn-login"><i class="fa-solid fa-lock"></i> ACCESO</a>
+        </div>
     </nav>
 
     <header>
-        <h1 id="view_brand_title">BIENVENIDOS</h1>
-        <p id="view_eslogan">Excelencia médica para tu bienestar.</p>
+        <h1 id="view_brand_title">JADI SALUD</h1>
+        <p id="view_eslogan">Cargando servicios...</p>
     </header>
 
     <section id="servicios">
-        <h2 style="text-align:center; font-weight:900; text-transform:uppercase; margin-bottom:50px;">Nuestros Servicios Especializados</h2>
-        <div class="grid" id="view_servicios_grid">
-            </div>
+        <div class="grid" id="view_servicios_grid"></div>
     </section>
 
     <a id="view_btn_wa" href="#" class="btn-wa" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-
-    <footer>
-        <p>&copy; 2026 JADI SALUD - Tecnología y Bienestar</p>
-    </footer>
 
     <script type="module" src="./public/js/index.js"></script>
 </body>
