@@ -3,55 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cargando... | JADI SALUD</title>
+    <title>JADI Salud | Cargando...</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
     <style>
-        :root { 
-            --principal: #0056b3; /* Azul Profesional */
-            --celeste: #00FFFF;   /* Acento */
-            --blanco: #ffffff;
-            --gris-fondo: #f4f7f6;
-            --texto: #1a1a1a;
-        }
+        :root { --azul: #0056b3; --blanco: #ffffff; --gris: #f4f7f6; }
+        body { font-family: 'Montserrat', sans-serif; margin: 0; background: var(--blanco); color: #333; scroll-behavior: smooth; }
+        
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: var(--blanco); box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        .brand-name { font-weight: 900; color: var(--azul); text-transform: uppercase; }
+        .btn-acceso { background: var(--azul); color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: 800; font-size: 0.7rem; display: flex; align-items: center; gap: 8px; }
 
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            color: var(--texto); 
-            background-color: var(--blanco);
-            scroll-behavior: smooth;
-        }
+        header { height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle, #ffffff 0%, #eef2f7 100%); padding: 20px; border-bottom: 5px solid var(--azul); }
+        #view_logo_central { margin-bottom: 20px; min-height: 100px; display: flex; align-items: center; justify-content: center; }
+        header h1 { color: var(--azul); font-weight: 900; font-size: 3.5rem; margin: 0; text-transform: uppercase; letter-spacing: -2px; }
+        header p { font-size: 1.3rem; color: #555; margin-top: 10px; max-width: 600px; }
 
-        /* Navbar Profesional */
-        nav { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 15px 5%; 
-            background: var(--blanco); 
-            position: sticky; 
-            top: 0; 
-            z-index: 1000; 
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05); 
-        }
+        #servicios { padding: 80px 5%; background: var(--gris); }
+        .grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-bottom: 5px solid var(--azul); transition: 0.3s; }
+        .card:hover { transform: translateY(-10px); }
+        .card img { width: 100%; height: 220px; object-fit: cover; }
+        .card-body { padding: 20px; }
+        .card-body h3 { margin: 0; color: var(--azul); text-transform: uppercase; }
 
-        .brand-logo { 
-            font-weight: 900; 
-            color: var(--principal); 
-            text-transform: uppercase; 
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .btn-wa { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 35px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 1000; text-decoration: none; }
+        footer { padding: 40px; text-align: center; background: #1a1a1a; color: white; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
 
-        .btn-acceso { 
-            background: var(--principal); 
-            color: white; 
-            text-decoration: none; 
-            padding: 10px 22px; 
-            border-radius: 50px; 
-            font
+    <nav>
+        <div class="brand-name" id="view_brand_name">JADI SALUD</div>
+        <a href="login.html" class="btn-acceso"><i class="fa-solid fa-lock"></i> ACCESO</a>
+    </nav>
+
+    <header>
+        <div id="view_logo_central">
+            <p style="color: #ccc;">Cargando identidad...</p>
+        </div>
+        <h1 id="view_nombre_main">JADI SALUD</h1>
+        <p id="view_eslogan">Excelencia médica a tu alcance</p>
+    </header>
+
+    <section id="servicios">
+        <h2 style="text-align: center; text-transform: uppercase; margin-bottom: 40px; color: var(--azul);">Nuestros Servicios</h2>
+        <div class="grid-servicios" id="view_servicios_grid"></div>
+    </section>
+
+    <a id="view_btn_wa" href="#" class="btn-wa" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+
+    <footer>
+        <p>&copy; 2026 <span id="footer_name">JADI SALUD</span>. Todos los derechos reservados.</p>
+    </footer>
+
+    <script type="module" src="./public/js/index.js"></script>
+
+</body>
+</html>
