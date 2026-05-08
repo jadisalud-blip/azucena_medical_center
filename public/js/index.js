@@ -1,57 +1,68 @@
 import { db } from './firebase-config.js';
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const cargarWeb = async () => {
+const sincronizarIndex = async () => {
     try {
-        console.log("Sincronizando JADI-SALUD...");
+        console.log("Conectando con la BD...");
         const docRef = doc(db, "publicidad", "configuracion_general");
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
             const data = docSnap.data();
+            console.log("Datos cargados:", data);
 
-            // 1. Título de la pestaña
-            if (data.nombre_centro) document.title = data.nombre_centro;
-
-            // 2. LOGO CENTRAL (Reemplaza el texto de carga)
-            const contenedorLogo = document.getElementById('view_logo_central');
-            if (contenedorLogo && data.servicios_lista) {
-                // Buscamos si guardaste el logo en el campo de 'cuerpo' o similar
-                const urlLogo = data.cuerpo_logo || data.logo || ""; 
-                if (urlLogo) {
-                    contenedorLogo.innerHTML = `<img src="${urlLogo}" alt="Logo JADI SALUD" style="max-width:300px; height:auto; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));">`;
-                }
+            // 1. CAMBIO DE NOMBRE DINÁMICO (Lo que pediste)
+            // Busca en encabezado.nombre o nombre_centro o nombre
+            const nombreBD = data.nombre_centro || (data.encabezado && data.encabezado.nombre) || data.nombre;
+            if (nombreBD) {
+                document.title = nombreBD;
+                document.getElementById('view_brand_name').innerText = nombreBD;
+                document.getElementById('view_nombre_main').innerText = nombreBD;
+                document.getElementById('footer_name').innerText = nombreBD;
             }
 
-            // 3. Eslogan y Nombre
-            if (data.eslogan) document.getElementById('view_eslogan').innerText = data.eslogan;
-            if (data.nombre_centro) document.getElementById('view_nombre_main').innerText = data.nombre_centro;
+            // 2. LOGO CENTRAL
+            const urlLogo = data.logo || (data.cuerpo && data.cuerpo.logo) || data.cuerpo_logo;
+            const contenedorLogo = document.getElementById('view_logo_central');
+            if (contenedorLogo && urlLogo) {
+                contenedorLogo.innerHTML = `<img src="${urlLogo}" alt="Logo" style="max-width:250px; height:auto; display:block;">`;
+            } else {
+                contenedorLogo.innerHTML = ""; // Limpia el "Cargando" si no hay logo
+            }
 
-            // 4. Servicios Dinámicos
+            // 3. ESLOGAN
+            const esloganBD = data.eslogan || (data.cuerpo && data.cuerpo.eslogan);
+            if (esloganBD) {
+                document.getElementById('view_eslogan').innerText = esloganBD;
+            }
+
+            // 4. SERVICIOS DINÁMICOS
+            const servicios = data.servicios_lista || (data.cuerpo && data.cuerpo.servicios_lista);
             const grid = document.getElementById('view_servicios_grid');
-            if (grid && data.servicios_lista) {
-                grid.innerHTML = data.servicios_lista.map(s => `
-                    <div class="card-servicio">
-                        <img src="${s.img}" alt="${s.nombre}">
-                        <div class="card-info">
-                            <h3>${s.nombre}</h3>
-                            <p>${s.texto}</p>
+            if (grid && servicios && Array.isArray(servicios)) {
+                grid.innerHTML = servicios.map(s => `
+                    <div class="card">
+                        <img src="${s.img || 'https://via.placeholder.com/300'}" alt="${s.nombre}">
+                        <div class="card-body">
+                            <h3>${s.nombre || 'Servicio'}</h3>
+                            <p>${s.texto || ''}</p>
                         </div>
                     </div>
                 `).join('');
             }
 
-            // 5. WhatsApp
-            if (data.f_wa || data.contacto?.whatsapp) {
-                const wa = data.f_wa || data.contacto.whatsapp;
-                document.getElementById('view_btn_wa').href = `https://wa.me/${wa}`;
+            // 5. WHATSAPP
+            const telefono = data.f_wa || (data.contacto && data.contacto.whatsapp) || data.whatsapp;
+            if (telefono) {
+                document.getElementById('view_btn_wa').href = `https://wa.me/${telefono}`;
             }
 
-            console.log("✅ Datos cargados correctamente.");
+        } else {
+            console.error("No se encontró el documento 'configuracion_general'");
         }
     } catch (error) {
-        console.error("Error en index.js:", error);
+        console.error("Error crítico en el index:", error);
     }
 };
 
-window.addEventListener('DOMContentLoaded', cargarWeb);
+window.addEventListener('DOMContentLoaded', sincronizarIndex);
