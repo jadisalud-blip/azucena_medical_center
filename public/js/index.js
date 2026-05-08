@@ -10,51 +10,47 @@ const cargarWeb = async () => {
         if (docSnap.exists()) {
             const data = docSnap.data();
 
-            // 1. Título de pestaña y Nombre del Centro
-            if (data.nombre_centro) {
-                document.title = data.nombre_centro;
-                document.getElementById('view_brand_name').innerText = data.nombre_centro;
+            // 1. Título de la pestaña
+            if (data.nombre_centro) document.title = data.nombre_centro;
+
+            // 2. LOGO CENTRAL (Reemplaza el texto de carga)
+            const contenedorLogo = document.getElementById('view_logo_central');
+            if (contenedorLogo && data.servicios_lista) {
+                // Buscamos si guardaste el logo en el campo de 'cuerpo' o similar
+                const urlLogo = data.cuerpo_logo || data.logo || ""; 
+                if (urlLogo) {
+                    contenedorLogo.innerHTML = `<img src="${urlLogo}" alt="Logo JADI SALUD" style="max-width:300px; height:auto; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));">`;
+                }
             }
 
-            // 2. Logo
-            if (data.cuerpo?.logo || data.logo) {
-                const logoImg = document.getElementById('view_logo');
-                logoImg.src = data.cuerpo?.logo || data.logo;
-            }
+            // 3. Eslogan y Nombre
+            if (data.eslogan) document.getElementById('view_eslogan').innerText = data.eslogan;
+            if (data.nombre_centro) document.getElementById('view_nombre_main').innerText = data.nombre_centro;
 
-            // 3. Menú Dinámico
-            const menuCont = document.getElementById('view_menu');
-            if (menuCont && data.servicios_menu) {
-                menuCont.innerHTML = data.servicios_menu
-                    .map(item => `<li><a href="#servicios">${item}</a></li>`).join('');
-            }
-
-            // 4. Hero Section (Eslogan)
-            if (data.eslogan) {
-                document.getElementById('view_eslogan').innerText = data.eslogan;
-            }
-
-            // 5. Grid de Servicios
-            const serviciosCont = document.getElementById('view_servicios_grid');
-            if (serviciosCont && data.servicios_lista) {
-                serviciosCont.innerHTML = data.servicios_lista.map(s => `
+            // 4. Servicios Dinámicos
+            const grid = document.getElementById('view_servicios_grid');
+            if (grid && data.servicios_lista) {
+                grid.innerHTML = data.servicios_lista.map(s => `
                     <div class="card-servicio">
                         <img src="${s.img}" alt="${s.nombre}">
-                        <h3>${s.nombre}</h3>
-                        <p>${s.texto}</p>
+                        <div class="card-info">
+                            <h3>${s.nombre}</h3>
+                            <p>${s.texto}</p>
+                        </div>
                     </div>
                 `).join('');
             }
 
-            // 6. Contacto
-            if (data.contacto?.whatsapp) {
-                document.getElementById('view_btn_wa').href = `https://wa.me/${data.contacto.whatsapp}`;
+            // 5. WhatsApp
+            if (data.f_wa || data.contacto?.whatsapp) {
+                const wa = data.f_wa || data.contacto.whatsapp;
+                document.getElementById('view_btn_wa').href = `https://wa.me/${wa}`;
             }
 
-            console.log("✅ Web cargada exitosamente.");
+            console.log("✅ Datos cargados correctamente.");
         }
     } catch (error) {
-        console.error("Error en el cerebro index.js:", error);
+        console.error("Error en index.js:", error);
     }
 };
 
