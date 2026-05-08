@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JADI Salud | Cargando...</title>
+    <title>JADI Salud</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
         :root { --azul: #0056b3; --blanco: #ffffff; --gris: #f4f7f6; }
         body { font-family: 'Montserrat', sans-serif; margin: 0; background: var(--blanco); color: #333; scroll-behavior: smooth; }
@@ -14,11 +15,39 @@
         .brand-name { font-weight: 900; color: var(--azul); text-transform: uppercase; }
         .btn-acceso { background: var(--azul); color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: 800; font-size: 0.7rem; display: flex; align-items: center; gap: 8px; }
 
-        header { height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle, #ffffff 0%, #eef2f7 100%); padding: 20px; border-bottom: 5px solid var(--azul); }
-        #view_logo_central { margin-bottom: 20px; min-height: 100px; display: flex; align-items: center; justify-content: center; }
-        header h1 { color: var(--azul); font-weight: 900; font-size: 3.5rem; margin: 0; text-transform: uppercase; letter-spacing: -2px; }
-        header p { font-size: 1.3rem; color: #555; margin-top: 10px; max-width: 600px; }
+        /* --- ESTILOS CORREGIDOS PARA FONDO TOTAL --- */
+        header { 
+            height: 80vh; /* Alto de la sección */
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            color: white; /* Letras blancas para contraste */
+            position: relative;
+            overflow: hidden;
+            
+            /* Estos estilos se aplicarán dinámicamente desde JS, pero los dejamos de base */
+            background-size: cover; /* Cubre toda el área */
+            background-position: center; /* Centra la imagen */
+            background-repeat: no-repeat;
+        }
 
+        /* Capa oscura superpuesta para que el texto se lea bien sobre la imagen */
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* Negro con 40% de opacidad */
+            z-index: 1;
+        }
+
+        /* Aseguramos que el texto esté por encima de la capa oscura */
+        header h1, header p { position: relative; z-index: 2; margin: 0; }
+        header h1 { color: white; font-weight: 900; font-size: 4rem; text-transform: uppercase; letter-spacing: -2px; }
+        header p { font-size: 1.5rem; margin-top: 15px; max-width: 700px; opacity: 0.9; }
+
+        /* Estilos de Servicios y Footer (Se mantienen igual) */
         #servicios { padding: 80px 5%; background: var(--gris); }
         .grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
         .card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-bottom: 5px solid var(--azul); transition: 0.3s; }
@@ -26,7 +55,6 @@
         .card img { width: 100%; height: 220px; object-fit: cover; }
         .card-body { padding: 20px; }
         .card-body h3 { margin: 0; color: var(--azul); text-transform: uppercase; }
-
         .btn-wa { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 35px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 1000; text-decoration: none; }
         footer { padding: 40px; text-align: center; background: #1a1a1a; color: white; font-size: 0.8rem; }
     </style>
@@ -38,24 +66,10 @@
         <a href="login.html" class="btn-acceso"><i class="fa-solid fa-lock"></i> ACCESO</a>
     </nav>
 
-    <header>
-        <div id="view_logo_central">
-            <p style="color: #ccc;">Cargando identidad...</p>
-        </div>
+    <header id="view_header_hero">
         <h1 id="view_nombre_main">JADI SALUD</h1>
         <p id="view_eslogan">Excelencia médica a tu alcance</p>
     </header>
-
-    <section id="servicios">
-        <h2 style="text-align: center; text-transform: uppercase; margin-bottom: 40px; color: var(--azul);">Nuestros Servicios</h2>
-        <div class="grid-servicios" id="view_servicios_grid"></div>
-    </section>
-
-    <a id="view_btn_wa" href="#" class="btn-wa" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-
-    <footer>
-        <p>&copy; 2026 <span id="footer_name">JADI SALUD</span>. Todos los derechos reservados.</p>
-    </footer>
 
     <script type="module" src="./public/js/index.js"></script>
 
