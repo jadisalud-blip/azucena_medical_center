@@ -3,7 +3,8 @@ import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-
 
 const sincronizarPagina = async () => {
     try {
-        const docRef = doc(db, "publicidad", "configuracion_general");
+        // ACTUALIZADO: Apuntamos al documento 'configuracion_generales' (con la 's')
+        const docRef = doc(db, "publicidad", "configuracion_generales");
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -11,16 +12,21 @@ const sincronizarPagina = async () => {
             console.log("Sincronización total activa:", data);
 
             // 1. ENCABEZADO (Navbar y Títulos)
-            const nombreCentro = data.encabezado?.nombre || "AZUCENA MEDICAL";
+            // ACTUALIZADO: Buscamos dentro de 'encabezados' (con la 's')
+            const nombreCentro = data.encabezados?.nombre || "AZUCENA MEDICAL";
             document.title = nombreCentro;
             document.getElementById('view_brand_name').innerText = nombreCentro;
             document.getElementById('view_nombre_main').innerText = nombreCentro;
 
-            // --- 1.1 MENÚ DE NAVEGACIÓN (NUEVO) ---
+            // --- 1.1 MENÚ DE NAVEGACIÓN DINÁMICO ---
             const menuCont = document.getElementById('view_menu_links');
-            const itemsMenu = data.encabezado?.menu_items || []; 
+            
+            // ACTUALIZADO: Leemos el array 'servicio_menú' dentro de 'encabezados'
+            const itemsMenu = data.encabezados?.servicio_menú || []; 
+            
             if (menuCont && itemsMenu.length > 0) {
                 menuCont.innerHTML = itemsMenu.map(item => {
+                    // Limpiamos el texto para crear el link (ej: "Servicios Médicos" -> "#servicios médicos")
                     const link = item.toLowerCase().trim();
                     return `<a href="#${link}">${item}</a>`;
                 }).join('');
@@ -80,7 +86,7 @@ const sincronizarPagina = async () => {
             }
 
         } else {
-            console.warn("No se encontró el documento publicitario. Verifica el guardado.");
+            console.warn("No se encontró el documento 'configuracion_generales'. Verifica el ID en la BD.");
         }
     } catch (error) {
         console.error("Error crítico en sincronización:", error);
