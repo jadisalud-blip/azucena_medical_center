@@ -45,6 +45,28 @@
         .socials a:hover { color: #00FFFF; }
 
         .btn-wa { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 35px; text-decoration: none; z-index: 2000; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+        /* Esto controla el contenedor del menú */
+.nav-links {
+    display: flex;       /* Pone los links en línea (horizontal) */
+    gap: 20px;          /* Deja espacio entre cada palabra */
+    margin-left: auto;   /* Empuja el menú a la derecha */
+    margin-right: 30px;  /* Lo separa un poco del botón ACCESO */
+}
+
+/* Esto controla cómo se ven las palabras dentro del menú */
+.nav-links a {
+    text-decoration: none;
+    color: #444;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--azul); /* Cambia a azul cuando pasas el mouse */
+}
+
     </style>
 </head>
 <body>
