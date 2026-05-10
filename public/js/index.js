@@ -3,7 +3,6 @@ import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-
 
 const sincronizarPagina = async () => {
     try {
-        // Apuntamos al documento 'configuracion_general' dentro de 'publicidad'
         const docRef = doc(db, "publicidad", "configuracion_general");
         const docSnap = await getDoc(docRef);
 
@@ -12,14 +11,22 @@ const sincronizarPagina = async () => {
             console.log("Sincronización total activa:", data);
 
             // 1. ENCABEZADO (Navbar y Títulos)
-            // Extraído de h_nombre en tu panel
             const nombreCentro = data.encabezado?.nombre || "AZUCENA MEDICAL";
             document.title = nombreCentro;
             document.getElementById('view_brand_name').innerText = nombreCentro;
             document.getElementById('view_nombre_main').innerText = nombreCentro;
 
+            // --- 1.1 MENÚ DE NAVEGACIÓN (NUEVO) ---
+            const menuCont = document.getElementById('view_menu_links');
+            const itemsMenu = data.encabezado?.menu_items || []; 
+            if (menuCont && itemsMenu.length > 0) {
+                menuCont.innerHTML = itemsMenu.map(item => {
+                    const link = item.toLowerCase().trim();
+                    return `<a href="#${link}">${item}</a>`;
+                }).join('');
+            }
+
             // 2. FONDO TOTAL (Hero Background)
-            // Extraído de c_logo en tu panel
             const urlFondo = data.cuerpo?.logo;
             const header = document.getElementById('view_header_hero');
             if (header && urlFondo) {
@@ -29,13 +36,11 @@ const sincronizarPagina = async () => {
             }
 
             // 3. ESLOGAN
-            // Extraído de c_eslogan en tu panel
             if (data.cuerpo?.eslogan) {
                 document.getElementById('view_eslogan').innerText = data.cuerpo.eslogan;
             }
 
-            // 4. DETALLE DE SERVICIOS (Cards dinámicas)
-            // Extraído de cont_servicios en tu panel
+            // 4. DETALLE DE SERVICIOS
             const grid = document.getElementById('view_servicios_grid');
             const servicios = data.cuerpo?.servicios_detalle || [];
             if (grid && servicios.length > 0) {
@@ -51,12 +56,10 @@ const sincronizarPagina = async () => {
             }
 
             // 5. VIDEOS DE YOUTUBE
-            // Extraído de cont_videos en tu panel
             const videoCont = document.getElementById('view_videos_cont');
             const videos = data.cuerpo?.videos || [];
             if (videoCont && videos.length > 0) {
                 videoCont.innerHTML = videos.map(v => {
-                    // Limpieza simple del link para que sea embed
                     const videoId = v.includes('v=') ? v.split('v=')[1].split('&')[0] : v.split('/').pop();
                     return `
                         <div class="video-item">
@@ -65,8 +68,7 @@ const sincronizarPagina = async () => {
                 }).join('');
             }
 
-            // 6. REDES Y WHATSAPP (Pie de página)
-            // Extraído de f_wa, f_tk, f_ig en tu panel
+            // 6. REDES Y WHATSAPP
             if (data.redes?.whatsapp) {
                 document.getElementById('view_btn_wa').href = `https://wa.me/${data.redes.whatsapp}`;
             }
