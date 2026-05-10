@@ -22,7 +22,7 @@ const menuCont = document.getElementById('view_menu_links');
 
 // 2. Extraemos el array: data (documento) -> encabesado (objeto) -> servicios_menu (array)
 // Usamos el nombre exacto que me pasaste (encabesado / servicios_menu)
-const listaServicios = data.encabesado?.servicios_menu || [];
+const listaServicios = data.encabezado?.servicios_menu || [];
 
 // 3. Verificamos que existan datos antes de intentar pintar nada
 if (menuCont && listaServicios.length > 0) {
