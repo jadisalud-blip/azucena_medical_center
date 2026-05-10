@@ -17,6 +17,27 @@ const sincronizarPagina = async () => {
             document.title = nombreCentro;
             document.getElementById('view_brand_name').innerText = nombreCentro;
             document.getElementById('view_nombre_main').innerText = nombreCentro;
+// 1. Buscamos el lugar en el HTML donde vamos a poner los links
+const menuCont = document.getElementById('view_menu_links');
+
+// 2. Extraemos el array: data (documento) -> encabesado (objeto) -> servicios_menu (array)
+// Usamos el nombre exacto que me pasaste (encabesado / servicios_menu)
+const listaServicios = data.encabesado?.servicios_menu || [];
+
+// 3. Verificamos que existan datos antes de intentar pintar nada
+if (menuCont && listaServicios.length > 0) {
+    
+    // 4. Transformamos el array de texto en etiquetas <a> (enlaces)
+    menuCont.innerHTML = listaServicios.map(item => {
+        
+        // Limpiamos el texto para crear un ID de salto (ej: "Nuestros Servicios" -> "nuestros-servicios")
+        const linkId = item.toLowerCase().trim().replace(/\s+/g, '-');
+        
+        // Retornamos el HTML del enlace
+        return `<a href="#${linkId}">${item}</a>`;
+        
+    }).join(''); // El .join('') une todos los enlaces en una sola cadena de texto
+}
 
             // 2. FONDO TOTAL (Hero Background)
             // Extraído de c_logo en tu panel
