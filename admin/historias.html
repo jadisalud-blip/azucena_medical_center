@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Historias Clínicas · Admin · Centro Médico Azucena</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--blue:#0066FF;--blue2:#0047B3;--card:#0a1628;--border:rgba(255,255,255,.07);--muted:#7B8CB0;--r:12px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:#080f1e;color:#fff;display:flex;min-height:100vh;overflow:hidden}
+aside{width:240px;background:#040B1C;border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:100vh;overflow-y:auto;position:fixed;top:0;left:0;z-index:100}
+.logo{display:flex;align-items:center;gap:.55rem;padding:1.4rem 1.2rem;border-bottom:1px solid var(--border);text-decoration:none}
+.lm{width:30px;height:30px;border-radius:7px;background:var(--blue);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.lm::before,.lm::after{content:'';position:absolute;background:#fff;border-radius:2px}
+.lm::before{width:3px;height:17px}.lm::after{width:17px;height:3px}
+.lt{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff}.lt em{font-style:normal;color:#60b4ff}
+.s-sec{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:.9rem 1.2rem .35rem}
+.si{display:flex;align-items:center;gap:.7rem;padding:.58rem 1.2rem;color:rgba(255,255,255,.55);text-decoration:none;font-size:.82rem;font-weight:500;transition:all .2s;cursor:pointer;border:none;background:none;width:100%;text-align:left;position:relative}
+.si:hover{background:rgba(255,255,255,.04);color:#fff}
+.si.active{background:rgba(0,102,255,.18);color:#60b4ff}
+.si.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);border-radius:0 3px 3px 0}
+.sico{width:18px;text-align:center;font-size:.9rem;flex-shrink:0}
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh;overflow-y:auto}
+.topbar{background:#040B1C;border-bottom:1px solid var(--border);padding:.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.tb-l h1{font-family:'Playfair Display',serif;font-size:1.25rem;color:#fff}
+.tb-l span{font-size:.72rem;color:var(--muted);display:block;margin-top:.1rem}
+.tb-r{display:flex;align-items:center;gap:.7rem}
+.btn-out{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;padding:.4rem .9rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer}
+.btn-add{background:var(--blue);color:#fff;border:none;padding:.45rem 1.1rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-add:hover{background:var(--blue2)}
+.content{padding:1.5rem 2rem;flex:1}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem;margin-bottom:1.2rem}
+.chd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.75rem}
+.ctit{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#fff}
+.csub{font-size:.72rem;color:var(--muted);margin-top:.1rem}
+/* TABS */
+.tabs{display:flex;gap:.5rem;margin-bottom:1.4rem}
+.tab{padding:.5rem 1.3rem;border-radius:50px;border:1.5px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-size:.8rem;font-weight:600;cursor:pointer;background:none;font-family:'Outfit',sans-serif;transition:all .2s}
+.tab.active{background:var(--blue);border-color:var(--blue);color:#fff}
+/* BUSQUEDA */
+.search-bar{display:flex;gap:.75rem;margin-bottom:1.2rem;flex-wrap:wrap}
+.f-inp{padding:.55rem .9rem;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;background:rgba(255,255,255,.05);color:#fff;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none;transition:all .2s;flex:1;min-width:200px}
+.f-inp:focus{border-color:var(--blue)}
+.f-inp::placeholder{color:rgba(255,255,255,.3)}
+/* LISTA HISTORIAS */
+.hist-list{display:flex;flex-direction:column;gap:.7rem}
+.hist-item{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem;display:flex;align-items:center;gap:1rem;cursor:pointer;transition:all .2s}
+.hist-item:hover{border-color:rgba(0,102,255,.35);background:rgba(0,102,255,.05)}
+.hist-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.hist-nm{font-weight:700;font-size:.9rem;color:#fff}
+.hist-meta{font-size:.72rem;color:var(--muted);margin-top:.18rem}
+.hist-tipo{padding:.2rem .65rem;border-radius:20px;font-size:.68rem;font-weight:700;margin-left:auto;flex-shrink:0}
+.t-med{background:rgba(0,102,255,.18);color:#93c5fd}
+.t-fis{background:rgba(22,163,74,.18);color:#86efac}
+.t-odo{background:rgba(202,138,4,.18);color:#fde047}
+.hist-actions{display:flex;gap:.4rem;flex-shrink:0}
+.bsm{padding:.3rem .7rem;border-radius:7px;border:none;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .2s}
+.bb{background:rgba(0,102,255,.2);color:#60b4ff}.bb:hover{background:rgba(0,102,255,.4)}
+.br{background:rgba(220,38,38,.15);color:#fca5a5}.br:hover{background:rgba(220,38,38,.3)}
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);align-items:flex-start;justify-content:center;overflow-y:auto;padding:1.5rem}
+.modal-bg.open{display:flex}
+.modal{background:#0a1628;border:1px solid rgba(255,255,255,.1);border-radius:18px;width:min(820px,100%);box-shadow:0 30px 80px rgba(0,0,0,.5);animation:mIn .3s ease;margin:auto}
+@keyframes mIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.mhd{padding:1.5rem 1.8rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;position:sticky;top:0;background:#0a1628;z-index:10;border-radius:18px 18px 0 0}
+.mtit{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#fff}
+.msub{font-size:.72rem;color:var(--muted);margin-top:.15rem}
+.mx{background:none;border:none;cursor:pointer;font-size:1.3rem;color:var(--muted);padding:.2rem}
+.mx:hover{color:#fff}
+.mbdy{padding:1.4rem 1.8rem 2rem}
+/* FORM HISTORIA */
+.sec-blk{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:1.2rem;margin-bottom:1.2rem}
+.sec-tit{font-size:.75rem;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:2px;margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem}
+.frow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.85rem}
+.frow2{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
+.frow4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:.75rem}
+.fg{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.75rem}
+.fg label{font-size:.68rem;font-weight:600;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:1px}
+.fg input,.fg select,.fg textarea{padding:.65rem .85rem;border:1.5px solid rgba(255,255,255,.09);border-radius:8px;background:rgba(255,255,255,.05);color:#fff;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none;transition:all .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);background:rgba(0,102,255,.07)}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,.2)}
+.fg select option{background:#0a1628;color:#fff}
+.fg textarea{resize:vertical;min-height:72px}
+/* CHECKS ANTECEDENTES */
+.ant-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
+.ant-item{display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:rgba(255,255,255,.7)}
+.ant-item input[type=checkbox]{width:16px;height:16px;accent-color:var(--blue)}
+/* SESIONES FISIO */
+.ses-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem}
+.ses-cell{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:7px;padding:.5rem;text-align:center}
+.ses-n{font-size:.68rem;color:var(--muted);margin-bottom:.3rem}
+.ses-cell input{width:100%;background:transparent;border:none;color:#fff;font-family:'Outfit',sans-serif;font-size:.78rem;text-align:center;outline:none}
+/* ODONTO DIENTES */
+.diente-row{display:flex;gap:.3rem;flex-wrap:wrap}
+.diente{width:32px;height:32px;border-radius:6px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:rgba(255,255,255,.6);font-size:.68rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.diente.sel{background:rgba(220,38,38,.25);border-color:#ef4444;color:#fca5a5}
+/* BTN GUARDAR */
+.btn-save{width:100%;background:var(--blue);color:#fff;border:none;padding:.95rem;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(0,102,255,.35);transition:all .25s;display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:1rem}
+.btn-save:hover{background:var(--blue2);transform:translateY(-2px)}
+.btn-save:disabled{opacity:.6;cursor:not-allowed;transform:none}
+/* ALERT */
+.al{padding:.75rem 1rem;border-radius:9px;font-size:.8rem;margin-bottom:1rem;display:none}
+.al.show{display:block}
+.al-ok{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:#86efac}
+.al-err{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5}
+.empty{text-align:center;color:var(--muted);padding:2.5rem;font-size:.85rem}
+.print-btn{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.12);padding:.38rem .85rem;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s}
+.print-btn:hover{background:rgba(255,255,255,.14)}
+@media print{aside,.topbar,.hist-actions,.mhd button,.btn-save,#al-ok,#al-err{display:none!important}.modal{box-shadow:none;border:none}}
+@media(max-width:768px){aside{display:none}.main{margin-left:0}.frow{grid-template-columns:1fr 1fr}.frow4{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<aside>
+  <a class="logo" href="../index.html" target="_blank"><div class="lm"></div><span class="lt">Azucena <em>Medical</em></span></a>
+  <div class="s-sec">Principal</div>
+  <a href="dashboard.html" class="si"><span class="sico">📊</span> Dashboard</a>
+  <a href="agenda.html"    class="si"><span class="sico">📅</span> Agenda</a>
+  <a href="citas.html"     class="si"><span class="sico">🩺</span> Citas</a>
+  <div class="s-sec">Gestión</div>
+  <a href="medicos.html"    class="si"><span class="sico">👨‍⚕️</span> Médicos</a>
+  <a href="servicios.html"  class="si"><span class="sico">🏥</span> Servicios</a>
+  <a href="pacientes.html"  class="si"><span class="sico">👥</span> Pacientes</a>
+  <a href="historias.html"  class="si active"><span class="sico">📋</span> Historias Clínicas</a>
+  <a href="reporte.html"    class="si"><span class="sico">💰</span> Reporte Diario</a>
+  <a href="estudiantes.html"class="si"><span class="sico">🎓</span> Estudiantes</a>
+  <a href="certificados.html"class="si"><span class="sico">📜</span> Certificados MSP</a>
+  <div class="s-sec">Personalización</div>
+  <a href="publicidad.html" class="si"><span class="sico">📢</span> Publicidad</a>
+  <a href="usuarios.html"   class="si"><span class="sico">👤</span> Usuarios</a>
+  <div class="s-sec">Cuenta</div>
+  <a href="../login.html?action=cambio" class="si"><span class="sico">🔑</span> Cambiar contraseña</a>
+  <button class="si" onclick="doLogout()"><span class="sico">🚪</span> Cerrar sesión</button>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="tb-l"><h1>📋 Historias Clínicas</h1><span>Medicina General · Fisioterapia · Odontología</span></div>
+    <div class="tb-r">
+      <button class="btn-add" onclick="abrirModal('medicina')">➕ Nueva historia</button>
+      <button class="btn-out" onclick="doLogout()">🚪 Salir</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="al al-ok" id="al-ok"></div>
+    <div class="al al-err" id="al-err"></div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab active" onclick="filtrarTipo('',this)">📋 Todas</button>
+      <button class="tab" onclick="filtrarTipo('medicina',this)">🩺 Medicina</button>
+      <button class="tab" onclick="filtrarTipo('fisioterapia',this)">🤸 Fisioterapia</button>
+      <button class="tab" onclick="filtrarTipo('odontologia',this)">🦷 Odontología</button>
+    </div>
+
+    <!-- BUSQUEDA -->
+    <div class="search-bar">
+      <input type="text" class="f-inp" id="f-buscar" placeholder="🔍 Buscar por paciente, cédula..." oninput="renderHistorias()"/>
+      <input type="date" id="f-fecha" style="padding:.5rem .85rem;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;background:rgba(255,255,255,.05);color:#fff;font-family:Outfit,sans-serif;font-size:.82rem;outline:none" onchange="renderHistorias()"/>
+      <button onclick="abrirModal('medicina')" style="background:rgba(0,102,255,.2);color:#60b4ff;border:1px solid rgba(0,102,255,.3);padding:.5rem 1rem;border-radius:9px;font-family:Outfit,sans-serif;font-size:.8rem;font-weight:600;cursor:pointer">🩺 Medicina</button>
+      <button onclick="abrirModal('fisioterapia')" style="background:rgba(22,163,74,.2);color:#86efac;border:1px solid rgba(22,163,74,.3);padding:.5rem 1rem;border-radius:9px;font-family:Outfit,sans-serif;font-size:.8rem;font-weight:600;cursor:pointer">🤸 Fisioterapia</button>
+      <button onclick="abrirModal('odontologia')" style="background:rgba(202,138,4,.2);color:#fde047;border:1px solid rgba(202,138,4,.3);padding:.5rem 1rem;border-radius:9px;font-family:Outfit,sans-serif;font-size:.8rem;font-weight:600;cursor:pointer">🦷 Odontología</button>
+    </div>
+
+    <div class="card">
+      <div class="chd">
+        <div><div class="ctit">📋 Listado de historias</div><div class="csub" id="csub-count">Cargando...</div></div>
+      </div>
+      <div class="hist-list" id="hist-list">
+        <div class="empty">Cargando historias clínicas...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL HISTORIA -->
+<div class="modal-bg" id="mbg">
+  <div class="modal" id="modal-inner">
+    <div class="mhd">
+      <div><div class="mtit" id="m-tit">📋 Nueva Historia Clínica</div><div class="msub" id="m-sub">Complete todos los campos</div></div>
+      <div style="display:flex;gap:.5rem;align-items:center">
+        <button class="print-btn" onclick="window.print()">🖨️ Imprimir</button>
+        <button class="mx" onclick="cerrarModal()">✕</button>
+      </div>
+    </div>
+    <div class="mbdy" id="mbdy"><!-- contenido dinámico --></div>
+  </div>
+</div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,addDoc,getDocs,doc,getDoc,updateDoc,deleteDoc,query,orderBy,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const FC={apiKey:"AIzaSyAwspV-1KcllVyRAbajVPLc0lwsWMOLIco",authDomain:"jadi-salud.firebaseapp.com",projectId:"jadi-salud",storageBucket:"jadi-salud.firebasestorage.app",messagingSenderId:"679691723583",appId:"1:679691723583:web:4235a2493d09a9196ea98a"};
+const app=initializeApp(FC);const db=getFirestore(app);const auth=getAuth(app);
+
+onAuthStateChanged(auth,async u=>{
+  if(!u){window.location.href='../login.html';return;}
+  try{const s=await getDoc(doc(db,'usuarios',u.uid));if(!s.exists()||!['admin','medico'].includes(s.data().rol)){window.location.href='../login.html';return;}}catch(e){}
+  loadHistorias();
+});
+window.doLogout=async()=>{await signOut(auth);window.location.href='../login.html';};
+
+function showOk(m){const e=document.getElementById('al-ok');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),4000);}
+function showErr(m){const e=document.getElementById('al-err');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),5000);}
+function todayStr(){const n=new Date();return`${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;}
+
+let allH=[],tipoFiltro='',currentTipo='medicina',editId='';
+
+async function loadHistorias(){
+  try{
+    const snap=await getDocs(query(collection(db,'historias'),orderBy('fecha','desc')));
+    allH=snap.docs.map(d=>({id:d.id,...d.data()}));
+  }catch(e){
+    try{const s2=await getDocs(collection(db,'historias'));allH=s2.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));}
+    catch(e2){allH=[];}
+  }
+  renderHistorias();
+}
+
+window.filtrarTipo=(t,btn)=>{
+  tipoFiltro=t;
+  document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
+  btn.classList.add('active');
+  renderHistorias();
+};
+
+window.renderHistorias=()=>{
+  const buscar=(document.getElementById('f-buscar').value||'').toLowerCase();
+  const fecha=document.getElementById('f-fecha').value;
+  let f=allH.filter(h=>{
+    if(tipoFiltro&&h.tipo!==tipoFiltro)return false;
+    if(fecha&&h.fecha!==fecha)return false;
+    if(buscar&&!`${h.paciente||''} ${h.cedula||''}`.toLowerCase().includes(buscar))return false;
+    return true;
+  });
+  const tipoColor={medicina:'t-med',fisioterapia:'t-fis',odontologia:'t-odo'};
+  const tipoIco={medicina:'🩺',fisioterapia:'🤸',odontologia:'🦷'};
+  const tipoBg={medicina:'rgba(0,102,255,.15)',fisioterapia:'rgba(22,163,74,.15)',odontologia:'rgba(202,138,4,.15)'};
+  document.getElementById('csub-count').textContent=`${f.length} historias encontradas`;
+  const list=document.getElementById('hist-list');
+  if(f.length===0){list.innerHTML='<div class="empty">No se encontraron historias clínicas.</div>';return;}
+  list.innerHTML=f.map(h=>`
+    <div class="hist-item" onclick="verHistoria('${h.id}')">
+      <div class="hist-ico" style="background:${tipoBg[h.tipo]||'rgba(0,102,255,.15)'}">${tipoIco[h.tipo]||'📋'}</div>
+      <div style="flex:1;min-width:0">
+        <div class="hist-nm">${h.paciente||'Sin nombre'}</div>
+        <div class="hist-meta">Cédula: ${h.cedula||'–'} · Fecha: ${h.fecha||'–'} · Dr. ${h.medico||'–'}</div>
+      </div>
+      <span class="hist-tipo ${tipoColor[h.tipo]||'t-med'}">${h.tipo?.charAt(0).toUpperCase()+h.tipo?.slice(1)||'–'}</span>
+      <div class="hist-actions" onclick="event.stopPropagation()">
+        <button class="bsm bb" onclick="editarHistoria('${h.id}')">✏️</button>
+        <button class="bsm" style="background:rgba(124,58,237,.2);color:#c4b5fd" onclick="verHistoria('${h.id}')">👁</button>
+        <button class="bsm br" onclick="eliminarHistoria('${h.id}')">🗑</button>
+      </div>
+    </div>`).join('');
+};
+
+// ── TEMPLATES DE FORMULARIO ──────────────────────────
+function tplMedicina(d={}){
+  return`
+  <div class="sec-blk">
+    <div class="sec-tit">📅 Datos generales</div>
+    <div class="frow">
+      <div class="fg"><label>N° Clínica</label><input id="h-ncli" value="${d.nClinica||''}"/></div>
+      <div class="fg"><label>Fecha *</label><input type="date" id="h-fecha" value="${d.fecha||todayStr()}"/></div>
+      <div class="fg"><label>Médico responsable</label><input id="h-medico" value="${d.medico||''}"/></div>
+    </div>
+  </div>
+  <div class="sec-blk">
+    <div class="sec-tit">👤 Datos del paciente</div>
+    <div class="frow2">
+      <div class="fg"><label>Nombres completos *</label><input id="h-pac" value="${d.paciente||''}"/></div>
+      <div class="fg"><label>Cédula *</label><input id="h-ced" value="${d.cedula||''}"/></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Edad</label><input type="number" id="h-edad" value="${d.edad||''}"/></div>
+      <div class="fg"><label>Sexo</label><select id="h-sexo"><option ${d.sexo==='M'?'selected':''}>M</option><option ${d.sexo==='F'?'selected':''}>F</option></select></div>
+      <div class="fg"><label>F/N (Fecha nacimiento)</label><input type="date" id="h-fn" value="${d.fn||''}"/></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Dirección</label><input id="h-dir" value="${d.direccion||''}"/></div>
+      <div class="fg"><label>Ocupación</label><input id="h-ocu" value="${d.ocupacion||''}"/></div>
+      <div class="fg"><label>Teléfono</label><input id="h-tel" value="${d.telefono||''}"/></div>
+    </div>
+    <div class="frow4">
+      <div class="fg"><label>Peso (kg)</label><input type="number" step=".1" id="h-peso" value="${d.peso||''}"/></div>
+      <div class="fg"><label>Talla (m)</label><input type="number" step=".01" id="h-talla" value="${d.talla||''}"/></div>
+      <div class="fg"><label>IMC</label><input id="h-imc" value="${d.imc||''}"/></div>
+      <div class="fg"><label>T/A</label><input id="h-ta" value="${d.ta||''}"/></div>
+    </div>
+    <div class="frow4">
+      <div class="fg"><label>FC</label><input id="h-fc" value="${d.fc||''}"/></div>
+      <div class="fg"><label>FR</label><input id="h-fr" value="${d.fr||''}"/></div>
+      <div class="fg"><label>SO2</label><input id="h-so2" value="${d.so2||''}"/></div>
+      <div class="fg"><label>T°</label><input id="h-temp" value="${d.temp||''}"/></div>
+    </div>
+  </div>
+  <div class="sec-blk">
+    <div class="sec-tit">🔍 Motivo de consulta y anamnesis</div>
+    <div class="fg"><label>Motivo de consulta</label><textarea id="h-motivo">${d.motivo||''}</textarea></div>
+    <div class="fg"><label>HEA (Historia enfermedad actual)</label><textarea id="h-hea">${d.hea||''}</textarea></div>
+  </div>
+  <div class="sec-blk">
+    <div class="sec-tit">📖 Antecedentes</div>
+    <div class="fg"><label>APP (Antecedentes patológicos personales) — Enfermedad / Tratamiento</label><textarea id="h-app">${d.app||''}</textarea></div>
+    <div class="frow2">
+      <div class="fg"><label>APF Paternos</label><input id="h-apfp" value="${d.apfP||''}"/></div>
+      <div class="fg"><label>APF Maternos</label><input id="h-apfm" value="${d.apfM||''}"/></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>AGO — Embarazos</label><input type="number" id="h-emb" value="${d.embarazos||''}"/></div>
+      <div class="fg"><label>Partos</label><input type="number" id="h-par" value="${d.partos||''}"/></div>
+      <div class="fg"><label>Cesáreas</label><input type="number" id="h-ces" value="${d.cesareas||''}"/></div>
+    </div>
+    <div class="fg"><label>Alergias</label><input id="h-aler" value="${d.alergias||''}"/></div>
+    <div class="fg"><label>Hábitos tóxicos</label><input id="h-hab" value="${d.habitos||''}"/></div>
+  </div>
+  <div class="sec-blk">
+    <div class="sec-tit">🔬 Examen físico</div>
+    <div class="fg"><label>Examen físico general</label><textarea id="h-efg">${d.efGeneral||''}</textarea></div>
+    <div class="fg"><label>Examen físico por aparatos y sistemas</label><textarea id="h-efas">${d.efSistemas||''}</textarea></div>
+  </div>
+  <div class="sec-blk">
+    <div class="sec-tit">💊 Tratamiento y recomendaciones</div>
+    <div class="fg"><label>Diagnóstico</label><textarea id="h-diag">${d.diagnostico||''}</textarea></div>
+    <div class="fg"><label>Tratamiento / Recomendaciones</label><textarea id="h-trat">${d.tratamiento||''}</textarea></div>
+    <div class="fg"><label>Reposo (días)</label><input type="number" id="h-rep" value="${d.reposo||''}"/></div>
+  </div>`;
+}
+
+function tplFisio(d={}){
+  const ant=['Diabetes','HTA','Cáncer','Alergias','Embarazos','Cirugías','Vértigo','Enf. Cardíacas','FX','Espasmos musculares','Hospitalización','Enf. Reumáticas','Caídas','Golpes'];
+  const antChecks=ant.map(a=>`<div class="ant-item"><input type="checkbox" id="ant-${a.replace(/\s/g,'-')}" ${(d.antecedentes||[]).includes(a)?'checked':''}><label for="ant-${a.replace(/\s/g,'-')}">${a}</label></div>`).join('');
+  const agentes=['CHC','CHF','ELEC.EST','AC.LIBRE','ULTRASON','OND.CHOQUE','MAGNETO','AC.ASISTIDOS','LASER','PUNCIÓN SECA','TMA','AC.PASIVO','ELIOTERAPIA','CRIOTERAPIA','TER.TERAPIA','PARAFINA','RED.MARCHA','ISOMÉTRICOS','PROPIOCEPTIVOS'];
+  const agChecks=agentes.map(a=>`<div class="ant-item"><input type="checkbox" id="ag-${a}" ${(d.agentes||[]).includes(a)?'checked':''}><label for="ag-${a}">${a}</label></div>`).join('');
+  let sesiones='';
+  for(let i=1;i<=10;i++){sesiones+=`<div class="ses-cell"><div class="ses-n">${i}ra sesión</div><input id="ses-${i}" value="${d.sesiones?.[i-1]||''}" placeholder="observ."/></div>`;}
+  return`
+  <div class="sec-blk">
+    <div class="sec-tit">📅 Datos generales</div>
+    <div class="frow">
+      <div class="fg"><label>N° Clínica</label><input id="h-ncli" value="${d.nClinica||''}"/></div>
+      <div class="fg"><label>Fecha *</label><input type="date" id="h-fecha" value="${d.fecha||todayStr()}"/></div>
+      <div class="fg"><label>Médico/Fisioterapeuta</label><input id="h-medico" value="${d.medico||''}"/></div>
+    </div>
+  </div>
+  <div class="sec-blk">
+    <div class="sec-tit">👤 Datos del paciente</div>
+    <div class="frow2">
+      <div class="fg"><label>Nombres completos *</label><input id="h-pac" value="${d.paciente||''}"/></div>
+      <div class="fg"><label>Cédula *</label><input id="h-ced" value="${d.cedula||''}"/></div>
+    </div>
+    <div class="frow4">
+      <div class="fg"><label>Edad</label><input type="number" id="h-edad" value="${d.edad||''}"/></div>
+      <div class="fg"><label>Sexo</label><select id="h-sexo"><option ${d.sexo==='M'?'selected':''}>M</option><option ${d.sexo==='F'?'selected':''}>F</option></select></div>
+      <div class="fg"><label>Estado civil</label><input id="h-ecivil" value="${d.estadoCivil||''}"/></div>
+      <div class="fg"><label>Ocupación</label><input id="h-ocu" value="${d.ocupacion||''}"/></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Dirección</label><input id="h-dir" value="${d.direccion||''}"/></div>
+      <div class="fg"><label>Teléfono</label><input id="h-tel" value="${d.telefono||''}"/></div>
+      <div class="fg"><label>F/N</label><input type="date" id="h-fn" value="${d.fn||''}"/></div>
+    </div>
+    <div class="frow4">
+      <div class="fg"><label>Peso</label><input id="h-peso" value="${d.peso||''}"/></div>
+      <div class="fg"><label>Talla</label><input id="h-talla" value="${d.talla||''}"/></div>
+      <div class="fg"><label>IMC</label><input id="h-imc" value="${d.imc||''}"/></div>
+      <div class="fg"><label>T/A</label><input id="h-ta" value="${d.ta||''}"/></div>
+    </div>
+    <div class="frow4">
+      <div class="fg"><label>FC</label><input id="h-fc" value="${d.fc||''}"/></div>
+      <div class="fg"><label>FR</label><input id="h-fr" value="${d.fr||''}"/></div>
+      <div class="fg"><label>SO2</label><input id="h-so2" value="${d.so2||''}"/></div>
+      <div class="fg"><label>T°</label><input id="h-temp" value="${d.temp||''}"/></div>
+    </div>
+  </div>
+  <div class="sec-blk">
+    <div class="sec-tit">🔍 Motivo y tratamiento previo</div>
+    <div class="fg"><label>Motivo de consulta</label><textarea id="h-motivo">${d.motivo||''}</textarea></div>
+    <div class="fg"><label>Tratamiento previo</label><textarea id="h-tprev">${d.tratPrevio||''}</textarea></div>
+  </div>
+  <div class="sec-blk">
+    <div class="sec-tit">📖 Antecedentes patológicos y hereditarios</div>
+    <div class="ant-grid">${antChecks}</div>
+    <div class="fg" style="margin-top:.8rem"><label>Especifique antecedentes</label><textarea id="h-ant-esp">${d.antEsp||''}</textarea></div>
+  </div>
+  <div class="sec-blk">
+    <div class="sec-tit">⚡ Agentes electrofísicos y ejercicios</div>
+    <div class="ant-grid">${agChecks}</div>
+  </div>
+  <div class="sec-blk">
+    <div class="sec-tit">📊 Seguimiento del abordaje fisioterapéutico (10 sesiones)</div>
+    <div class="ses-grid">${sesiones}</div>
+  </div>`;
+}
+
+function tplOdonto(d={}){
+  const nums=[...Array(16).keys()].map(i=>i+11).concat([...Array(16).keys()].map(i=>i+21));
+  const dientes=nums.map(n=>`<div class="diente ${(d.dientes||[]).includes(n)?'sel':''}" onclick="toggleDiente(${n},this)">${n}</div>`).join('');
+  return`
+  <div class="sec-blk">
+    <div class="sec-tit">📅 Datos generales</div>
+    <div class="frow">
+      <div class="fg"><label>N° Clínica</label><input id="h-ncli" value="${d.nClinica||''}"/></div>
+      <div class="fg"><label>Fecha *</label><input type="date" id="h-fecha" value="${d.fecha||todayStr()}"/></div>
+      <div class="fg"><label>Odontólogo</label><input id="h-medico" value="${d.medico||''}"/></div>
+    </div>
+  </div>
+  <div class="sec-blk">
+    <div class="sec-tit">👤 Datos del paciente</div>
+    <div class="frow2">
+      <div class="fg"><label>Nombres *</label><input id="h-pac" value="${d.paciente||''}"/></div>
+      <div class="fg"><label>Cédula *</label><input id="h-ced" value="${d.cedula||''}"/></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Edad</label><input type="number" id="h-edad" value="${d.edad||''}"/></div>
+      <div class="fg"><label>F/N</label><input type="date" id="h-fn" value="${d.fn||''}"/></div>
+      <div class="fg"><label>Ocupación</label><input id="h-ocu" value="${d.ocupacion||''}"/></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Dirección</label><input id="h-dir" value="${d.direccion||''}"/></div>
+      <div class="fg"><label>Celular</label><input id="h-tel" value="${d.telefono||''}"/></div>
+      <div class="fg"><label>Email</label><input type="email" id="h-email" value="${d.email||''}"/></div>
+    </div>
+  </div>
+  <div class="sec-blk">
+    <div class="sec-tit">🦷 Motivo y diagnóstico</div>
+    <div class="fg"><label>Motivo de consulta 1</label><textarea id="h-motivo">${d.motivo||''}</textarea></div>
+    <div class="fg"><label>Motivo de consulta 2</label><textarea id="h-motivo2">${d.motivo2||''}</textarea></div>
+    <div class="fg"><label>Antecedentes médicos y odontológicos</label><textarea id="h-ant">${d.antecedentes||''}</textarea></div>
+    <div class="fg"><label>Diagnóstico</label><textarea id="h-diag">${d.diagnostico||''}</textarea></div>
+  </div>
+  <div class="sec-blk">
+    <div class="sec-tit">🦷 Odontograma — Dientes afectados (clic para marcar)</div>
+    <div style="margin-bottom:.5rem;font-size:.72rem;color:var(--muted)">Dientes superiores (11–28)</div>
+    <div class="diente-row" id="dientes-row">${dientes}</div>
+    <div style="margin:.6rem 0 .4rem;font-size:.72rem;color:var(--muted)">Observaciones por diente</div>
+    <div class="fg"><textarea id="h-obs-dientes" placeholder="Ej: Diente 16 caries clase II, diente 21 fractura...">${d.obsDientes||''}</textarea></div>
+  </div>
+  <div class="sec-blk">
+    <div class="sec-tit">📄 Observaciones y tratamiento</div>
+    <div class="fg"><label>Observaciones generales</label><textarea id="h-obs">${d.observaciones||''}</textarea></div>
+    <div class="fg" style="margin-bottom:0">
+      <label>Consentimiento informado</label>
+      <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:1rem;font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.7">
+        Yo, <input id="h-ci-nombre" value="${d.ciNombre||''}" style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.2);color:#fff;font-family:Outfit,sans-serif;min-width:200px;outline:none;padding:.1rem .3rem"/> con CI <input id="h-ci-cedula" value="${d.ciCedula||''}" style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.2);color:#fff;font-family:Outfit,sans-serif;min-width:120px;outline:none;padding:.1rem .3rem"/>, he sido informado por el doctor de AZUCENA MEDICAL CENTER de la naturaleza de la dolencia y de los beneficios a que seré sometido(a).
+      </div>
+    </div>
+  </div>`;
+}
+
+let dientesSel=[];
+window.toggleDiente=(n,el)=>{
+  el.classList.toggle('sel');
+  if(el.classList.contains('sel'))dientesSel.push(n);
+  else dientesSel=dientesSel.filter(x=>x!==n);
+};
+
+// ABRIR MODAL
+window.abrirModal=(tipo,data={})=>{
+  currentTipo=tipo;editId=data.id||'';
+  const titulos={medicina:'🩺 Historia Clínica — Medicina General',fisioterapia:'🤸 Historia Clínica — Fisioterapia',odontologia:'🦷 Historia Clínica — Odontología'};
+  document.getElementById('m-tit').textContent=editId?'✏️ Editar '+titulos[tipo]:titulos[tipo];
+  document.getElementById('m-sub').textContent='Centro Médico Azucena · Quito, Ecuador';
+  const tpl={medicina:tplMedicina,fisioterapia:tplFisio,odontologia:tplOdonto};
+  document.getElementById('mbdy').innerHTML=tpl[tipo](data)+'<button class="btn-save" id="btn-save" onclick="guardarHistoria()">💾 Guardar historia clínica</button>';
+  dientesSel=[...(data.dientes||[])];
+  document.getElementById('mbg').classList.add('open');
+};
+
+window.cerrarModal=()=>{document.getElementById('mbg').classList.remove('open');};
+document.getElementById('mbg').addEventListener('click',e=>{if(e.target===document.getElementById('mbg'))window.cerrarModal();});
+
+// RECOGER DATOS SEGÚN TIPO
+function recogerDatos(){
+  const base={
+    nClinica:document.getElementById('h-ncli')?.value||'',
+    fecha:document.getElementById('h-fecha')?.value||todayStr(),
+    medico:document.getElementById('h-medico')?.value||'',
+    paciente:document.getElementById('h-pac')?.value||'',
+    cedula:document.getElementById('h-ced')?.value||'',
+    edad:document.getElementById('h-edad')?.value||'',
+    sexo:document.getElementById('h-sexo')?.value||'',
+    fn:document.getElementById('h-fn')?.value||'',
+    direccion:document.getElementById('h-dir')?.value||'',
+    telefono:document.getElementById('h-tel')?.value||'',
+    ocupacion:document.getElementById('h-ocu')?.value||'',
+    peso:document.getElementById('h-peso')?.value||'',
+    talla:document.getElementById('h-talla')?.value||'',
+    imc:document.getElementById('h-imc')?.value||'',
+    ta:document.getElementById('h-ta')?.value||'',
+    fc:document.getElementById('h-fc')?.value||'',
+    fr:document.getElementById('h-fr')?.value||'',
+    so2:document.getElementById('h-so2')?.value||'',
+    temp:document.getElementById('h-temp')?.value||'',
+    motivo:document.getElementById('h-motivo')?.value||'',
+    tipo:currentTipo,
+  };
+  if(currentTipo==='medicina'){
+    Object.assign(base,{hea:document.getElementById('h-hea')?.value||'',app:document.getElementById('h-app')?.value||'',apfP:document.getElementById('h-apfp')?.value||'',apfM:document.getElementById('h-apfm')?.value||'',embarazos:document.getElementById('h-emb')?.value||'',partos:document.getElementById('h-par')?.value||'',cesareas:document.getElementById('h-ces')?.value||'',alergias:document.getElementById('h-aler')?.value||'',habitos:document.getElementById('h-hab')?.value||'',efGeneral:document.getElementById('h-efg')?.value||'',efSistemas:document.getElementById('h-efas')?.value||'',diagnostico:document.getElementById('h-diag')?.value||'',tratamiento:document.getElementById('h-trat')?.value||'',reposo:document.getElementById('h-rep')?.value||''});
+  }
+  if(currentTipo==='fisioterapia'){
+    const antNombres=['Diabetes','HTA','Cáncer','Alergias','Embarazos','Cirugías','Vértigo','Enf. Cardíacas','FX','Espasmos musculares','Hospitalización','Enf. Reumáticas','Caídas','Golpes'];
+    const agNombres=['CHC','CHF','ELEC.EST','AC.LIBRE','ULTRASON','OND.CHOQUE','MAGNETO','AC.ASISTIDOS','LASER','PUNCIÓN SECA','TMA','AC.PASIVO','ELIOTERAPIA','CRIOTERAPIA','TER.TERAPIA','PARAFINA','RED.MARCHA','ISOMÉTRICOS','PROPIOCEPTIVOS'];
+    const sesiones=[];for(let i=1;i<=10;i++)sesiones.push(document.getElementById(`ses-${i}`)?.value||'');
+    Object.assign(base,{estadoCivil:document.getElementById('h-ecivil')?.value||'',tratPrevio:document.getElementById('h-tprev')?.value||'',antecedentes:antNombres.filter(a=>document.getElementById(`ant-${a.replace(/\s/g,'-')}`)?.checked),antEsp:document.getElementById('h-ant-esp')?.value||'',agentes:agNombres.filter(a=>document.getElementById(`ag-${a}`)?.checked),sesiones});
+  }
+  if(currentTipo==='odontologia'){
+    Object.assign(base,{email:document.getElementById('h-email')?.value||'',motivo2:document.getElementById('h-motivo2')?.value||'',antecedentes:document.getElementById('h-ant')?.value||'',diagnostico:document.getElementById('h-diag')?.value||'',dientes:dientesSel,obsDientes:document.getElementById('h-obs-dientes')?.value||'',observaciones:document.getElementById('h-obs')?.value||'',ciNombre:document.getElementById('h-ci-nombre')?.value||'',ciCedula:document.getElementById('h-ci-cedula')?.value||''});
+  }
+  return base;
+}
+
+window.guardarHistoria=async()=>{
+  const d=recogerDatos();
+  if(!d.paciente||!d.cedula){showErr('Nombre del paciente y cédula son obligatorios.');return;}
+  const btn=document.getElementById('btn-save');btn.disabled=true;btn.innerHTML='⏳ Guardando...';
+  d.updatedAt=serverTimestamp();
+  try{
+    if(editId){await updateDoc(doc(db,'historias',editId),d);showOk('✅ Historia clínica actualizada.');}
+    else{d.creadoEn=serverTimestamp();await addDoc(collection(db,'historias'),d);showOk('✅ Historia clínica guardada.');}
+    cerrarModal();loadHistorias();
+  }catch(e){showErr('Error: '+e.message);}
+  btn.disabled=false;
+};
+
+window.verHistoria=(id)=>{
+  const h=allH.find(x=>x.id===id);if(!h)return;
+  editarHistoria(id);
+};
+
+window.editarHistoria=(id)=>{
+  const h=allH.find(x=>x.id===id);if(!h)return;
+  abrirModal(h.tipo||'medicina',{...h,id});
+};
+
+window.eliminarHistoria=async(id)=>{
+  if(!confirm('¿Eliminar esta historia clínica?'))return;
+  try{await deleteDoc(doc(db,'historias',id));showOk('🗑 Historia eliminada.');loadHistorias();}
+  catch(e){showErr('Error: '+e.message);}
+};
+</script>
+</body>
+</html>
