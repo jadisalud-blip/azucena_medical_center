@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Reporte Diario · Admin · Centro Médico Azucena</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--blue:#0066FF;--blue2:#0047B3;--card:#0a1628;--border:rgba(255,255,255,.07);--muted:#7B8CB0;--grn:#16a34a;--red:#dc2626;--r:12px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:#080f1e;color:#fff;display:flex;min-height:100vh;overflow:hidden}
+aside{width:240px;background:#040B1C;border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:100vh;overflow-y:auto;position:fixed;top:0;left:0;z-index:100}
+.logo{display:flex;align-items:center;gap:.55rem;padding:1.4rem 1.2rem;border-bottom:1px solid var(--border);text-decoration:none}
+.lm{width:30px;height:30px;border-radius:7px;background:var(--blue);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.lm::before,.lm::after{content:'';position:absolute;background:#fff;border-radius:2px}
+.lm::before{width:3px;height:17px}.lm::after{width:17px;height:3px}
+.lt{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff}.lt em{font-style:normal;color:#60b4ff}
+.s-sec{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:.9rem 1.2rem .35rem}
+.si{display:flex;align-items:center;gap:.7rem;padding:.58rem 1.2rem;color:rgba(255,255,255,.55);text-decoration:none;font-size:.82rem;font-weight:500;transition:all .2s;cursor:pointer;border:none;background:none;width:100%;text-align:left;position:relative}
+.si:hover{background:rgba(255,255,255,.04);color:#fff}
+.si.active{background:rgba(0,102,255,.18);color:#60b4ff}
+.si.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);border-radius:0 3px 3px 0}
+.sico{width:18px;text-align:center;font-size:.9rem;flex-shrink:0}
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh;overflow-y:auto}
+.topbar{background:#040B1C;border-bottom:1px solid var(--border);padding:.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.tb-l h1{font-family:'Playfair Display',serif;font-size:1.25rem;color:#fff}
+.tb-l span{font-size:.72rem;color:var(--muted);display:block;margin-top:.1rem}
+.tb-r{display:flex;align-items:center;gap:.7rem}
+.btn-out{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;padding:.4rem .9rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer}
+.btn-exp{background:rgba(22,163,74,.2);color:#86efac;border:1px solid rgba(22,163,74,.3);padding:.4rem .9rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-exp:hover{background:rgba(22,163,74,.4)}
+.btn-add{background:var(--blue);color:#fff;border:none;padding:.4rem 1rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-add:hover{background:var(--blue2)}
+.content{padding:1.5rem 2rem;flex:1}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem;margin-bottom:1.2rem}
+.chd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.75rem}
+.ctit{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#fff}
+.csub{font-size:.72rem;color:var(--muted);margin-top:.1rem}
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.9rem;margin-bottom:1.2rem}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem;position:relative;overflow:hidden}
+.kpi-bar{position:absolute;top:0;left:0;right:0;height:3px}
+.kpi-v{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;color:#fff;line-height:1}
+.kpi-l{font-size:.7rem;color:var(--muted);margin-top:.25rem}
+/* SELECTOR FECHA */
+.date-nav{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.f-date{padding:.5rem .85rem;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;background:rgba(255,255,255,.05);color:#fff;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none;transition:all .2s}
+.f-date:focus{border-color:var(--blue)}
+.btn-nav{background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1);padding:.5rem .9rem;border-radius:9px;font-family:'Outfit',sans-serif;font-size:.82rem;cursor:pointer;transition:all .2s}
+.btn-nav:hover{background:rgba(255,255,255,.12)}
+.btn-hoy{background:rgba(0,102,255,.2);color:#60b4ff;border:1px solid rgba(0,102,255,.3);padding:.5rem .9rem;border-radius:9px;font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-hoy:hover{background:rgba(0,102,255,.4)}
+/* TABLA */
+.tbl-wrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;min-width:700px}
+.tbl th{text-align:left;font-size:.67rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);padding:.6rem .75rem;border-bottom:1px solid var(--border)}
+.tbl td{padding:.7rem .75rem;font-size:.82rem;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:rgba(255,255,255,.025)}
+.esp-tag{display:inline-block;background:rgba(0,102,255,.15);color:#93c5fd;font-size:.72rem;font-weight:600;padding:.18rem .55rem;border-radius:6px}
+.pago-tag{display:inline-block;background:rgba(22,163,74,.15);color:#86efac;font-size:.72rem;font-weight:700;padding:.18rem .55rem;border-radius:6px}
+/* GRAFICO BARRAS */
+.bar-chart{display:flex;flex-direction:column;gap:.7rem}
+.bc-row{display:flex;align-items:center;gap:.75rem}
+.bc-lbl{font-size:.78rem;color:rgba(255,255,255,.7);min-width:130px;flex-shrink:0}
+.bc-bar{flex:1;height:8px;background:rgba(255,255,255,.07);border-radius:20px;overflow:hidden}
+.bc-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--blue),#00C2FF);transition:width .8s ease}
+.bc-val{font-size:.78rem;color:#fff;font-weight:600;min-width:60px;text-align:right;flex-shrink:0}
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem}
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:#0a1628;border:1px solid rgba(255,255,255,.1);border-radius:18px;width:min(620px,95vw);max-height:90vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:mIn .3s ease}
+@keyframes mIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.mhd{padding:1.5rem 1.8rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between}
+.mtit{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#fff}
+.msub{font-size:.72rem;color:var(--muted);margin-top:.15rem}
+.mx{background:none;border:none;cursor:pointer;font-size:1.3rem;color:var(--muted)}
+.mx:hover{color:#fff}
+.mbdy{padding:1.4rem 1.8rem 1.8rem}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.fg{display:flex;flex-direction:column;gap:.38rem;margin-bottom:.95rem}
+.fg label{font-size:.72rem;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px}
+.fg input,.fg select,.fg textarea{padding:.72rem .9rem;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;background:rgba(255,255,255,.05);color:#fff;font-family:'Outfit',sans-serif;font-size:.87rem;outline:none;transition:all .2s}
+.fg input:focus,.fg select:focus{border-color:var(--blue);background:rgba(0,102,255,.08)}
+.fg input::placeholder{color:rgba(255,255,255,.25)}
+.fg select option{background:#0a1628;color:#fff}
+.fg textarea{resize:vertical;min-height:65px}
+.btn-save{width:100%;background:var(--blue);color:#fff;border:none;padding:.95rem;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(0,102,255,.35);transition:all .25s;margin-top:.5rem;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.btn-save:hover{background:var(--blue2);transform:translateY(-2px)}
+.btn-save:disabled{opacity:.6;cursor:not-allowed;transform:none}
+/* RESUMEN FILA */
+.resumen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:.8rem}
+.res-item{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:9px;padding:.9rem;text-align:center}
+.res-v{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#fff}
+.res-l{font-size:.7rem;color:var(--muted);margin-top:.15rem}
+/* ALERT */
+.al{padding:.75rem 1rem;border-radius:9px;font-size:.8rem;margin-bottom:1rem;display:none}
+.al.show{display:block}
+.al-ok{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:#86efac}
+.al-err{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5}
+.empty{text-align:center;color:var(--muted);padding:2.5rem;font-size:.85rem}
+@media(max-width:1100px){.kpi-grid{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:768px){aside{display:none}.main{margin-left:0}.g2{grid-template-columns:1fr}.frow{grid-template-columns:1fr}.kpi-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<aside>
+  <a class="logo" href="../index.html" target="_blank"><div class="lm"></div><span class="lt">Azucena <em>Medical</em></span></a>
+  <div class="s-sec">Principal</div>
+  <a href="dashboard.html" class="si"><span class="sico">📊</span> Dashboard</a>
+  <a href="agenda.html"    class="si"><span class="sico">📅</span> Agenda</a>
+  <a href="citas.html"     class="si"><span class="sico">🩺</span> Citas</a>
+  <div class="s-sec">Gestión</div>
+  <a href="medicos.html"    class="si"><span class="sico">👨‍⚕️</span> Médicos</a>
+  <a href="servicios.html"  class="si"><span class="sico">🏥</span> Servicios</a>
+  <a href="pacientes.html"  class="si"><span class="sico">👥</span> Pacientes</a>
+  <a href="historias.html"  class="si"><span class="sico">📋</span> Historias Clínicas</a>
+  <a href="reporte.html"    class="si active"><span class="sico">💰</span> Reporte Diario</a>
+  <a href="estudiantes.html"class="si"><span class="sico">🎓</span> Estudiantes</a>
+  <a href="certificados.html"class="si"><span class="sico">📜</span> Certificados MSP</a>
+  <div class="s-sec">Personalización</div>
+  <a href="publicidad.html" class="si"><span class="sico">📢</span> Publicidad</a>
+  <a href="usuarios.html"   class="si"><span class="sico">👤</span> Usuarios</a>
+  <div class="s-sec">Cuenta</div>
+  <a href="../login.html?action=cambio" class="si"><span class="sico">🔑</span> Cambiar contraseña</a>
+  <button class="si" onclick="doLogout()"><span class="sico">🚪</span> Cerrar sesión</button>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="tb-l">
+      <h1>💰 Reporte Diario</h1>
+      <span id="tb-fecha">–</span>
+    </div>
+    <div class="tb-r">
+      <button class="btn-add" onclick="abrirModal()">➕ Agregar registro</button>
+      <button class="btn-exp" onclick="exportarCSV()">⬇️ Exportar CSV</button>
+      <button class="btn-out" onclick="doLogout()">🚪 Salir</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="al al-ok" id="al-ok"></div>
+    <div class="al al-err" id="al-err"></div>
+
+    <!-- SELECTOR DE FECHA -->
+    <div class="card">
+      <div class="chd">
+        <div><div class="ctit">📆 Seleccionar período</div></div>
+        <div class="date-nav">
+          <button class="btn-nav" onclick="navDia(-1)">◀ Anterior</button>
+          <input type="date" class="f-date" id="f-fecha" onchange="loadReporte()"/>
+          <button class="btn-hoy" onclick="irHoy()">Hoy</button>
+          <button class="btn-nav" onclick="navDia(1)">Siguiente ▶</button>
+          <select class="f-date" id="f-vista" onchange="loadReporte()" style="min-width:120px">
+            <option value="dia">Vista: Día</option>
+            <option value="mes">Vista: Mes</option>
+          </select>
+        </div>
+      </div>
+      <!-- KPI DÍA/MES -->
+      <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-bar" style="background:linear-gradient(90deg,#0066FF,#00C2FF)"></div><div class="kpi-v" id="k-total">$0</div><div class="kpi-l">Total cobrado</div></div>
+        <div class="kpi"><div class="kpi-bar" style="background:linear-gradient(90deg,#16a34a,#22c55e)"></div><div class="kpi-v" id="k-pacs">0</div><div class="kpi-l">Pacientes atendidos</div></div>
+        <div class="kpi"><div class="kpi-bar" style="background:linear-gradient(90deg,#ca8a04,#f59e0b)"></div><div class="kpi-v" id="k-efectivo">$0</div><div class="kpi-l">Efectivo</div></div>
+        <div class="kpi"><div class="kpi-bar" style="background:linear-gradient(90deg,#7c3aed,#a855f7)"></div><div class="kpi-v" id="k-transfer">$0</div><div class="kpi-l">Transferencia</div></div>
+        <div class="kpi"><div class="kpi-bar" style="background:linear-gradient(90deg,#dc2626,#ef4444)"></div><div class="kpi-v" id="k-pend">$0</div><div class="kpi-l">Pendientes cobro</div></div>
+      </div>
+    </div>
+
+    <!-- TABLA + GRÁFICO -->
+    <div class="g2">
+      <!-- TABLA REGISTROS -->
+      <div class="card">
+        <div class="chd">
+          <div><div class="ctit">📋 Registros del período</div><div class="csub" id="csub-periodo">–</div></div>
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr>
+              <th>Hora</th><th>Paciente</th><th>Especialidad</th>
+              <th>Pago $</th><th>F.Pago</th><th>Insumos</th><th>Jeringas</th><th>Acciones</th>
+            </tr></thead>
+            <tbody id="tbody-rep">
+              <tr><td colspan="8" class="empty">Cargando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="resumen-grid" id="resumen-grid"></div>
+      </div>
+
+      <!-- GRÁFICO POR ESPECIALIDAD -->
+      <div style="display:flex;flex-direction:column;gap:1.2rem">
+        <div class="card">
+          <div class="chd"><div><div class="ctit">📊 Por especialidad</div><div class="csub">Ingresos del período</div></div></div>
+          <div class="bar-chart" id="chart-esp">
+            <div style="color:var(--muted);font-size:.8rem">Cargando...</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="chd"><div><div class="ctit">💳 Por forma de pago</div></div></div>
+          <div class="bar-chart" id="chart-pago">
+            <div style="color:var(--muted);font-size:.8rem">Cargando...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL REGISTRO RÁPIDO -->
+<div class="modal-bg" id="mbg">
+  <div class="modal">
+    <div class="mhd">
+      <div><div class="mtit" id="m-tit">➕ Registro rápido de cobro</div><div class="msub">Se guarda también en la agenda principal</div></div>
+      <button class="mx" onclick="cerrarModal()">✕</button>
+    </div>
+    <div class="mbdy">
+      <input type="hidden" id="edit-id"/>
+      <div class="frow">
+        <div class="fg"><label>Fecha *</label><input type="date" id="m-fecha"/></div>
+        <div class="fg"><label>Hora</label><input type="time" id="m-hora"/></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Paciente *</label><input type="text" id="m-pac" placeholder="Nombre del paciente"/></div>
+        <div class="fg"><label>Especialidad *</label>
+          <select id="m-esp">
+            <option value="">Selecciona...</option>
+            <option>Medicina General</option><option>Fisioterapia</option>
+            <option>Obstetricia</option><option>Traumatología</option>
+            <option>Odontología</option><option>Laboratorio</option>
+            <option>Especialidades</option><option>Rayos X</option>
+          </select>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Pago (USD) *</label><input type="number" id="m-pago" placeholder="10.00" min="0" step="0.50"/></div>
+        <div class="fg"><label>Forma de pago</label>
+          <select id="m-fpago">
+            <option value="">Selecciona...</option>
+            <option>Efectivo</option><option>Transferencia</option>
+            <option>Tarjeta</option><option>Pendiente</option>
+          </select>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Insumos utilizados</label><input type="text" id="m-ins" placeholder="jeringa, suero, etc."/></div>
+        <div class="fg"><label>Jeringas (cantidad)</label><input type="number" id="m-jer" placeholder="0" min="0"/></div>
+      </div>
+      <div class="fg"><label>Medicación / observaciones</label>
+        <textarea id="m-med" placeholder="Medicación administrada, notas..."></textarea></div>
+      <button class="btn-save" id="btn-save" onclick="guardarRegistro()">💾 Guardar registro</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,addDoc,getDocs,doc,getDoc,updateDoc,deleteDoc,query,orderBy,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const FC={apiKey:"AIzaSyAwspV-1KcllVyRAbajVPLc0lwsWMOLIco",authDomain:"jadi-salud.firebaseapp.com",projectId:"jadi-salud",storageBucket:"jadi-salud.firebasestorage.app",messagingSenderId:"679691723583",appId:"1:679691723583:web:4235a2493d09a9196ea98a"};
+const app=initializeApp(FC);const db=getFirestore(app);const auth=getAuth(app);
+
+const DIAS=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const now=new Date();
+document.getElementById('tb-fecha').textContent=`${DIAS[now.getDay()]}, ${now.getDate()} de ${MESES[now.getMonth()]} de ${now.getFullYear()}`;
+
+function todayStr(){const n=new Date();return`${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;}
+document.getElementById('f-fecha').value=todayStr();
+document.getElementById('m-fecha').value=todayStr();
+
+onAuthStateChanged(auth,async u=>{
+  if(!u){window.location.href='../login.html';return;}
+  try{const s=await getDoc(doc(db,'usuarios',u.uid));if(!s.exists()||!['admin','medico'].includes(s.data().rol)){window.location.href='../login.html';return;}}catch(e){}
+  loadReporte();
+});
+window.doLogout=async()=>{await signOut(auth);window.location.href='../login.html';};
+
+function showOk(m){const e=document.getElementById('al-ok');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),4000);}
+function showErr(m){const e=document.getElementById('al-err');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),5000);}
+
+let allData=[];
+
+window.loadReporte=async()=>{
+  try{
+    const snap=await getDocs(query(collection(db,'agenda'),orderBy('fecha','desc')));
+    allData=snap.docs.map(d=>({id:d.id,...d.data()}));
+  }catch(e){
+    try{const s2=await getDocs(collection(db,'agenda'));allData=s2.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));}
+    catch(e2){showErr('Error: '+e2.message);return;}
+  }
+  renderReporte();
+};
+
+function renderReporte(){
+  const fecha=document.getElementById('f-fecha').value;
+  const vista=document.getElementById('f-vista').value;
+  let filtrados,label;
+  if(vista==='mes'){
+    const mes=fecha.slice(0,7);
+    filtrados=allData.filter(r=>(r.fecha||'').startsWith(mes));
+    label=`Mes: ${MESES[parseInt(mes.split('-')[1])-1]} ${mes.split('-')[0]} · ${filtrados.length} registros`;
+  }else{
+    filtrados=allData.filter(r=>r.fecha===fecha);
+    const d=new Date(fecha+'T12:00:00');
+    label=`${DIAS[d.getDay()]} ${d.getDate()} de ${MESES[d.getMonth()]} de ${d.getFullYear()} · ${filtrados.length} registros`;
+  }
+  document.getElementById('csub-periodo').textContent=label;
+
+  // KPIs
+  const total=filtrados.reduce((s,r)=>s+(parseFloat(r.pago)||0),0);
+  const efectivo=filtrados.filter(r=>r.formaPago==='Efectivo').reduce((s,r)=>s+(parseFloat(r.pago)||0),0);
+  const transfer=filtrados.filter(r=>r.formaPago==='Transferencia').reduce((s,r)=>s+(parseFloat(r.pago)||0),0);
+  const pend=filtrados.filter(r=>r.formaPago==='Pendiente'||!r.formaPago).reduce((s,r)=>s+(parseFloat(r.pago)||0),0);
+  document.getElementById('k-total').textContent='$'+total.toFixed(2);
+  document.getElementById('k-pacs').textContent=filtrados.length;
+  document.getElementById('k-efectivo').textContent='$'+efectivo.toFixed(2);
+  document.getElementById('k-transfer').textContent='$'+transfer.toFixed(2);
+  document.getElementById('k-pend').textContent='$'+pend.toFixed(2);
+
+  // Tabla
+  const tbody=document.getElementById('tbody-rep');
+  if(filtrados.length===0){tbody.innerHTML='<tr><td colspan="8" class="empty">Sin registros para este período</td></tr>';document.getElementById('resumen-grid').innerHTML='';return;}
+  tbody.innerHTML=filtrados.map(r=>`
+    <tr>
+      <td style="white-space:nowrap;font-size:.78rem">${r.hora||'–'}</td>
+      <td style="font-weight:600">${r.paciente||'–'}</td>
+      <td><span class="esp-tag">${r.especialidad||'–'}</span></td>
+      <td><span class="pago-tag">$${parseFloat(r.pago||0).toFixed(2)}</span></td>
+      <td style="font-size:.78rem">${r.formaPago||'–'}</td>
+      <td style="font-size:.75rem;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r.insumos||''}">${r.insumos||'–'}</td>
+      <td style="text-align:center">${r.jeringas||0}</td>
+      <td>
+        <button style="background:rgba(0,102,255,.2);color:#60b4ff;border:none;padding:.2rem .55rem;border-radius:6px;font-size:.7rem;cursor:pointer;margin-right:.2rem" onclick="editarReg('${r.id}')">✏️</button>
+        <button style="background:rgba(220,38,38,.15);color:#fca5a5;border:none;padding:.2rem .55rem;border-radius:6px;font-size:.7rem;cursor:pointer" onclick="eliminarReg('${r.id}')">🗑</button>
+      </td>
+    </tr>`).join('');
+
+  // Resumen
+  document.getElementById('resumen-grid').innerHTML=`
+    <div class="res-item"><div class="res-v">$${efectivo.toFixed(2)}</div><div class="res-l">💵 Efectivo</div></div>
+    <div class="res-item"><div class="res-v">$${transfer.toFixed(2)}</div><div class="res-l">🏦 Transferencia</div></div>
+    <div class="res-item"><div class="res-v">$${total.toFixed(2)}</div><div class="res-l">✅ Total</div></div>`;
+
+  // Chart especialidad
+  const esps={};filtrados.forEach(r=>{const e=r.especialidad||'Otro';esps[e]=(esps[e]||0)+(parseFloat(r.pago)||0);});
+  const espSort=Object.entries(esps).sort((a,b)=>b[1]-a[1]);
+  const maxE=espSort[0]?.[1]||1;
+  document.getElementById('chart-esp').innerHTML=espSort.map(([e,v])=>`
+    <div class="bc-row">
+      <div class="bc-lbl">${e}</div>
+      <div class="bc-bar"><div class="bc-fill" style="width:${(v/maxE*100).toFixed(0)}%"></div></div>
+      <div class="bc-val">$${v.toFixed(2)}</div>
+    </div>`).join('');
+
+  // Chart forma pago
+  const pagos={};filtrados.forEach(r=>{const p=r.formaPago||'Sin especificar';pagos[p]=(pagos[p]||0)+(parseFloat(r.pago)||0);});
+  const pagoSort=Object.entries(pagos).sort((a,b)=>b[1]-a[1]);
+  const maxP=pagoSort[0]?.[1]||1;
+  document.getElementById('chart-pago').innerHTML=pagoSort.map(([p,v])=>`
+    <div class="bc-row">
+      <div class="bc-lbl">${p}</div>
+      <div class="bc-bar"><div class="bc-fill" style="width:${(v/maxP*100).toFixed(0)}%;background:linear-gradient(90deg,#16a34a,#22c55e)"></div></div>
+      <div class="bc-val">$${v.toFixed(2)}</div>
+    </div>`).join('');
+}
+
+// NAVEGACIÓN POR DÍA
+window.navDia=(delta)=>{
+  const d=new Date(document.getElementById('f-fecha').value+'T12:00:00');
+  d.setDate(d.getDate()+delta);
+  document.getElementById('f-fecha').value=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  loadReporte();
+};
+window.irHoy=()=>{document.getElementById('f-fecha').value=todayStr();loadReporte();};
+
+// MODAL
+window.abrirModal=()=>{
+  document.getElementById('edit-id').value='';
+  document.getElementById('m-tit').textContent='➕ Registro rápido de cobro';
+  ['m-pac','m-ins','m-med'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('m-esp').value='';document.getElementById('m-fpago').value='';
+  document.getElementById('m-pago').value='';document.getElementById('m-jer').value='0';
+  document.getElementById('m-fecha').value=document.getElementById('f-fecha').value;
+  const h=new Date();document.getElementById('m-hora').value=`${String(h.getHours()).padStart(2,'0')}:${String(h.getMinutes()).padStart(2,'0')}`;
+  document.getElementById('btn-save').innerHTML='💾 Guardar registro';
+  document.getElementById('mbg').classList.add('open');document.body.style.overflow='hidden';
+};
+window.cerrarModal=()=>{document.getElementById('mbg').classList.remove('open');document.body.style.overflow='';};
+document.getElementById('mbg').addEventListener('click',e=>{if(e.target===document.getElementById('mbg'))window.cerrarModal();});
+
+window.editarReg=(id)=>{
+  const r=allData.find(x=>x.id===id);if(!r)return;
+  document.getElementById('edit-id').value=id;
+  document.getElementById('m-tit').textContent='✏️ Editar registro';
+  document.getElementById('m-fecha').value=r.fecha||'';
+  document.getElementById('m-hora').value=r.hora||'';
+  document.getElementById('m-pac').value=r.paciente||'';
+  document.getElementById('m-esp').value=r.especialidad||'';
+  document.getElementById('m-pago').value=r.pago||'';
+  document.getElementById('m-fpago').value=r.formaPago||'';
+  document.getElementById('m-ins').value=r.insumos||'';
+  document.getElementById('m-jer').value=r.jeringas||'0';
+  document.getElementById('m-med').value=r.medicacion||'';
+  document.getElementById('btn-save').innerHTML='💾 Actualizar registro';
+  document.getElementById('mbg').classList.add('open');document.body.style.overflow='hidden';
+};
+
+window.guardarRegistro=async()=>{
+  const fecha=document.getElementById('m-fecha').value;
+  const pac=document.getElementById('m-pac').value.trim();
+  const esp=document.getElementById('m-esp').value;
+  const pago=document.getElementById('m-pago').value;
+  if(!fecha||!pac||!esp){showErr('Fecha, paciente y especialidad son obligatorios.');return;}
+  const btn=document.getElementById('btn-save');btn.disabled=true;btn.innerHTML='⏳ Guardando...';
+  const data={
+    fecha,hora:document.getElementById('m-hora').value,
+    paciente:pac,especialidad:esp,
+    pago:parseFloat(pago)||0,formaPago:document.getElementById('m-fpago').value,
+    insumos:document.getElementById('m-ins').value.trim(),
+    jeringas:parseInt(document.getElementById('m-jer').value)||0,
+    medicacion:document.getElementById('m-med').value.trim(),
+    updatedAt:serverTimestamp()
+  };
+  try{
+    const editId=document.getElementById('edit-id').value;
+    if(editId){await updateDoc(doc(db,'agenda',editId),data);showOk('✅ Registro actualizado.');}
+    else{data.creadoEn=serverTimestamp();await addDoc(collection(db,'agenda'),data);showOk('✅ Registro guardado.');}
+    cerrarModal();loadReporte();
+  }catch(e){showErr('Error: '+e.message);}
+  btn.disabled=false;btn.innerHTML='💾 Guardar registro';
+};
+
+window.eliminarReg=async(id)=>{
+  if(!confirm('¿Eliminar este registro?'))return;
+  try{await deleteDoc(doc(db,'agenda',id));showOk('🗑 Eliminado.');loadReporte();}
+  catch(e){showErr('Error: '+e.message);}
+};
+
+window.exportarCSV=()=>{
+  const fecha=document.getElementById('f-fecha').value;
+  const vista=document.getElementById('f-vista').value;
+  const filtrados=vista==='mes'?allData.filter(r=>(r.fecha||'').startsWith(fecha.slice(0,7))):allData.filter(r=>r.fecha===fecha);
+  const headers=['Fecha','Hora','Paciente','Especialidad','Pago','Forma Pago','Insumos','Jeringas','Medicación'];
+  const rows=filtrados.map(r=>[r.fecha,r.hora,r.paciente,r.especialidad,r.pago,r.formaPago,r.insumos,r.jeringas,r.medicacion].map(v=>`"${v||''}"`).join(','));
+  const csv=[headers.join(','),...rows].join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;
+  a.download=`reporte_azucena_${fecha}.csv`;a.click();URL.revokeObjectURL(url);
+  showOk('✅ CSV exportado.');
+};
+</script>
+</body>
+</html>
