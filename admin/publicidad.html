@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Módulo de Publicidad · Salud+</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --teal:       #0a7b74;
+      --teal-light: #0fb3a8;
+      --cream:      #f5f0e8;
+      --charcoal:   #1a1f2e;
+      --gold:       #c9a84c;
+      --red:        #e53e3e;
+      --green:      #38a169;
+      --muted:      #6b7280;
+      --radius:     12px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #f0f2f5;
+      color: var(--charcoal);
+    }
+
+    /* ── SIDEBAR ── */
+    .layout { display: flex; min-height: 100vh; }
+
+    aside {
+      width: 260px;
+      background: var(--charcoal);
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .side-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: white;
+      margin-bottom: .25rem;
+    }
+    .side-logo span { color: var(--gold); }
+    .side-sub { font-size: .72rem; color: rgba(255,255,255,.4); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2rem; }
+
+    .side-section { font-size: .65rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.3); margin: 1.2rem 0 .5rem; padding-left: .5rem; }
+
+    .side-item {
+      display: flex; align-items: center; gap: .75rem;
+      padding: .65rem .75rem;
+      border-radius: 8px;
+      color: rgba(255,255,255,.65);
+      font-size: .85rem;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+      margin-bottom: 2px;
+      text-decoration: none;
+    }
+    .side-item:hover { background: rgba(255,255,255,.07); color: white; }
+    .side-item.active { background: var(--teal); color: white; }
+    .side-item .ico { font-size: 1rem; width: 20px; text-align: center; }
+
+    .side-badge {
+      margin-left: auto;
+      background: var(--gold);
+      color: var(--charcoal);
+      font-size: .65rem;
+      font-weight: 700;
+      padding: .1rem .45rem;
+      border-radius: 20px;
+    }
+
+    /* ── MAIN ── */
+    main { margin-left: 260px; padding: 2.5rem; flex: 1; }
+
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 2.5rem;
+    }
+    .topbar h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem;
+      color: var(--charcoal);
+    }
+    .topbar h1 span { color: var(--teal); }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .65rem 1.4rem;
+      border: none;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .btn-primary { background: var(--teal); color: white; }
+    .btn-primary:hover { background: var(--teal-light); }
+    .btn-sm { padding: .4rem .9rem; font-size: .78rem; }
+    .btn-ghost { background: transparent; border: 1px solid #ddd; color: var(--charcoal); }
+    .btn-ghost:hover { background: #f9f9f9; }
+
+    /* ── KPI CARDS ── */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+    .kpi {
+      background: white;
+      border-radius: var(--radius);
+      padding: 1.4rem 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,.05);
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+      border-left: 4px solid transparent;
+    }
+    .kpi.k1 { border-color: var(--teal); }
+    .kpi.k2 { border-color: var(--gold); }
+    .kpi.k3 { border-color: #6366f1; }
+    .kpi.k4 { border-color: var(--green); }
+    .kpi-label { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+    .kpi-value { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--charcoal); }
+    .kpi-delta { font-size: .75rem; color: var(--green); }
+    .kpi-delta.down { color: var(--red); }
+
+    /* ── SLOTS ── */
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 1.8rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,.05);
+      margin-bottom: 2rem;
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      padding: .5rem .75rem;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    td {
+      padding: .9rem .75rem;
+      font-size: .85rem;
+      border-bottom: 1px solid #f9f9f9;
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafafa; }
+
+    .slot-name { font-weight: 500; }
+    .slot-dims { font-size: .75rem; color: var(--muted); }
+
+    .status-badge {
+      display: inline-block;
+      padding: .25rem .7rem;
+      border-radius: 20px;
+      font-size: .72rem;
+      font-weight: 600;
+    }
+    .s-active   { background: #dcfce7; color: #166534; }
+    .s-inactive { background: #fee2e2; color: #991b1b; }
+    .s-pending  { background: #fef3c7; color: #92400e; }
+
+    .progress-bar {
+      background: #f0f0f0;
+      border-radius: 20px;
+      height: 6px;
+      width: 120px;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 20px;
+      background: linear-gradient(90deg, var(--teal), var(--teal-light));
+    }
+
+    /* ── PREVIEW PANEL ── */
+    .preview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.2rem;
+    }
+    .preview-slot {
+      background: var(--charcoal);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      min-height: 100px;
+      gap: .6rem;
+      position: relative;
+      border: 2px dashed rgba(255,255,255,.15);
+      cursor: pointer;
+      transition: border-color .2s;
+    }
+    .preview-slot:hover { border-color: var(--teal-light); }
+    .preview-slot-label {
+      position: absolute; top: 8px; left: 12px;
+      font-size: .65rem; letter-spacing: 1.5px;
+      color: rgba(255,255,255,.35); text-transform: uppercase;
+    }
+    .preview-slot-name { color: rgba(255,255,255,.8); font-size: .85rem; font-weight: 500; }
+    .preview-slot-dims { color: rgba(255,255,255,.4); font-size: .72rem; }
+
+    /* ── FIREBASE STATUS ── */
+    .firebase-row {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem;
+      background: #f9f9f9;
+      border-radius: 8px;
+      margin-bottom: .75rem;
+    }
+    .fb-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .fb-dot.ok { background: var(--green); box-shadow: 0 0 0 3px rgba(56,161,105,.2); }
+    .fb-dot.err { background: var(--red); }
+    .fb-label { font-size: .85rem; font-weight: 500; }
+    .fb-desc   { font-size: .75rem; color: var(--muted); }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width: 900px) {
+      aside { display: none; }
+      main  { margin-left: 0; }
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+      .preview-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ════════════════════════════════
+       SIDEBAR
+  ═════════════════════════════════ -->
+  <aside>
+    <div class="side-logo">Salud<span>+</span></div>
+    <div class="side-sub">Módulo Publicidad</div>
+
+    <div class="side-section">Principal</div>
+    <a class="side-item active" href="#">
+      <span class="ico">📊</span> Dashboard
+    </a>
+    <a class="side-item" href="#">
+      <span class="ico">🖼️</span> Slots <span class="side-badge">3</span>
+    </a>
+    <a class="side-item" href="#">
+      <span class="ico">📢</span> Campañas
+    </a>
+    <a class="side-item" href="#">
+      <span class="ico">📅</span> Calendario
+    </a>
+
+    <div class="side-section">Configuración</div>
+    <a class="side-item" href="#">
+      <span class="ico">🔥</span> Firebase
+    </a>
+    <a class="side-item" href="#">
+      <span class="ico">🔗</span> Integraciones
+    </a>
+    <a class="side-item" href="#">
+      <span class="ico">⚙️</span> Ajustes
+    </a>
+
+    <div class="side-section">App</div>
+    <a class="side-item" href="index.html">
+      <span class="ico">🏠</span> Ver index.html
+    </a>
+    <a class="side-item" href="#">
+      <span class="ico">📦</span> GitHub repo
+    </a>
+  </aside>
+
+  <!-- ════════════════════════════════
+       MAIN
+  ═════════════════════════════════ -->
+  <main>
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div>
+        <h1>Panel de <span>Publicidad</span></h1>
+        <p style="font-size:.82rem;color:var(--muted);margin-top:.2rem;">Gestión de banners · Firebase Firestore · Última sincronización: hace 2 min</p>
+      </div>
+      <div style="display:flex;gap:.75rem;">
+        <button class="btn btn-ghost">↻ Sincronizar</button>
+        <button class="btn btn-primary">+ Nueva campaña</button>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi k1">
+        <div class="kpi-label">Impresiones hoy</div>
+        <div class="kpi-value">24,810</div>
+        <div class="kpi-delta">▲ +12% vs ayer</div>
+      </div>
+      <div class="kpi k2">
+        <div class="kpi-label">Clics hoy</div>
+        <div class="kpi-value">1,042</div>
+        <div class="kpi-delta">▲ +8% vs ayer</div>
+      </div>
+      <div class="kpi k3">
+        <div class="kpi-label">CTR promedio</div>
+        <div class="kpi-value">4.2%</div>
+        <div class="kpi-delta down">▼ -0.3% vs ayer</div>
+      </div>
+      <div class="kpi k4">
+        <div class="kpi-label">Campañas activas</div>
+        <div class="kpi-value">5</div>
+        <div class="kpi-delta">2 pendientes aprobación</div>
+      </div>
+    </div>
+
+    <!-- Slots Table -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Slots de publicidad en index.html</div>
+        <button class="btn btn-ghost btn-sm">Editar slots</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>ID Slot</th>
+            <th>Posición</th>
+            <th>Dimensiones</th>
+            <th>Campaña activa</th>
+            <th>Impresiones</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code style="font-size:.78rem;background:#f3f4f6;padding:.2rem .5rem;border-radius:4px;">banner-top</code></td>
+            <td><span class="slot-name">Encabezado</span><br/><span class="slot-dims">Sobre el hero</span></td>
+            <td>728 × 90 px</td>
+            <td>Farmacia Vida Sana</td>
+            <td>
+              <div style="display:flex;flex-direction:column;gap:.3rem;">
+                <span style="font-size:.85rem;">12,450</span>
+                <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+              </div>
+            </td>
+            <td><span class="status-badge s-active">Activo</span></td>
+            <td><button class="btn btn-ghost btn-sm">Editar</button></td>
+          </tr>
+          <tr>
+            <td><code style="font-size:.78rem;background:#f3f4f6;padding:.2rem .5rem;border-radius:4px;">banner-mid</code></td>
+            <td><span class="slot-name">Mitad de página</span><br/><span class="slot-dims">Entre servicios y médicos</span></td>
+            <td>970 × 120 px</td>
+            <td>Seguro MédiMax</td>
+            <td>
+              <div style="display:flex;flex-direction:column;gap:.3rem;">
+                <span style="font-size:.85rem;">8,920</span>
+                <div class="progress-bar"><div class="progress-fill" style="width:54%"></div></div>
+              </div>
+            </td>
+            <td><span class="status-badge s-active">Activo</span></td>
+            <td><button class="btn btn-ghost btn-sm">Editar</button></td>
+          </tr>
+          <tr>
+            <td><code style="font-size:.78rem;background:#f3f4f6;padding:.2rem .5rem;border-radius:4px;">banner-footer</code></td>
+            <td><span class="slot-name">Pie de página</span><br/><span class="slot-dims">Sobre copyright</span></td>
+            <td>728 × 90 px</td>
+            <td>—</td>
+            <td>
+              <div style="display:flex;flex-direction:column;gap:.3rem;">
+                <span style="font-size:.85rem;">3,440</span>
+                <div class="progress-bar"><div class="progress-fill" style="width:21%"></div></div>
+              </div>
+            </td>
+            <td><span class="status-badge s-pending">Pendiente</span></td>
+            <td><button class="btn btn-primary btn-sm">+ Asignar</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Preview + Firebase -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+
+      <!-- Preview visual -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Vista previa de posiciones</div>
+        </div>
+        <div class="preview-grid" style="grid-template-columns:1fr;">
+          <div class="preview-slot" style="min-height:60px;">
+            <span class="preview-slot-label">Slot</span>
+            <span class="preview-slot-name">banner-top</span>
+            <span class="preview-slot-dims">728 × 90 · Encabezado</span>
+          </div>
+          <div class="preview-slot" style="min-height:80px;">
+            <span class="preview-slot-label">Slot</span>
+            <span class="preview-slot-name">banner-mid</span>
+            <span class="preview-slot-dims">970 × 120 · Mitad de página</span>
+          </div>
+          <div class="preview-slot" style="min-height:60px;">
+            <span class="preview-slot-label">Slot</span>
+            <span class="preview-slot-name">banner-footer</span>
+            <span class="preview-slot-dims">728 × 90 · Pie de página</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Firebase status -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Estado Firebase</div>
+          <span style="font-size:.72rem;background:#dcfce7;color:#166534;padding:.2rem .6rem;border-radius:20px;font-weight:600;">● Conectado</span>
+        </div>
+
+        <div class="firebase-row">
+          <div class="fb-dot ok"></div>
+          <div>
+            <div class="fb-label">Firestore Database</div>
+            <div class="fb-desc">Colección: <code>ads/slots</code> · 3 documentos activos</div>
+          </div>
+        </div>
+        <div class="firebase-row">
+          <div class="fb-dot ok"></div>
+          <div>
+            <div class="fb-label">Firebase Storage</div>
+            <div class="fb-desc">Bucket: <code>saludmas-ads/</code> · 12 imágenes</div>
+          </div>
+        </div>
+        <div class="firebase-row">
+          <div class="fb-dot ok"></div>
+          <div>
+            <div class="fb-label">Authentication</div>
+            <div class="fb-desc">Admin logueado · Sesión activa</div>
+          </div>
+        </div>
+        <div class="firebase-row">
+          <div class="fb-dot ok"></div>
+          <div>
+            <div class="fb-label">GitHub Actions</div>
+            <div class="fb-desc">Deploy automático · Último push: hace 18 min</div>
+          </div>
+        </div>
+
+        <div style="margin-top:1.2rem;">
+          <p style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem;">Esquema Firestore sugerido:</p>
+          <pre style="background:#1a1f2e;color:#a5f3fc;border-radius:8px;padding:1rem;font-size:.72rem;line-height:1.6;overflow-x:auto;">ads/
+  slots/
+    banner-top   { active, campaign, imageUrl, linkUrl, startDate, endDate }
+    banner-mid   { active, campaign, imageUrl, linkUrl, startDate, endDate }
+    banner-footer { active, campaign, imageUrl, linkUrl, startDate, endDate }</pre>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>
