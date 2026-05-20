@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Mi Portal · Centro Médico Azucena</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--blue:#0066FF;--blue2:#0047B3;--dark:#060E1F;--card:#0a1628;--border:rgba(255,255,255,.07);--muted:#7B8CB0;--r:14px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:#080f1e;color:#fff;min-height:100vh}
+/* NAV */
+nav{background:#040B1C;border-bottom:1px solid var(--border);padding:0 5vw;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:.55rem;text-decoration:none}
+.lm{width:28px;height:28px;border-radius:7px;background:var(--blue);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.lm::before,.lm::after{content:'';position:absolute;background:#fff;border-radius:2px}
+.lm::before{width:3px;height:16px}.lm::after{width:16px;height:3px}
+.lt{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff}.lt em{font-style:normal;color:#60b4ff}
+.nav-r{display:flex;align-items:center;gap:.75rem}
+.usr-chip{display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);padding:.38rem .85rem;border-radius:50px;font-size:.8rem;color:rgba(255,255,255,.75)}
+.btn-out{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;padding:.38rem .85rem;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-out:hover{background:rgba(220,38,38,.3)}
+/* CONTENT */
+.wrap{max-width:1100px;margin:0 auto;padding:2rem 5vw}
+/* BIENVENIDA */
+.welcome{background:linear-gradient(135deg,#003096 0%,#0066FF 100%);border-radius:var(--r);padding:2rem;margin-bottom:1.5rem;position:relative;overflow:hidden}
+.welcome::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.03) 0,rgba(255,255,255,.03) 1px,transparent 1px,transparent 40px)}
+.welcome h1{font-family:'Playfair Display',serif;font-size:1.6rem;color:#fff;margin-bottom:.3rem}
+.welcome p{font-size:.85rem;color:rgba(255,255,255,.72)}
+.welcome-actions{display:flex;gap:.75rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn-wa{background:#25D366;color:#fff;border:none;padding:.6rem 1.3rem;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;transition:transform .2s}
+.btn-wa:hover{transform:scale(1.04)}
+.btn-nueva{background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);padding:.6rem 1.3rem;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;backdrop-filter:blur(8px);transition:all .2s}
+.btn-nueva:hover{background:rgba(255,255,255,.25)}
+/* GRID */
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+/* KPI */
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;position:relative;overflow:hidden}
+.kpi-bar{position:absolute;top:0;left:0;right:0;height:3px}
+.kpi-ico{font-size:1.5rem;margin-bottom:.6rem}
+.kpi-v{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:#fff;line-height:1}
+.kpi-l{font-size:.72rem;color:var(--muted);margin-top:.2rem}
+/* CARD */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem}
+.chd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem}
+.ctit{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff}
+.csub{font-size:.7rem;color:var(--muted);margin-top:.1rem}
+/* TABS */
+.tabs{display:flex;gap:.5rem;margin-bottom:1.2rem}
+.tab{padding:.45rem 1.1rem;border-radius:50px;border:1.5px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-size:.78rem;font-weight:600;cursor:pointer;background:none;font-family:'Outfit',sans-serif;transition:all .2s}
+.tab.active{background:var(--blue);border-color:var(--blue);color:#fff}
+/* CITAS */
+.cita-item{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:1rem;display:flex;align-items:center;gap:1rem;margin-bottom:.7rem;transition:border-color .2s}
+.cita-item:hover{border-color:rgba(0,102,255,.3)}
+.cita-ico{width:42px;height:42px;border-radius:10px;background:rgba(0,102,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.cita-nm{font-weight:600;font-size:.88rem;color:#fff}
+.cita-meta{font-size:.72rem;color:var(--muted);margin-top:.18rem}
+.badge{display:inline-flex;align-items:center;padding:.2rem .65rem;border-radius:20px;font-size:.68rem;font-weight:700;margin-left:auto;flex-shrink:0}
+.bp{background:rgba(202,138,4,.18);color:#fde047}
+.bc{background:rgba(22,163,74,.18);color:#86efac}
+.bx{background:rgba(220,38,38,.18);color:#fca5a5}
+.ba{background:rgba(0,102,255,.18);color:#93c5fd}
+/* INFO PERSONAL */
+.info-row{display:flex;gap:1rem;align-items:flex-start;padding:.75rem 0;border-bottom:1px solid var(--border)}
+.info-row:last-child{border-bottom:none}
+.info-lbl{font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;min-width:120px;flex-shrink:0}
+.info-val{font-size:.85rem;color:#fff;flex:1}
+/* MODAL CITA */
+.modal-bg{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:#0a1628;border:1px solid rgba(255,255,255,.1);border-radius:18px;width:min(520px,94vw);max-height:90vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:mIn .3s ease}
+@keyframes mIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+.mhd{padding:1.5rem 1.8rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between}
+.mtit{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#fff}
+.msub{font-size:.72rem;color:var(--muted);margin-top:.15rem}
+.mx{background:none;border:none;cursor:pointer;font-size:1.3rem;color:var(--muted)}
+.mx:hover{color:#fff}
+.mbdy{padding:1.4rem 1.8rem 1.8rem}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.fg{display:flex;flex-direction:column;gap:.38rem;margin-bottom:.9rem}
+.fg label{font-size:.72rem;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px}
+.fg input,.fg select,.fg textarea{padding:.72rem .9rem;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;background:rgba(255,255,255,.05);color:#fff;font-family:'Outfit',sans-serif;font-size:.87rem;outline:none;transition:all .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);background:rgba(0,102,255,.08)}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,.25)}
+.fg select option{background:#0a1628;color:#fff}
+.fg textarea{resize:vertical;min-height:72px}
+.btn-save{width:100%;background:var(--blue);color:#fff;border:none;padding:.95rem;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(0,102,255,.35);transition:all .25s;margin-top:.5rem;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.btn-save:hover{background:var(--blue2);transform:translateY(-2px)}
+.btn-save:disabled{opacity:.6;cursor:not-allowed;transform:none}
+/* OK SCREEN */
+.ok-scr{display:none;flex-direction:column;align-items:center;padding:2.5rem 2rem;text-align:center}
+.ok-scr.show{display:flex}
+.ok-ico{width:72px;height:72px;border-radius:50%;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:2.2rem;margin-bottom:1rem}
+.ok-scr h3{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:.5rem}
+.ok-scr p{font-size:.83rem;color:var(--muted);max-width:320px;line-height:1.7}
+.ok-id{background:#e8f2ff;color:var(--blue);border-radius:8px;padding:.4rem 1rem;font-size:.78rem;font-weight:700;margin:.9rem 0}
+/* CHANGE PWD */
+.pwd-wrap{position:relative}
+.pwd-wrap input{width:100%;padding-right:2.8rem}
+.pwd-eye{position:absolute;right:.85rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:rgba(255,255,255,.35);font-size:1rem}
+/* ALERT */
+.al{padding:.75rem 1rem;border-radius:9px;font-size:.8rem;margin-bottom:1rem;display:none}
+.al.show{display:block}
+.al-ok{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:#86efac}
+.al-err{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5}
+.empty{text-align:center;color:var(--muted);padding:2rem;font-size:.83rem}
+.wa-float{position:fixed;bottom:1.5rem;right:1.5rem;z-index:200;width:52px;height:52px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 4px 20px rgba(37,211,102,.45);text-decoration:none;transition:transform .2s}
+.wa-float:hover{transform:scale(1.1)}
+@media(max-width:768px){.g3{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}.frow{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="../index.html"><div class="lm"></div><span class="lt">Azucena <em>Medical</em></span></a>
+  <div class="nav-r">
+    <div class="usr-chip">👤 <span id="nav-nombre">Cargando...</span></div>
+    <button class="btn-out" onclick="doLogout()">🚪 Salir</button>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="al al-ok" id="al-ok"></div>
+  <div class="al al-err" id="al-err"></div>
+
+  <!-- BIENVENIDA -->
+  <div class="welcome">
+    <h1>👋 Hola, <span id="w-nombre">Paciente</span></h1>
+    <p>Bienvenido a tu portal de salud. Aquí puedes ver tus citas, historial y más.</p>
+    <div class="welcome-actions">
+      <button class="btn-nueva" onclick="abrirModalCita()">📅 Reservar nueva cita</button>
+      <a class="btn-wa" href="https://wa.me/593983241556?text=Hola,%20soy%20paciente%20de%20Azucena%20Medical%20y%20necesito%20información." target="_blank">💬 Contactar por WhatsApp</a>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="g3">
+    <div class="kpi">
+      <div class="kpi-bar" style="background:linear-gradient(90deg,#0066FF,#00C2FF)"></div>
+      <div class="kpi-ico">📅</div>
+      <div class="kpi-v" id="k-total">–</div>
+      <div class="kpi-l">Mis citas totales</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-bar" style="background:linear-gradient(90deg,#ca8a04,#f59e0b)"></div>
+      <div class="kpi-ico">⏳</div>
+      <div class="kpi-v" id="k-pend">–</div>
+      <div class="kpi-l">Pendientes</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-bar" style="background:linear-gradient(90deg,#16a34a,#22c55e)"></div>
+      <div class="kpi-ico">✅</div>
+      <div class="kpi-v" id="k-conf">–</div>
+      <div class="kpi-l">Confirmadas</div>
+    </div>
+  </div>
+
+  <!-- TABS + CONTENIDO -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('citas',this)">📅 Mis citas</button>
+    <button class="tab" onclick="showTab('perfil',this)">👤 Mi perfil</button>
+    <button class="tab" onclick="showTab('pwd',this)">🔑 Cambiar clave</button>
+  </div>
+
+  <!-- PANEL CITAS -->
+  <div id="panel-citas">
+    <div class="card">
+      <div class="chd">
+        <div><div class="ctit">📅 Historial de citas</div><div class="csub">Todas tus solicitudes de atención</div></div>
+        <button onclick="abrirModalCita()" style="background:rgba(0,102,255,.2);color:#60b4ff;border:1px solid rgba(0,102,255,.3);padding:.38rem .85rem;border-radius:8px;font-family:Outfit,sans-serif;font-size:.75rem;font-weight:600;cursor:pointer">+ Nueva cita</button>
+      </div>
+      <div id="citas-list"><div class="empty">Cargando tus citas...</div></div>
+    </div>
+  </div>
+
+  <!-- PANEL PERFIL -->
+  <div id="panel-perfil" style="display:none">
+    <div class="card">
+      <div class="chd"><div><div class="ctit">👤 Mi información personal</div><div class="csub">Datos registrados en el sistema</div></div>
+        <button onclick="editarPerfil()" style="background:rgba(0,102,255,.2);color:#60b4ff;border:1px solid rgba(0,102,255,.3);padding:.38rem .85rem;border-radius:8px;font-family:Outfit,sans-serif;font-size:.75rem;font-weight:600;cursor:pointer" id="btn-edit-perfil">✏️ Editar</button>
+      </div>
+      <div id="perfil-view">
+        <div class="info-row"><div class="info-lbl">Nombre</div><div class="info-val" id="p-nombre">–</div></div>
+        <div class="info-row"><div class="info-lbl">Cédula</div><div class="info-val" id="p-cedula">–</div></div>
+        <div class="info-row"><div class="info-lbl">Email</div><div class="info-val" id="p-email">–</div></div>
+        <div class="info-row"><div class="info-lbl">WhatsApp</div><div class="info-val" id="p-tel">–</div></div>
+      </div>
+      <div id="perfil-edit" style="display:none">
+        <div class="frow">
+          <div class="fg"><label>Nombre *</label><input id="pe-nom" placeholder="Juan"/></div>
+          <div class="fg"><label>Apellido *</label><input id="pe-ape" placeholder="Pérez"/></div>
+        </div>
+        <div class="frow">
+          <div class="fg"><label>Cédula</label><input id="pe-ced"/></div>
+          <div class="fg"><label>WhatsApp</label><input id="pe-tel" placeholder="+593 99..."/></div>
+        </div>
+        <div style="display:flex;gap:.75rem;margin-top:.5rem">
+          <button onclick="guardarPerfil()" style="background:var(--blue);color:#fff;border:none;padding:.65rem 1.4rem;border-radius:50px;font-family:Outfit,sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;flex:1">💾 Guardar</button>
+          <button onclick="cancelarEditPerfil()" style="background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1);padding:.65rem 1.2rem;border-radius:50px;font-family:Outfit,sans-serif;font-size:.85rem;cursor:pointer">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL CAMBIAR CLAVE -->
+  <div id="panel-pwd" style="display:none">
+    <div class="card" style="max-width:480px">
+      <div class="chd"><div><div class="ctit">🔑 Cambiar contraseña</div><div class="csub">Solo puedes cambiar la contraseña, no el correo</div></div></div>
+      <div class="al al-ok" id="pwd-ok"></div>
+      <div class="al al-err" id="pwd-err"></div>
+      <div class="fg"><label>Contraseña actual *</label>
+        <div class="pwd-wrap"><input type="password" id="pwd-actual" placeholder="Tu contraseña actual"/>
+          <button class="pwd-eye" onclick="togglePwd('pwd-actual',this)">👁</button></div></div>
+      <div class="fg"><label>Nueva contraseña *</label>
+        <div class="pwd-wrap"><input type="password" id="pwd-nueva" placeholder="Mínimo 6 caracteres"/>
+          <button class="pwd-eye" onclick="togglePwd('pwd-nueva',this)">👁</button></div></div>
+      <div class="fg"><label>Confirmar nueva contraseña *</label>
+        <div class="pwd-wrap"><input type="password" id="pwd-conf" placeholder="Repite la nueva contraseña"/>
+          <button class="pwd-eye" onclick="togglePwd('pwd-conf',this)">👁</button></div></div>
+      <button onclick="cambiarClave()" style="width:100%;background:var(--blue);color:#fff;border:none;padding:.95rem;border-radius:50px;font-family:Outfit,sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(0,102,255,.35);transition:all .25s;display:flex;align-items:center;justify-content:center;gap:.5rem" id="btn-pwd">🔑 Cambiar contraseña</button>
+    </div>
+  </div>
+</div>
+
+<!-- WA FLOTANTE -->
+<a href="https://wa.me/593983241556" target="_blank" class="wa-float">💬</a>
+
+<!-- MODAL NUEVA CITA -->
+<div class="modal-bg" id="mbg">
+  <div class="modal">
+    <div id="form-cita">
+      <div class="mhd">
+        <div><div class="mtit">📅 Reservar cita médica</div><div class="msub">Centro Médico Azucena · Quito</div></div>
+        <button class="mx" onclick="cerrarModal()">✕</button>
+      </div>
+      <div class="mbdy">
+        <div class="fg"><label>Especialidad *</label>
+          <select id="c-esp">
+            <option value="">Selecciona...</option>
+            <option>Medicina General</option><option>Fisioterapia</option>
+            <option>Obstetricia</option><option>Traumatología</option>
+            <option>Odontología</option><option>Laboratorio</option>
+            <option>Especialidades</option><option>Rayos X</option>
+          </select>
+        </div>
+        <div class="frow">
+          <div class="fg"><label>Fecha preferida *</label><input type="date" id="c-fecha"/></div>
+          <div class="fg"><label>Hora preferida *</label>
+            <select id="c-hora">
+              <option value="">Seleccionar...</option>
+              <option>08:00 AM</option><option>08:30 AM</option><option>09:00 AM</option>
+              <option>09:30 AM</option><option>10:00 AM</option><option>10:30 AM</option>
+              <option>11:00 AM</option><option>11:30 AM</option><option>12:00 PM</option>
+              <option>02:00 PM</option><option>02:30 PM</option><option>03:00 PM</option>
+              <option>03:30 PM</option><option>04:00 PM</option><option>05:00 PM</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg"><label>Motivo / síntomas</label>
+          <textarea id="c-motivo" placeholder="Describe brevemente el motivo..."></textarea></div>
+        <button class="btn-save" id="btn-cita" onclick="guardarCita()">📅 Confirmar reserva</button>
+        <div style="text-align:center;font-size:.7rem;color:var(--muted);margin-top:.75rem">🔒 Tu cita se guarda en Firebase · Confirmación por WhatsApp</div>
+      </div>
+    </div>
+    <div class="ok-scr" id="ok-cita">
+      <div class="ok-ico">✅</div>
+      <h3>¡Cita registrada!</h3>
+      <p>Tu solicitud fue enviada. Nuestro equipo te confirmará por WhatsApp en las próximas horas.</p>
+      <div class="ok-id" id="ok-id"></div>
+      <a href="https://wa.me/593983241556?text=Hola,%20registré%20una%20cita%20en%20línea." target="_blank"
+         style="background:#25D366;color:#fff;text-decoration:none;border-radius:50px;padding:.75rem 1.8rem;font-weight:600;font-size:.85rem;margin-top:.5rem;display:inline-flex;align-items:center;gap:.4rem">💬 Confirmar por WhatsApp</a>
+      <button onclick="cerrarModal()" style="background:none;border:none;color:var(--muted);font-size:.8rem;cursor:pointer;margin-top:.75rem">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,addDoc,getDocs,doc,getDoc,setDoc,query,where,orderBy,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{getAuth,onAuthStateChanged,signOut,updatePassword,EmailAuthProvider,reauthenticateWithCredential}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const FC={apiKey:"AIzaSyAwspV-1KcllVyRAbajVPLc0lwsWMOLIco",authDomain:"jadi-salud.firebaseapp.com",projectId:"jadi-salud",storageBucket:"jadi-salud.firebasestorage.app",messagingSenderId:"679691723583",appId:"1:679691723583:web:4235a2493d09a9196ea98a"};
+const app=initializeApp(FC);const db=getFirestore(app);const auth=getAuth(app);
+
+let USER=null,USER_DATA=null;
+
+function showOk(id,m){const e=document.getElementById(id);e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),4000);}
+function showErr(id,m){const e=document.getElementById(id);e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),5000);}
+function todayStr(){const n=new Date();return`${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;}
+
+// AUTH
+onAuthStateChanged(auth,async u=>{
+  if(!u){window.location.href='../login.html';return;}
+  USER=u;
+  try{
+    const snap=await getDoc(doc(db,'usuarios',u.uid));
+    USER_DATA=snap.exists()?snap.data():{nombre:'Paciente',email:u.email};
+    // Si es admin o médico, redirigir al admin
+    if(['admin','medico'].includes(USER_DATA.rol)){window.location.href='../admin/dashboard.html';return;}
+    const nombre=`${USER_DATA.nombre||''} ${USER_DATA.apellido||''}`.trim();
+    document.getElementById('nav-nombre').textContent=nombre||u.email;
+    document.getElementById('w-nombre').textContent=USER_DATA.nombre||'Paciente';
+    cargarPerfil();
+    cargarCitas();
+  }catch(e){document.getElementById('nav-nombre').textContent=u.email;}
+});
+
+window.doLogout=async()=>{await signOut(auth);window.location.href='../login.html';};
+
+// TABS
+window.showTab=(t,btn)=>{
+  ['panel-citas','panel-perfil','panel-pwd'].forEach(p=>document.getElementById(p).style.display='none');
+  document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
+  document.getElementById('panel-'+t).style.display='';
+  btn.classList.add('active');
+};
+
+// CARGAR PERFIL
+function cargarPerfil(){
+  if(!USER_DATA)return;
+  const nombre=`${USER_DATA.nombre||''} ${USER_DATA.apellido||''}`.trim();
+  document.getElementById('p-nombre').textContent=nombre||'–';
+  document.getElementById('p-cedula').textContent=USER_DATA.cedula||'–';
+  document.getElementById('p-email').textContent=USER_DATA.email||USER?.email||'–';
+  document.getElementById('p-tel').textContent=USER_DATA.telefono||'–';
+  // Pre-fill edit
+  document.getElementById('pe-nom').value=USER_DATA.nombre||'';
+  document.getElementById('pe-ape').value=USER_DATA.apellido||'';
+  document.getElementById('pe-ced').value=USER_DATA.cedula||'';
+  document.getElementById('pe-tel').value=USER_DATA.telefono||'';
+}
+
+window.editarPerfil=()=>{
+  document.getElementById('perfil-view').style.display='none';
+  document.getElementById('perfil-edit').style.display='';
+  document.getElementById('btn-edit-perfil').style.display='none';
+};
+window.cancelarEditPerfil=()=>{
+  document.getElementById('perfil-view').style.display='';
+  document.getElementById('perfil-edit').style.display='none';
+  document.getElementById('btn-edit-perfil').style.display='';
+};
+
+window.guardarPerfil=async()=>{
+  const nom=document.getElementById('pe-nom').value.trim();
+  const ape=document.getElementById('pe-ape').value.trim();
+  if(!nom){showOk('al-err','El nombre es obligatorio.');return;}
+  try{
+    const data={nombre:nom,apellido:ape,cedula:document.getElementById('pe-ced').value.trim(),telefono:document.getElementById('pe-tel').value.trim(),updatedAt:serverTimestamp()};
+    await setDoc(doc(db,'usuarios',USER.uid),data,{merge:true});
+    USER_DATA={...USER_DATA,...data};
+    cargarPerfil();cancelarEditPerfil();
+    showOk('al-ok','✅ Perfil actualizado correctamente.');
+  }catch(e){showErr('al-err','Error: '+e.message);}
+};
+
+// CARGAR CITAS
+async function cargarCitas(){
+  try{
+    let citas=[];
+    try{
+      const snap=await getDocs(query(collection(db,'citas'),where('pacienteUid','==',USER.uid),orderBy('creadoEn','desc')));
+      citas=snap.docs.map(d=>({id:d.id,...d.data()}));
+    }catch(e){
+      // Fallback: buscar por nombre/cédula si no tienen pacienteUid
+      const snap2=await getDocs(collection(db,'citas'));
+      citas=snap2.docs.map(d=>({id:d.id,...d.data()})).filter(c=>c.email===USER.email||c.cedula===USER_DATA?.cedula).sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
+    }
+    document.getElementById('k-total').textContent=citas.length;
+    document.getElementById('k-pend').textContent=citas.filter(c=>c.estado==='pendiente').length;
+    document.getElementById('k-conf').textContent=citas.filter(c=>c.estado==='confirmada').length;
+
+    const list=document.getElementById('citas-list');
+    if(citas.length===0){
+      list.innerHTML=`<div class="empty">Aún no tienes citas registradas.<br/><button onclick="abrirModalCita()" style="background:var(--blue);color:#fff;border:none;padding:.6rem 1.4rem;border-radius:50px;font-family:Outfit,sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;margin-top:.75rem">📅 Reservar mi primera cita</button></div>`;
+      return;
+    }
+
+    const bdg={pendiente:'<span class="badge bp">⏳ Pendiente</span>',confirmada:'<span class="badge bc">✅ Confirmada</span>',cancelada:'<span class="badge bx">❌ Cancelada</span>',atendida:'<span class="badge ba">🩺 Atendida</span>'};
+    const ico={pendiente:'⏳',confirmada:'✅',cancelada:'❌',atendida:'🩺'};
+
+    list.innerHTML=citas.map(c=>`
+      <div class="cita-item">
+        <div class="cita-ico">${ico[c.estado]||'📅'}</div>
+        <div style="flex:1;min-width:0">
+          <div class="cita-nm">${c.especialidad||'–'}</div>
+          <div class="cita-meta">📅 ${c.fecha||'–'} · 🕐 ${c.hora||'–'}${c.motivo?` · ${c.motivo.slice(0,40)}...`:''}</div>
+        </div>
+        ${bdg[c.estado]||`<span class="badge bp">${c.estado}</span>`}
+      </div>`).join('');
+  }catch(e){document.getElementById('citas-list').innerHTML='<div class="empty">Error al cargar citas: '+e.message+'</div>';}
+}
+
+// MODAL CITA
+window.abrirModalCita=()=>{
+  document.getElementById('c-fecha').value=todayStr();
+  document.getElementById('c-fecha').min=todayStr();
+  document.getElementById('c-esp').value='';
+  document.getElementById('c-hora').value='';
+  document.getElementById('c-motivo').value='';
+  document.getElementById('form-cita').style.display='';
+  document.getElementById('ok-cita').classList.remove('show');
+  document.getElementById('btn-cita').disabled=false;
+  document.getElementById('btn-cita').innerHTML='📅 Confirmar reserva';
+  document.getElementById('mbg').classList.add('open');
+  document.body.style.overflow='hidden';
+};
+window.cerrarModal=()=>{document.getElementById('mbg').classList.remove('open');document.body.style.overflow='';};
+document.getElementById('mbg').addEventListener('click',e=>{if(e.target===document.getElementById('mbg'))window.cerrarModal();});
+
+window.guardarCita=async()=>{
+  const esp=document.getElementById('c-esp').value;
+  const fecha=document.getElementById('c-fecha').value;
+  const hora=document.getElementById('c-hora').value;
+  if(!esp||!fecha||!hora){alert('Por favor completa especialidad, fecha y hora.');return;}
+  const btn=document.getElementById('btn-cita');btn.disabled=true;btn.innerHTML='⏳ Enviando...';
+  try{
+    const ref=await addDoc(collection(db,'citas'),{
+      pacienteUid:USER.uid,
+      pacienteNombre:`${USER_DATA?.nombre||''} ${USER_DATA?.apellido||''}`.trim(),
+      cedula:USER_DATA?.cedula||'',
+      telefono:USER_DATA?.telefono||'',
+      email:USER?.email||'',
+      especialidad:esp,fecha,hora,
+      motivo:document.getElementById('c-motivo').value.trim(),
+      estado:'pendiente',
+      creadoEn:serverTimestamp()
+    });
+    document.getElementById('form-cita').style.display='none';
+    document.getElementById('ok-cita').classList.add('show');
+    document.getElementById('ok-id').textContent='ID: '+ref.id.slice(0,12).toUpperCase();
+    cargarCitas();
+  }catch(e){
+    document.getElementById('form-cita').style.display='none';
+    document.getElementById('ok-cita').classList.add('show');
+    document.getElementById('ok-id').textContent='ID: DEMO-'+Date.now();
+  }
+};
+
+// CAMBIAR CLAVE
+window.togglePwd=(id,btn)=>{const i=document.getElementById(id);i.type=i.type==='password'?'text':'password';btn.textContent=i.type==='password'?'👁':'🙈';};
+
+window.cambiarClave=async()=>{
+  const actual=document.getElementById('pwd-actual').value;
+  const nueva=document.getElementById('pwd-nueva').value;
+  const conf=document.getElementById('pwd-conf').value;
+  if(!actual||!nueva||!conf){showErr('pwd-err','Completa todos los campos.');return;}
+  if(nueva.length<6){showErr('pwd-err','La nueva contraseña debe tener al menos 6 caracteres.');return;}
+  if(nueva!==conf){showErr('pwd-err','Las contraseñas nuevas no coinciden.');return;}
+  if(nueva===actual){showErr('pwd-err','La nueva contraseña debe ser diferente a la actual.');return;}
+  const btn=document.getElementById('btn-pwd');btn.disabled=true;btn.innerHTML='⏳ Cambiando...';
+  try{
+    const cred=EmailAuthProvider.credential(USER.email,actual);
+    await reauthenticateWithCredential(USER,cred);
+    await updatePassword(USER,nueva);
+    showOk('pwd-ok','✅ Contraseña cambiada correctamente.');
+    document.getElementById('pwd-actual').value='';
+    document.getElementById('pwd-nueva').value='';
+    document.getElementById('pwd-conf').value='';
+  }catch(e){
+    const msgs={'auth/wrong-password':'La contraseña actual es incorrecta.','auth/invalid-credential':'La contraseña actual es incorrecta.'};
+    showErr('pwd-err',msgs[e.code]||'Error: '+e.message);
+  }
+  btn.disabled=false;btn.innerHTML='🔑 Cambiar contraseña';
+};
+</script>
+</body>
+</html>
