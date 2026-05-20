@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Dashboard · Admin · Centro Médico Azucena</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--blue:#0066FF;--blue2:#0047B3;--dark:#060E1F;--card:#0a1628;--border:rgba(255,255,255,.07);--muted:#7B8CB0;--grn:#16a34a;--red:#dc2626;--r:12px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:#080f1e;color:#fff;display:flex;min-height:100vh;overflow:hidden}
+aside{width:240px;background:#040B1C;border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:100vh;overflow-y:auto;position:fixed;top:0;left:0;z-index:100}
+.logo{display:flex;align-items:center;gap:.55rem;padding:1.4rem 1.2rem;border-bottom:1px solid var(--border);text-decoration:none}
+.lm{width:30px;height:30px;border-radius:7px;background:var(--blue);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.lm::before,.lm::after{content:'';position:absolute;background:#fff;border-radius:2px}
+.lm::before{width:3px;height:17px}.lm::after{width:17px;height:3px}
+.lt{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff}.lt em{font-style:normal;color:#60b4ff}
+.s-user{padding:1rem 1.2rem;border-bottom:1px solid var(--border)}
+.s-av{width:36px;height:36px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:1rem;margin-bottom:.5rem}
+.s-nm{font-size:.83rem;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s-rl{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:.1rem}
+.s-sec{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:.9rem 1.2rem .35rem}
+.si{display:flex;align-items:center;gap:.7rem;padding:.58rem 1.2rem;color:rgba(255,255,255,.55);text-decoration:none;font-size:.82rem;font-weight:500;transition:all .2s;cursor:pointer;border:none;background:none;width:100%;text-align:left;position:relative}
+.si:hover{background:rgba(255,255,255,.04);color:#fff}
+.si.active{background:rgba(0,102,255,.18);color:#60b4ff}
+.si.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);border-radius:0 3px 3px 0}
+.sico{width:18px;text-align:center;font-size:.9rem;flex-shrink:0}
+.sbadge{margin-left:auto;background:var(--blue);color:#fff;font-size:.6rem;font-weight:700;padding:.1rem .45rem;border-radius:20px;min-width:18px;text-align:center}
+.sbadge.red{background:var(--red)}
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh;overflow-y:auto}
+.topbar{background:#040B1C;border-bottom:1px solid var(--border);padding:.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.tb-l h1{font-family:'Playfair Display',serif;font-size:1.25rem;color:#fff}
+.tb-l span{font-size:.72rem;color:var(--muted);display:block;margin-top:.1rem}
+.tb-r{display:flex;align-items:center;gap:.7rem}
+.tb-date{font-size:.78rem;color:var(--muted);background:rgba(255,255,255,.05);padding:.4rem .85rem;border-radius:20px}
+.btn-out{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;padding:.4rem .9rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-out:hover{background:rgba(220,38,38,.3)}
+.btn-idx{background:rgba(0,102,255,.15);border:1px solid rgba(0,102,255,.3);color:#60b4ff;padding:.4rem .9rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;text-decoration:none;transition:all .2s}
+.btn-idx:hover{background:rgba(0,102,255,.3)}
+.content{padding:1.8rem 2rem;flex:1}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.8rem}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem;position:relative;overflow:hidden;transition:transform .2s}
+.kpi:hover{transform:translateY(-2px)}
+.kpi-bar{position:absolute;top:0;left:0;right:0;height:3px}
+.kpi-ico{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:.9rem}
+.kpi-v{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:#fff;line-height:1}
+.kpi-l{font-size:.72rem;color:var(--muted);margin-top:.3rem}
+.kpi-d{font-size:.72rem;margin-top:.5rem}
+.cup{color:#86efac}.cdn{color:#fca5a5}.ceq{color:var(--muted)}
+.g2{display:grid;grid-template-columns:2fr 1fr;gap:1.2rem;margin-bottom:1.2rem}
+.g3{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem}
+.chd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem}
+.ctit{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#fff}
+.csub{font-size:.72rem;color:var(--muted);margin-top:.15rem}
+.bsm{padding:.38rem .85rem;border-radius:8px;border:none;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem}
+.bb{background:rgba(0,102,255,.2);color:#60b4ff}.bb:hover{background:rgba(0,102,255,.4)}
+.bg{background:rgba(22,163,74,.2);color:#86efac}.bg:hover{background:rgba(22,163,74,.4)}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{text-align:left;font-size:.68rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);padding:.6rem .75rem;border-bottom:1px solid var(--border)}
+.tbl td{padding:.72rem .75rem;font-size:.82rem;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:rgba(255,255,255,.02)}
+.badge{display:inline-flex;align-items:center;padding:.22rem .65rem;border-radius:20px;font-size:.68rem;font-weight:700}
+.bp{background:rgba(202,138,4,.18);color:#fde047}
+.bc{background:rgba(22,163,74,.18);color:#86efac}
+.bx{background:rgba(220,38,38,.18);color:#fca5a5}
+.ba{background:rgba(0,102,255,.18);color:#93c5fd}
+.btn-con{background:rgba(22,163,74,.2);color:#86efac;border:none;padding:.25rem .65rem;border-radius:6px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s}
+.btn-con:hover{background:rgba(22,163,74,.4)}
+.btn-can{background:rgba(220,38,38,.15);color:#fca5a5;border:none;padding:.25rem .65rem;border-radius:6px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s}
+.btn-can:hover{background:rgba(220,38,38,.3)}
+.act-list{display:flex;flex-direction:column;gap:.55rem}
+.act-item{padding:.65rem .8rem;background:rgba(255,255,255,.03);border-radius:8px;border:1px solid var(--border)}
+.act-txt{font-size:.79rem;color:rgba(255,255,255,.75)}
+.act-t{font-size:.68rem;color:var(--muted);margin-top:.2rem}
+.rep-row{display:flex;align-items:center;justify-content:space-between;padding:.65rem 0;border-bottom:1px solid var(--border)}
+.rep-row:last-child{border-bottom:none}
+.rep-l{font-size:.8rem;color:rgba(255,255,255,.7)}
+.rep-v{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff}
+.doc-row{display:flex;align-items:center;gap:.7rem;padding:.6rem 0;border-bottom:1px solid var(--border)}
+.doc-row:last-child{border-bottom:none}
+.doc-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue2));display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;overflow:hidden}
+.doc-av img{width:100%;height:100%;object-fit:cover}
+.doc-nm{font-size:.82rem;font-weight:600;color:#fff}
+.doc-sp{font-size:.7rem;color:var(--muted)}
+.svc-bar{margin-bottom:.8rem}
+.svc-hd{display:flex;justify-content:space-between;font-size:.78rem;color:rgba(255,255,255,.7);margin-bottom:.3rem}
+.bar{height:6px;background:rgba(255,255,255,.08);border-radius:20px;overflow:hidden}
+.bar-f{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--blue),#00C2FF);transition:width .8s ease}
+.al{padding:.75rem 1rem;border-radius:9px;font-size:.8rem;margin-bottom:1rem;display:none}
+.al.show{display:block}
+.al-ok{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:#86efac}
+@media(max-width:1100px){.kpi-grid{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}}
+@media(max-width:768px){aside{display:none}.main{margin-left:0}.kpi-grid{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<aside>
+  <a class="logo" href="../index.html" target="_blank"><div class="lm"></div><span class="lt">Azucena <em>Medical</em></span></a>
+  <div class="s-user">
+    <div class="s-av" id="s-av">👤</div>
+    <div class="s-nm" id="s-nm">Cargando...</div>
+    <div class="s-rl" id="s-rl">–</div>
+  </div>
+  <div class="s-sec">Principal</div>
+  <a href="dashboard.html" class="si active"><span class="sico">📊</span> Dashboard</a>
+  <a href="agenda.html"    class="si"><span class="sico">📅</span> Agenda <span class="sbadge" id="b-ag">0</span></a>
+  <a href="citas.html"     class="si"><span class="sico">🩺</span> Citas <span class="sbadge red" id="b-ct">0</span></a>
+  <div class="s-sec">Gestión</div>
+  <a href="medicos.html"    class="si"><span class="sico">👨‍⚕️</span> Médicos</a>
+  <a href="servicios.html"  class="si"><span class="sico">🏥</span> Servicios</a>
+  <a href="pacientes.html"  class="si"><span class="sico">👥</span> Pacientes</a>
+  <a href="historias.html"  class="si"><span class="sico">📋</span> Historias Clínicas</a>
+  <a href="reporte.html"    class="si"><span class="sico">💰</span> Reporte Diario</a>
+  <a href="estudiantes.html"class="si"><span class="sico">🎓</span> Estudiantes</a>
+  <a href="certificados.html"class="si"><span class="sico">📜</span> Certificados MSP</a>
+  <div class="s-sec">Personalización</div>
+  <a href="publicidad.html" class="si"><span class="sico">📢</span> Publicidad / Index</a>
+  <a href="usuarios.html"   class="si"><span class="sico">👤</span> Usuarios</a>
+  <div class="s-sec">Cuenta</div>
+  <a href="../login.html?action=cambio" class="si"><span class="sico">🔑</span> Cambiar contraseña</a>
+  <button class="si" onclick="doLogout()"><span class="sico">🚪</span> Cerrar sesión</button>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="tb-l">
+      <h1>📊 Dashboard</h1>
+      <span id="tb-fecha">–</span>
+    </div>
+    <div class="tb-r">
+      <div class="tb-date" id="tb-hora">--:--</div>
+      <a href="../index.html" target="_blank" class="btn-idx">👁 Ver Index</a>
+      <button class="btn-out" onclick="doLogout()">🚪 Salir</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="al al-ok" id="al-ok"></div>
+
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-bar" style="background:linear-gradient(90deg,#0066FF,#00C2FF)"></div>
+        <div class="kpi-ico" style="background:rgba(0,102,255,.2)">📅</div>
+        <div class="kpi-v" id="k-citas">–</div>
+        <div class="kpi-l">Citas hoy</div>
+        <div class="kpi-d ceq" id="k-citas-d">Cargando...</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-bar" style="background:linear-gradient(90deg,#16a34a,#22c55e)"></div>
+        <div class="kpi-ico" style="background:rgba(22,163,74,.2)">💰</div>
+        <div class="kpi-v" id="k-ing">–</div>
+        <div class="kpi-l">Ingresos hoy (USD)</div>
+        <div class="kpi-d cup" id="k-ing-d">Cargando...</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-bar" style="background:linear-gradient(90deg,#ca8a04,#f59e0b)"></div>
+        <div class="kpi-ico" style="background:rgba(202,138,4,.2)">⏳</div>
+        <div class="kpi-v" id="k-pend">–</div>
+        <div class="kpi-l">Citas pendientes</div>
+        <div class="kpi-d ceq">Requieren confirmación</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-bar" style="background:linear-gradient(90deg,#7c3aed,#a855f7)"></div>
+        <div class="kpi-ico" style="background:rgba(124,58,237,.2)">🎓</div>
+        <div class="kpi-v" id="k-est">–</div>
+        <div class="kpi-l">Estudiantes hoy</div>
+        <div class="kpi-d ceq">En práctica ahora</div>
+      </div>
+    </div>
+
+    <!-- CITAS PENDIENTES + ACTIVIDAD -->
+    <div class="g2">
+      <div class="card">
+        <div class="chd">
+          <div><div class="ctit">🩺 Citas pendientes</div><div class="csub">Confirma o cancela solicitudes</div></div>
+          <a href="citas.html" class="bsm bb">Ver todas →</a>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="tbl">
+            <thead><tr><th>Paciente</th><th>Especialidad</th><th>Fecha</th><th>Hora</th><th>Estado</th><th>Acción</th></tr></thead>
+            <tbody id="tbody-citas"><tr><td colspan="6" style="text-align:center;color:var(--muted);padding:2rem">Cargando...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="chd"><div><div class="ctit">⚡ Actividad reciente</div><div class="csub">Últimas acciones</div></div></div>
+        <div class="act-list" id="act-list"><div style="color:var(--muted);font-size:.8rem;padding:.5rem">Cargando...</div></div>
+      </div>
+    </div>
+
+    <!-- REPORTE + MÉDICOS + ESTUDIANTES -->
+    <div class="g3">
+      <div class="card">
+        <div class="chd">
+          <div><div class="ctit">💰 Reporte de hoy</div><div class="csub">Resumen financiero del día</div></div>
+          <a href="reporte.html" class="bsm bb">Detalle →</a>
+        </div>
+        <div id="rep-esp"><div style="color:var(--muted);font-size:.8rem">Cargando...</div></div>
+        <div style="height:1px;background:var(--border);margin:1rem 0"></div>
+        <div class="rep-row"><div class="rep-l">💵 Total cobrado hoy</div><div class="rep-v" id="rep-tot">$–</div></div>
+        <div class="rep-row"><div class="rep-l">🧾 Pacientes atendidos</div><div class="rep-v" id="rep-pac">–</div></div>
+        <div class="rep-row" style="border:none"><div class="rep-l">📅 Ingresos del mes</div><div class="rep-v" id="rep-mes">$–</div></div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:1.2rem">
+        <div class="card">
+          <div class="chd">
+            <div><div class="ctit">👨‍⚕️ Médicos activos</div><div class="csub">Personal registrado</div></div>
+            <a href="medicos.html" class="bsm bb">Gestionar</a>
+          </div>
+          <div id="med-list"><div style="color:var(--muted);font-size:.8rem">Cargando...</div></div>
+        </div>
+        <div class="card">
+          <div class="chd">
+            <div><div class="ctit">🎓 Estudiantes hoy</div><div class="csub">Asistencia del día</div></div>
+            <a href="estudiantes.html" class="bsm bb">Ver todos</a>
+          </div>
+          <div id="est-list"><div style="color:var(--muted);font-size:.8rem">Cargando...</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERVICIOS TOP -->
+    <div class="card">
+      <div class="chd">
+        <div><div class="ctit">📊 Servicios más solicitados</div><div class="csub">Basado en citas del mes</div></div>
+        <a href="agenda.html" class="bsm bb">Ver agenda →</a>
+      </div>
+      <div id="svc-stats"><div style="color:var(--muted);font-size:.8rem">Cargando...</div></div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,getDocs,doc,getDoc,updateDoc,query,where,orderBy,limit,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+const FC={apiKey:"AIzaSyAwspV-1KcllVyRAbajVPLc0lwsWMOLIco",authDomain:"jadi-salud.firebaseapp.com",projectId:"jadi-salud",storageBucket:"jadi-salud.firebasestorage.app",messagingSenderId:"679691723583",appId:"1:679691723583:web:4235a2493d09a9196ea98a"};
+const app=initializeApp(FC);const db=getFirestore(app);const auth=getAuth(app);
+
+// FECHA/HORA
+const DIAS=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+function fmtFecha(d){return`${DIAS[d.getDay()]}, ${d.getDate()} de ${MESES[d.getMonth()]} de ${d.getFullYear()}`;}
+function fmtHora(d){return d.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});}
+function todayStr(){const n=new Date();return`${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;}
+
+const now=new Date();
+document.getElementById('tb-fecha').textContent=fmtFecha(now);
+setInterval(()=>document.getElementById('tb-hora').textContent=fmtHora(new Date()),1000);
+document.getElementById('tb-hora').textContent=fmtHora(now);
+
+// AUTH GUARD
+onAuthStateChanged(auth,async u=>{
+  if(!u){window.location.href='../login.html';return;}
+  try{
+    const s=await getDoc(doc(db,'usuarios',u.uid));
+    if(!s.exists()||!['admin','medico'].includes(s.data().rol)){window.location.href='../login.html';return;}
+    const d=s.data();
+    document.getElementById('s-nm').textContent=`${d.nombre} ${d.apellido||''}`;
+    document.getElementById('s-rl').textContent=d.rol==='admin'?'Administrador':'Médico';
+    document.getElementById('s-av').textContent=d.rol==='admin'?'👑':'👨‍⚕️';
+  }catch(e){}
+  loadAll();
+});
+
+window.doLogout=async()=>{await signOut(auth);window.location.href='../login.html';};
+
+function showOk(msg){const e=document.getElementById('al-ok');e.textContent=msg;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),4000);}
+
+// CARGAR TODO
+async function loadAll(){
+  await Promise.all([loadCitas(),loadReporte(),loadMedicos(),loadEstudiantes(),loadSvcStats()]);
+}
+
+// 1. CITAS
+async function loadCitas(){
+  try{
+    const today=todayStr();
+    const snap=await getDocs(query(collection(db,'citas'),orderBy('creadoEn','desc'),limit(50)));
+    const all=snap.docs.map(d=>({id:d.id,...d.data()}));
+    const pendientes=all.filter(c=>c.estado==='pendiente');
+    const hoy=all.filter(c=>c.fecha===today);
+    document.getElementById('k-citas').textContent=hoy.length;
+    document.getElementById('k-citas-d').textContent=`${hoy.filter(c=>c.estado==='atendida').length} atendidas hoy`;
+    document.getElementById('k-pend').textContent=pendientes.length;
+    document.getElementById('b-ag').textContent=hoy.length;
+    document.getElementById('b-ct').textContent=pendientes.length;
+
+    // Tabla pendientes (max 8)
+    const tbody=document.getElementById('tbody-citas');
+    if(pendientes.length===0){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:2rem">✅ No hay citas pendientes</td></tr>';return;}
+    tbody.innerHTML=pendientes.slice(0,8).map(c=>`
+      <tr>
+        <td style="font-weight:600">${c.pacienteNombre||'–'}</td>
+        <td>${c.especialidad||'–'}</td>
+        <td>${c.fecha||'–'}</td>
+        <td>${c.hora||'–'}</td>
+        <td><span class="badge bp">⏳ Pendiente</span></td>
+        <td style="display:flex;gap:.4rem">
+          <button class="btn-con" onclick="confirmarCita('${c.id}')">✓ Confirmar</button>
+          <button class="btn-can" onclick="cancelarCita('${c.id}')">✕</button>
+        </td>
+      </tr>`).join('');
+
+    // Actividad reciente
+    const act=document.getElementById('act-list');
+    const recent=all.slice(0,6);
+    if(recent.length===0){act.innerHTML='<div style="color:var(--muted);font-size:.8rem;padding:.5rem">Sin actividad reciente</div>';return;}
+    const colores={pendiente:'#fde047',confirmada:'#86efac',cancelada:'#fca5a5',atendida:'#93c5fd'};
+    act.innerHTML=recent.map(c=>`
+      <div class="act-item">
+        <div class="act-txt">🩺 <strong>${c.pacienteNombre||'Paciente'}</strong> solicitó cita de <em>${c.especialidad||'–'}</em></div>
+        <div class="act-t" style="color:${colores[c.estado]||'#fff'}">● ${c.estado?.toUpperCase()} · ${c.fecha||''} ${c.hora||''}</div>
+      </div>`).join('');
+  }catch(e){console.log('Citas:',e.message);}
+}
+
+window.confirmarCita=async(id)=>{
+  try{await updateDoc(doc(db,'citas',id),{estado:'confirmada',updatedAt:serverTimestamp()});showOk('✅ Cita confirmada.');loadCitas();}
+  catch(e){alert('Error: '+e.message);}
+};
+window.cancelarCita=async(id)=>{
+  if(!confirm('¿Cancelar esta cita?'))return;
+  try{await updateDoc(doc(db,'citas',id),{estado:'cancelada',updatedAt:serverTimestamp()});showOk('Cita cancelada.');loadCitas();}
+  catch(e){alert('Error: '+e.message);}
+};
+
+// 2. REPORTE HOY
+async function loadReporte(){
+  try{
+    const today=todayStr();
+    const mes=today.slice(0,7);
+    const snap=await getDocs(collection(db,'agenda'));
+    const todos=snap.docs.map(d=>d.data());
+    const hoy=todos.filter(r=>r.fecha===today);
+    const esteMes=todos.filter(r=>(r.fecha||'').startsWith(mes));
+
+    const totalHoy=hoy.reduce((s,r)=>s+(parseFloat(r.pago)||0),0);
+    const totalMes=esteMes.reduce((s,r)=>s+(parseFloat(r.pago)||0),0);
+
+    document.getElementById('k-ing').textContent='$'+totalHoy.toFixed(2);
+    document.getElementById('k-ing-d').textContent=`↑ $${totalMes.toFixed(2)} este mes`;
+    document.getElementById('rep-tot').textContent='$'+totalHoy.toFixed(2);
+    document.getElementById('rep-pac').textContent=hoy.length;
+    document.getElementById('rep-mes').textContent='$'+totalMes.toFixed(2);
+
+    // Por especialidad
+    const esps={};
+    hoy.forEach(r=>{const e=r.especialidad||'Otro';esps[e]=(esps[e]||0)+(parseFloat(r.pago)||0);});
+    const sorted=Object.entries(esps).sort((a,b)=>b[1]-a[1]);
+    const max=sorted[0]?.[1]||1;
+    document.getElementById('rep-esp').innerHTML=sorted.length===0
+      ?'<div style="color:var(--muted);font-size:.8rem">Sin registros hoy</div>'
+      :sorted.map(([e,v])=>`
+        <div class="svc-bar">
+          <div class="svc-hd"><span>${e}</span><span>$${v.toFixed(2)}</span></div>
+          <div class="bar"><div class="bar-f" style="width:${(v/max*100).toFixed(0)}%"></div></div>
+        </div>`).join('');
+  }catch(e){console.log('Reporte:',e.message);}
+}
+
+// 3. MÉDICOS
+async function loadMedicos(){
+  try{
+    const snap=await getDocs(query(collection(db,'medicos'),where('activo','==',true)));
+    const list=document.getElementById('med-list');
+    if(snap.empty){list.innerHTML='<div style="color:var(--muted);font-size:.8rem">No hay médicos registrados. <a href="medicos.html" style="color:#60b4ff">Agregar →</a></div>';return;}
+    list.innerHTML=snap.docs.map(d=>{const m=d.data();return`
+      <div class="doc-row">
+        <div class="doc-av">${m.fotoUrl?`<img src="${m.fotoUrl}" alt="${m.nombre}"/>`:'👨‍⚕️'}</div>
+        <div><div class="doc-nm">${m.nombre} ${m.apellido||''}</div><div class="doc-sp">${m.especialidad}</div></div>
+        <div style="margin-left:auto;width:8px;height:8px;border-radius:50%;background:#86efac"></div>
+      </div>`;}).join('');
+  }catch(e){console.log('Médicos:',e.message);}
+}
+
+// 4. ESTUDIANTES HOY
+async function loadEstudiantes(){
+  try{
+    const today=todayStr();
+    const snap=await getDocs(query(collection(db,'estudiantes'),where('activo','==',true)));
+    const todos=snap.docs.map(d=>({id:d.id,...d.data()}));
+    const hoyEst=todos.filter(e=>(e.registros||[]).some(r=>r.fecha===today));
+    document.getElementById('k-est').textContent=hoyEst.length;
+    const list=document.getElementById('est-list');
+    if(hoyEst.length===0){list.innerHTML='<div style="color:var(--muted);font-size:.8rem">Ningún estudiante registrado hoy. <a href="estudiantes.html" style="color:#60b4ff">Registrar →</a></div>';return;}
+    list.innerHTML=hoyEst.map(e=>{
+      const reg=e.registros?.find(r=>r.fecha===today);
+      return`<div class="doc-row">
+        <div class="doc-av" style="background:rgba(139,92,246,.3)">🎓</div>
+        <div><div class="doc-nm">${e.nombre}</div><div class="doc-sp">${e.institucion||'–'}</div></div>
+        <div style="margin-left:auto;font-size:.7rem;color:#86efac">${reg?.entrada||'–'}</div>
+      </div>`;}).join('');
+  }catch(e){console.log('Estudiantes:',e.message);}
+}
+
+// 5. SERVICIOS STATS
+async function loadSvcStats(){
+  try{
+    const mes=todayStr().slice(0,7);
+    const snap=await getDocs(collection(db,'citas'));
+    const mes_citas=snap.docs.map(d=>d.data()).filter(c=>(c.fecha||'').startsWith(mes));
+    const esps={};
+    mes_citas.forEach(c=>{const e=c.especialidad||'Otro';esps[e]=(esps[e]||0)+1;});
+    const sorted=Object.entries(esps).sort((a,b)=>b[1]-a[1]);
+    const max=sorted[0]?.[1]||1;
+    document.getElementById('svc-stats').innerHTML=sorted.length===0
+      ?'<div style="color:var(--muted);font-size:.8rem">Sin datos este mes</div>'
+      :sorted.map(([e,v])=>`
+        <div class="svc-bar">
+          <div class="svc-hd"><span>${e}</span><span>${v} citas</span></div>
+          <div class="bar"><div class="bar-f" style="width:${(v/max*100).toFixed(0)}%"></div></div>
+        </div>`).join('');
+  }catch(e){console.log('SvcStats:',e.message);}
+}
+</script>
+</body>
+</html>
