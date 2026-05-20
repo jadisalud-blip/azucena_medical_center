@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Médicos · Admin · Centro Médico Azucena</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--blue:#0066FF;--blue2:#0047B3;--card:#0a1628;--border:rgba(255,255,255,.07);--muted:#7B8CB0;--grn:#16a34a;--red:#dc2626;--r:12px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:#080f1e;color:#fff;display:flex;min-height:100vh;overflow:hidden}
+aside{width:240px;background:#040B1C;border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:100vh;overflow-y:auto;position:fixed;top:0;left:0;z-index:100}
+.logo{display:flex;align-items:center;gap:.55rem;padding:1.4rem 1.2rem;border-bottom:1px solid var(--border);text-decoration:none}
+.lm{width:30px;height:30px;border-radius:7px;background:var(--blue);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.lm::before,.lm::after{content:'';position:absolute;background:#fff;border-radius:2px}
+.lm::before{width:3px;height:17px}.lm::after{width:17px;height:3px}
+.lt{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff}.lt em{font-style:normal;color:#60b4ff}
+.s-sec{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:.9rem 1.2rem .35rem}
+.si{display:flex;align-items:center;gap:.7rem;padding:.58rem 1.2rem;color:rgba(255,255,255,.55);text-decoration:none;font-size:.82rem;font-weight:500;transition:all .2s;cursor:pointer;border:none;background:none;width:100%;text-align:left;position:relative}
+.si:hover{background:rgba(255,255,255,.04);color:#fff}
+.si.active{background:rgba(0,102,255,.18);color:#60b4ff}
+.si.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);border-radius:0 3px 3px 0}
+.sico{width:18px;text-align:center;font-size:.9rem;flex-shrink:0}
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh;overflow-y:auto}
+.topbar{background:#040B1C;border-bottom:1px solid var(--border);padding:.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.tb-l h1{font-family:'Playfair Display',serif;font-size:1.25rem;color:#fff}
+.tb-l span{font-size:.72rem;color:var(--muted);display:block;margin-top:.1rem}
+.tb-r{display:flex;align-items:center;gap:.7rem}
+.btn-out{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;padding:.4rem .9rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer}
+.btn-add{background:var(--blue);color:#fff;border:none;padding:.45rem 1.1rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-add:hover{background:var(--blue2)}
+.content{padding:1.5rem 2rem;flex:1}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem;margin-bottom:1.2rem}
+.chd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.75rem}
+.ctit{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#fff}
+.csub{font-size:.72rem;color:var(--muted);margin-top:.1rem}
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin-bottom:1.2rem}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem;position:relative;overflow:hidden}
+.kpi-bar{position:absolute;top:0;left:0;right:0;height:3px}
+.kpi-v{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;color:#fff}
+.kpi-l{font-size:.7rem;color:var(--muted);margin-top:.2rem}
+/* GRID MÉDICOS */
+.doc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem}
+.doc-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .2s,transform .2s}
+.doc-card:hover{border-color:rgba(0,102,255,.3);transform:translateY(-2px)}
+.doc-photo{height:140px;background:linear-gradient(135deg,#0066FF,#0047B3);display:flex;align-items:center;justify-content:center;font-size:4rem;overflow:hidden;position:relative}
+.doc-photo img{width:100%;height:100%;object-fit:cover}
+.doc-status{position:absolute;top:.6rem;right:.6rem;width:10px;height:10px;border-radius:50%}
+.doc-body{padding:1.2rem}
+.doc-nm{font-weight:700;font-size:.95rem;color:#fff;margin-bottom:.2rem}
+.doc-esp{font-size:.75rem;color:#60b4ff;font-weight:600;margin-bottom:.6rem}
+.doc-info{font-size:.75rem;color:var(--muted);margin-bottom:.2rem;display:flex;align-items:center;gap:.4rem}
+.doc-actions{display:flex;gap:.5rem;margin-top:.9rem}
+.btn-sm{padding:.38rem .8rem;border-radius:8px;border:none;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s;flex:1;display:flex;align-items:center;justify-content:center;gap:.3rem}
+.bb{background:rgba(0,102,255,.2);color:#60b4ff}.bb:hover{background:rgba(0,102,255,.4)}
+.br{background:rgba(220,38,38,.15);color:#fca5a5}.br:hover{background:rgba(220,38,38,.3)}
+.bg2{background:rgba(22,163,74,.2);color:#86efac}.bg2:hover{background:rgba(22,163,74,.4)}
+.by{background:rgba(202,138,4,.2);color:#fde047}.by:hover{background:rgba(202,138,4,.4)}
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:#0a1628;border:1px solid rgba(255,255,255,.1);border-radius:18px;width:min(640px,95vw);max-height:92vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:mIn .3s ease}
+@keyframes mIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.mhd{padding:1.5rem 1.8rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between}
+.mtit{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#fff}
+.msub{font-size:.72rem;color:var(--muted);margin-top:.15rem}
+.mx{background:none;border:none;cursor:pointer;font-size:1.3rem;color:var(--muted)}
+.mx:hover{color:#fff}
+.mbdy{padding:1.4rem 1.8rem 1.8rem}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.fg{display:flex;flex-direction:column;gap:.38rem;margin-bottom:.95rem}
+.fg label{font-size:.72rem;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px}
+.fg input,.fg select,.fg textarea{padding:.72rem .9rem;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;background:rgba(255,255,255,.05);color:#fff;font-family:'Outfit',sans-serif;font-size:.87rem;outline:none;transition:all .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);background:rgba(0,102,255,.08)}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,.25)}
+.fg select option{background:#0a1628;color:#fff}
+.sep{height:1px;background:var(--border);margin:1rem 0}
+.sec-tit{font-size:.82rem;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.75rem}
+.btn-save{width:100%;background:var(--blue);color:#fff;border:none;padding:.95rem;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(0,102,255,.35);transition:all .25s;margin-top:.5rem;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.btn-save:hover{background:var(--blue2);transform:translateY(-2px)}
+.btn-save:disabled{opacity:.6;cursor:not-allowed;transform:none}
+/* INFO BOX */
+.info-box{background:rgba(0,102,255,.1);border:1px solid rgba(0,102,255,.25);border-radius:9px;padding:.85rem 1rem;font-size:.8rem;color:#a0c4ff;margin-bottom:1rem;line-height:1.6}
+/* ALERT */
+.al{padding:.75rem 1rem;border-radius:9px;font-size:.8rem;margin-bottom:1rem;display:none}
+.al.show{display:block}
+.al-ok{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:#86efac}
+.al-err{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5}
+.empty{text-align:center;color:var(--muted);padding:3rem;font-size:.85rem;grid-column:1/-1}
+/* HORARIO */
+.horario-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.4rem}
+.dia-btn{padding:.4rem .2rem;border-radius:7px;border:1.5px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);font-size:.7rem;font-weight:600;cursor:pointer;background:none;font-family:'Outfit',sans-serif;text-align:center;transition:all .2s}
+.dia-btn.sel{background:var(--blue);border-color:var(--blue);color:#fff}
+@media(max-width:768px){aside{display:none}.main{margin-left:0}.frow{grid-template-columns:1fr}.kpi-row{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<aside>
+  <a class="logo" href="../index.html" target="_blank"><div class="lm"></div><span class="lt">Azucena <em>Medical</em></span></a>
+  <div class="s-sec">Principal</div>
+  <a href="dashboard.html" class="si"><span class="sico">📊</span> Dashboard</a>
+  <a href="agenda.html"    class="si"><span class="sico">📅</span> Agenda</a>
+  <a href="citas.html"     class="si"><span class="sico">🩺</span> Citas</a>
+  <div class="s-sec">Gestión</div>
+  <a href="medicos.html"    class="si active"><span class="sico">👨‍⚕️</span> Médicos</a>
+  <a href="servicios.html"  class="si"><span class="sico">🏥</span> Servicios</a>
+  <a href="pacientes.html"  class="si"><span class="sico">👥</span> Pacientes</a>
+  <a href="historias.html"  class="si"><span class="sico">📋</span> Historias Clínicas</a>
+  <a href="reporte.html"    class="si"><span class="sico">💰</span> Reporte Diario</a>
+  <a href="estudiantes.html"class="si"><span class="sico">🎓</span> Estudiantes</a>
+  <a href="certificados.html"class="si"><span class="sico">📜</span> Certificados MSP</a>
+  <div class="s-sec">Personalización</div>
+  <a href="publicidad.html" class="si"><span class="sico">📢</span> Publicidad</a>
+  <a href="usuarios.html"   class="si"><span class="sico">👤</span> Usuarios</a>
+  <div class="s-sec">Cuenta</div>
+  <a href="../login.html?action=cambio" class="si"><span class="sico">🔑</span> Cambiar contraseña</a>
+  <button class="si" onclick="doLogout()"><span class="sico">🚪</span> Cerrar sesión</button>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="tb-l"><h1>👨‍⚕️ Gestión de Médicos</h1><span>Administra el equipo médico del centro</span></div>
+    <div class="tb-r">
+      <button class="btn-add" onclick="abrirModal()">➕ Agregar médico</button>
+      <button class="btn-out" onclick="doLogout()">🚪 Salir</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="al al-ok" id="al-ok"></div>
+    <div class="al al-err" id="al-err"></div>
+
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-bar" style="background:linear-gradient(90deg,#0066FF,#00C2FF)"></div><div class="kpi-v" id="k-total">–</div><div class="kpi-l">Total médicos</div></div>
+      <div class="kpi"><div class="kpi-bar" style="background:linear-gradient(90deg,#16a34a,#22c55e)"></div><div class="kpi-v" id="k-activos">–</div><div class="kpi-l">Activos</div></div>
+      <div class="kpi"><div class="kpi-bar" style="background:linear-gradient(90deg,#7c3aed,#a855f7)"></div><div class="kpi-v" id="k-esp">–</div><div class="kpi-l">Especialidades</div></div>
+    </div>
+
+    <div class="card">
+      <div class="chd">
+        <div><div class="ctit">👨‍⚕️ Equipo médico</div><div class="csub">Los médicos activos aparecen en el index público automáticamente</div></div>
+        <input type="text" id="buscar" placeholder="🔍 Buscar nombre, especialidad..." oninput="renderMedicos()" style="padding:.45rem .85rem;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;background:rgba(255,255,255,.05);color:#fff;font-family:Outfit,sans-serif;font-size:.82rem;outline:none;min-width:220px"/>
+      </div>
+      <div class="doc-grid" id="doc-grid">
+        <div class="empty">Cargando médicos...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="mbg">
+  <div class="modal">
+    <div class="mhd">
+      <div><div class="mtit" id="m-tit">➕ Agregar médico</div><div class="msub">El médico aparecerá en el index y puede acceder al sistema</div></div>
+      <button class="mx" onclick="cerrarModal()">✕</button>
+    </div>
+    <div class="mbdy">
+      <input type="hidden" id="edit-id"/>
+
+      <div class="sec-tit">📋 Datos personales</div>
+      <div class="frow">
+        <div class="fg"><label>Nombre *</label><input type="text" id="m-nom" placeholder="Carlos"/></div>
+        <div class="fg"><label>Apellido *</label><input type="text" id="m-ape" placeholder="Mendoza"/></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Especialidad *</label>
+          <select id="m-esp">
+            <option value="">Selecciona...</option>
+            <option>Medicina General</option><option>Fisioterapia</option>
+            <option>Obstetricia</option><option>Traumatología</option>
+            <option>Odontología</option><option>Laboratorio</option>
+            <option>Especialidades</option><option>Rayos X</option>
+            <option>Neurología</option><option>Cardiología</option>
+            <option>Pediatría</option><option>Otro</option>
+          </select>
+        </div>
+        <div class="fg"><label>Cédula profesional</label><input type="text" id="m-ced" placeholder="1712345678"/></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Teléfono</label><input type="tel" id="m-tel" placeholder="+593 99 xxx xxxx"/></div>
+        <div class="fg"><label>URL foto (opcional)</label><input type="url" id="m-foto" placeholder="https://...jpg"/></div>
+      </div>
+      <div class="fg"><label>Descripción / bio corta</label>
+        <textarea id="m-bio" placeholder="Ej: Especialista con 10 años de experiencia en..."></textarea></div>
+
+      <div class="sep"></div>
+      <div class="sec-tit">📅 Días de atención</div>
+      <div class="horario-grid" id="horario-grid" style="margin-bottom:1rem">
+        <button class="dia-btn" data-dia="Lun" onclick="toggleDia(this)">Lun</button>
+        <button class="dia-btn" data-dia="Mar" onclick="toggleDia(this)">Mar</button>
+        <button class="dia-btn" data-dia="Mié" onclick="toggleDia(this)">Mié</button>
+        <button class="dia-btn" data-dia="Jue" onclick="toggleDia(this)">Jue</button>
+        <button class="dia-btn" data-dia="Vie" onclick="toggleDia(this)">Vie</button>
+        <button class="dia-btn" data-dia="Sáb" onclick="toggleDia(this)">Sáb</button>
+        <button class="dia-btn" data-dia="Dom" onclick="toggleDia(this)">Dom</button>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Hora inicio</label><input type="time" id="m-hinicio" value="08:00"/></div>
+        <div class="fg"><label>Hora fin</label><input type="time" id="m-hfin" value="17:00"/></div>
+      </div>
+
+      <div class="sep"></div>
+      <div class="sec-tit">🔐 Acceso al sistema</div>
+      <div class="info-box">
+        ℹ️ Al crear un médico puedes asignarle acceso al sistema. El médico deberá cambiar su contraseña en el primer inicio de sesión. <strong>El usuario (correo) no puede ser cambiado después.</strong>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Correo electrónico (usuario)</label><input type="email" id="m-email" placeholder="dr.garcia@azucena.com"/></div>
+        <div class="fg"><label>Contraseña inicial</label><input type="password" id="m-pwd" placeholder="Mínimo 6 caracteres"/></div>
+      </div>
+      <div style="font-size:.72rem;color:rgba(255,255,255,.35);margin-bottom:1rem">Deja vacío si no necesita acceso al sistema ahora. Podrás agregarlo después desde Usuarios.</div>
+
+      <button class="btn-save" id="btn-save" onclick="guardarMedico()">💾 Guardar médico</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,addDoc,getDocs,doc,getDoc,updateDoc,deleteDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{getAuth,onAuthStateChanged,signOut,createUserWithEmailAndPassword}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const FC={apiKey:"AIzaSyAwspV-1KcllVyRAbajVPLc0lwsWMOLIco",authDomain:"jadi-salud.firebaseapp.com",projectId:"jadi-salud",storageBucket:"jadi-salud.firebasestorage.app",messagingSenderId:"679691723583",appId:"1:679691723583:web:4235a2493d09a9196ea98a"};
+const app=initializeApp(FC);const db=getFirestore(app);const auth=getAuth(app);
+
+onAuthStateChanged(auth,async u=>{
+  if(!u){window.location.href='../login.html';return;}
+  try{const s=await getDoc(doc(db,'usuarios',u.uid));if(!s.exists()||!['admin','medico'].includes(s.data().rol)){window.location.href='../login.html';return;}}catch(e){}
+  loadMedicos();
+});
+window.doLogout=async()=>{await signOut(auth);window.location.href='../login.html';};
+
+function showOk(m){const e=document.getElementById('al-ok');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),4000);}
+function showErr(m){const e=document.getElementById('al-err');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),6000);}
+
+let allMed=[];
+
+async function loadMedicos(){
+  try{const s=await getDocs(collection(db,'medicos'));allMed=s.docs.map(d=>({id:d.id,...d.data()}));}
+  catch(e){allMed=[];}
+  const activos=allMed.filter(m=>m.activo!==false);
+  const esps=new Set(allMed.map(m=>m.especialidad).filter(Boolean));
+  document.getElementById('k-total').textContent=allMed.length;
+  document.getElementById('k-activos').textContent=activos.length;
+  document.getElementById('k-esp').textContent=esps.size;
+  renderMedicos();
+}
+
+window.renderMedicos=()=>{
+  const buscar=(document.getElementById('buscar').value||'').toLowerCase();
+  const filtrados=allMed.filter(m=>`${m.nombre||''} ${m.apellido||''} ${m.especialidad||''}`.toLowerCase().includes(buscar));
+  const grid=document.getElementById('doc-grid');
+  if(filtrados.length===0){grid.innerHTML='<div class="empty">No se encontraron médicos. <button onclick="abrirModal()" style="background:none;border:none;color:#60b4ff;cursor:pointer">Agregar →</button></div>';return;}
+  grid.innerHTML=filtrados.map(m=>`
+    <div class="doc-card">
+      <div class="doc-photo">
+        ${m.fotoUrl?`<img src="${m.fotoUrl}" alt="${m.nombre}"/>`:'👨‍⚕️'}
+        <div class="doc-status" style="background:${m.activo!==false?'#86efac':'#fca5a5'}"></div>
+      </div>
+      <div class="doc-body">
+        <div class="doc-nm">Dr. ${m.nombre} ${m.apellido||''}</div>
+        <div class="doc-esp">${m.especialidad||'–'}</div>
+        ${m.telefono?`<div class="doc-info">📞 ${m.telefono}</div>`:''}
+        ${m.email?`<div class="doc-info">✉️ ${m.email}</div>`:''}
+        ${m.horario?.dias?.length?`<div class="doc-info">📅 ${m.horario.dias.join(', ')} · ${m.horario.inicio||''}–${m.horario.fin||''}</div>`:''}
+        ${m.bio?`<div style="font-size:.73rem;color:var(--muted);margin-top:.5rem;line-height:1.5">${m.bio.slice(0,80)}${m.bio.length>80?'...':''}</div>`:''}
+        <div class="doc-actions">
+          <button class="btn-sm bb" onclick="editarMedico('${m.id}')">✏️ Editar</button>
+          <button class="btn-sm ${m.activo!==false?'by':'bg2'}" onclick="toggleActivo('${m.id}',${m.activo!==false})">${m.activo!==false?'⏸ Pausar':'▶ Activar'}</button>
+          <button class="btn-sm br" onclick="eliminarMedico('${m.id}')">🗑</button>
+        </div>
+      </div>
+    </div>`).join('');
+};
+
+// DÍAS HORARIO
+window.toggleDia=(btn)=>{btn.classList.toggle('sel');};
+function getDiasSeleccionados(){return[...document.querySelectorAll('.dia-btn.sel')].map(b=>b.dataset.dia);}
+function setDias(dias){document.querySelectorAll('.dia-btn').forEach(b=>b.classList.toggle('sel',dias.includes(b.dataset.dia)));}
+
+// MODAL
+window.abrirModal=()=>{
+  document.getElementById('edit-id').value='';
+  document.getElementById('m-tit').textContent='➕ Agregar médico';
+  ['m-nom','m-ape','m-ced','m-tel','m-foto','m-bio','m-email','m-pwd'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('m-esp').value='';
+  document.getElementById('m-hinicio').value='08:00';
+  document.getElementById('m-hfin').value='17:00';
+  document.querySelectorAll('.dia-btn').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('m-email').disabled=false;
+  document.getElementById('m-pwd').disabled=false;
+  document.getElementById('btn-save').innerHTML='💾 Guardar médico';
+  document.getElementById('mbg').classList.add('open');document.body.style.overflow='hidden';
+};
+window.cerrarModal=()=>{document.getElementById('mbg').classList.remove('open');document.body.style.overflow='';};
+document.getElementById('mbg').addEventListener('click',e=>{if(e.target===document.getElementById('mbg'))window.cerrarModal();});
+
+window.editarMedico=(id)=>{
+  const m=allMed.find(x=>x.id===id);if(!m)return;
+  document.getElementById('edit-id').value=id;
+  document.getElementById('m-tit').textContent='✏️ Editar médico';
+  document.getElementById('m-nom').value=m.nombre||'';
+  document.getElementById('m-ape').value=m.apellido||'';
+  document.getElementById('m-esp').value=m.especialidad||'';
+  document.getElementById('m-ced').value=m.cedula||'';
+  document.getElementById('m-tel').value=m.telefono||'';
+  document.getElementById('m-foto').value=m.fotoUrl||'';
+  document.getElementById('m-bio').value=m.bio||'';
+  document.getElementById('m-email').value=m.email||'';
+  document.getElementById('m-email').disabled=true;// No cambiar correo
+  document.getElementById('m-pwd').value='';
+  document.getElementById('m-pwd').disabled=true;
+  document.getElementById('m-hinicio').value=m.horario?.inicio||'08:00';
+  document.getElementById('m-hfin').value=m.horario?.fin||'17:00';
+  setDias(m.horario?.dias||[]);
+  document.getElementById('btn-save').innerHTML='💾 Actualizar médico';
+  document.getElementById('mbg').classList.add('open');document.body.style.overflow='hidden';
+};
+
+window.guardarMedico=async()=>{
+  const nom=document.getElementById('m-nom').value.trim();
+  const ape=document.getElementById('m-ape').value.trim();
+  const esp=document.getElementById('m-esp').value;
+  if(!nom||!esp){showErr('Nombre y especialidad son obligatorios.');return;}
+  const btn=document.getElementById('btn-save');btn.disabled=true;btn.innerHTML='⏳ Guardando...';
+  const editId=document.getElementById('edit-id').value;
+  const email=document.getElementById('m-email').value.trim();
+  const pwd=document.getElementById('m-pwd').value;
+  const data={
+    nombre:nom,apellido:ape,especialidad:esp,
+    cedula:document.getElementById('m-ced').value.trim(),
+    telefono:document.getElementById('m-tel').value.trim(),
+    fotoUrl:document.getElementById('m-foto').value.trim(),
+    bio:document.getElementById('m-bio').value.trim(),
+    email,
+    horario:{dias:getDiasSeleccionados(),inicio:document.getElementById('m-hinicio').value,fin:document.getElementById('m-hfin').value},
+    activo:true,updatedAt:serverTimestamp()
+  };
+  try{
+    if(editId){
+      await updateDoc(doc(db,'medicos',editId),data);
+      showOk('✅ Médico actualizado. Los cambios ya se ven en el index.');
+    }else{
+      data.creadoEn=serverTimestamp();
+      const ref=await addDoc(collection(db,'medicos'),data);
+      // Crear usuario en Firebase Auth si hay email y password
+      if(email&&pwd&&pwd.length>=6){
+        try{
+          const cred=await createUserWithEmailAndPassword(auth,email,pwd);
+          await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js").then(async({setDoc,doc:d2})=>{
+            await setDoc(d2(db,'usuarios',cred.user.uid),{
+              uid:cred.user.uid,nombre:nom,apellido:ape,email,
+              rol:'medico',medicoId:ref.id,activo:true,
+              primerLogin:true,creadoEn:serverTimestamp()
+            });
+          });
+          showOk('✅ Médico creado con acceso al sistema. Debe cambiar su contraseña al ingresar.');
+        }catch(authErr){showOk('✅ Médico guardado. Error al crear acceso: '+authErr.message);}
+      }else{
+        showOk('✅ Médico guardado. Ya aparece en el index público.');
+      }
+    }
+    cerrarModal();loadMedicos();
+  }catch(e){showErr('Error: '+e.message);}
+  btn.disabled=false;btn.innerHTML='💾 Guardar médico';
+};
+
+window.toggleActivo=async(id,activo)=>{
+  try{await updateDoc(doc(db,'medicos',id),{activo:!activo,updatedAt:serverTimestamp()});showOk(`Médico ${!activo?'activado':'pausado'}. El index se actualiza automáticamente.`);loadMedicos();}
+  catch(e){showErr('Error: '+e.message);}
+};
+
+window.eliminarMedico=async(id)=>{
+  if(!confirm('¿Eliminar este médico? Se quitará del index público.'))return;
+  try{await deleteDoc(doc(db,'medicos',id));showOk('🗑 Médico eliminado.');loadMedicos();}
+  catch(e){showErr('Error: '+e.message);}
+};
+</script>
+</body>
+</html>
