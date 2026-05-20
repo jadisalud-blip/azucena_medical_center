@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Certificados MSP · Admin · Centro Médico Azucena</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--blue:#0066FF;--blue2:#0047B3;--card:#0a1628;--border:rgba(255,255,255,.07);--muted:#7B8CB0;--r:12px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:#080f1e;color:#fff;display:flex;min-height:100vh;overflow:hidden}
+aside{width:240px;background:#040B1C;border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:100vh;overflow-y:auto;position:fixed;top:0;left:0;z-index:100}
+.logo{display:flex;align-items:center;gap:.55rem;padding:1.4rem 1.2rem;border-bottom:1px solid var(--border);text-decoration:none}
+.lm{width:30px;height:30px;border-radius:7px;background:var(--blue);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.lm::before,.lm::after{content:'';position:absolute;background:#fff;border-radius:2px}
+.lm::before{width:3px;height:17px}.lm::after{width:17px;height:3px}
+.lt{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff}.lt em{font-style:normal;color:#60b4ff}
+.s-sec{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:.9rem 1.2rem .35rem}
+.si{display:flex;align-items:center;gap:.7rem;padding:.58rem 1.2rem;color:rgba(255,255,255,.55);text-decoration:none;font-size:.82rem;font-weight:500;transition:all .2s;cursor:pointer;border:none;background:none;width:100%;text-align:left;position:relative}
+.si:hover{background:rgba(255,255,255,.04);color:#fff}
+.si.active{background:rgba(0,102,255,.18);color:#60b4ff}
+.si.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);border-radius:0 3px 3px 0}
+.sico{width:18px;text-align:center;font-size:.9rem;flex-shrink:0}
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh;overflow-y:auto}
+.topbar{background:#040B1C;border-bottom:1px solid var(--border);padding:.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.tb-l h1{font-family:'Playfair Display',serif;font-size:1.25rem;color:#fff}
+.tb-l span{font-size:.72rem;color:var(--muted);display:block;margin-top:.1rem}
+.tb-r{display:flex;align-items:center;gap:.7rem}
+.btn-out{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;padding:.4rem .9rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer}
+.content{padding:1.5rem 2rem;flex:1}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem;margin-bottom:1.2rem}
+.chd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.75rem}
+.ctit{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#fff}
+.csub{font-size:.72rem;color:var(--muted);margin-top:.1rem}
+/* FORM */
+.fg{display:flex;flex-direction:column;gap:.38rem;margin-bottom:.9rem}
+.fg label{font-size:.72rem;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px}
+.fg input,.fg select,.fg textarea{padding:.7rem .9rem;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;background:rgba(255,255,255,.05);color:#fff;font-family:'Outfit',sans-serif;font-size:.87rem;outline:none;transition:all .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);background:rgba(0,102,255,.08)}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,.25)}
+.fg select option{background:#0a1628;color:#fff}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
+.frow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.85rem}
+/* REPOSO TOGGLE */
+.rep-toggle{display:flex;gap:.75rem;margin-bottom:.9rem}
+.rep-btn{flex:1;padding:.65rem;border-radius:9px;border:1.5px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;background:none;transition:all .2s;text-align:center}
+.rep-btn.sel{border-color:var(--blue);background:rgba(0,102,255,.2);color:#fff}
+.btn-gen{width:100%;background:var(--blue);color:#fff;border:none;padding:.95rem;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(0,102,255,.35);transition:all .25s;display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:.5rem}
+.btn-gen:hover{background:var(--blue2);transform:translateY(-2px)}
+.btn-gen:disabled{opacity:.6;cursor:not-allowed;transform:none}
+/* CERTIFICADO PREVIEW */
+.cert-wrap{background:#fff;color:#000;padding:2.5rem;border-radius:var(--r);font-family:'Outfit',sans-serif;font-size:13px;line-height:1.5;min-height:500px}
+.cert-header{text-align:center;margin-bottom:1.5rem;border-bottom:2px solid #003;padding-bottom:1rem}
+.cert-header h2{font-size:1.1rem;font-weight:700;color:#003;margin-bottom:.3rem}
+.cert-header p{font-size:.8rem;color:#444}
+.cert-sello{display:inline-block;background:#003;color:#fff;padding:.2rem .8rem;border-radius:4px;font-size:.72rem;font-weight:700;letter-spacing:1px;margin-top:.4rem}
+.cert-section{margin-bottom:1.2rem}
+.cert-section-title{font-size:.7rem;font-weight:700;color:#003;text-transform:uppercase;letter-spacing:2px;border-bottom:1px solid #ddd;padding-bottom:.3rem;margin-bottom:.75rem}
+.cert-row{display:flex;gap:1rem;margin-bottom:.5rem;flex-wrap:wrap}
+.cert-field{flex:1;min-width:120px}
+.cert-field label{font-size:.62rem;font-weight:700;color:#666;display:block;margin-bottom:.15rem;text-transform:uppercase}
+.cert-field .val{border-bottom:1px solid #999;padding:.15rem .3rem;min-height:22px;font-size:.82rem;color:#000}
+.cert-diag-box{border:1px solid #999;padding:.5rem .75rem;min-height:60px;font-size:.82rem;margin-top:.3rem}
+.cert-firma{display:flex;gap:2rem;margin-top:2rem;padding-top:1rem;border-top:1px solid #ddd}
+.cert-firma-item{flex:1;text-align:center}
+.cert-firma-item .linea{border-bottom:1px solid #000;margin-bottom:.3rem;height:40px}
+.cert-firma-item p{font-size:.7rem;color:#666}
+.cert-footer{text-align:center;margin-top:1.5rem;font-size:.65rem;color:#888;border-top:1px dashed #ccc;padding-top:.75rem}
+/* LISTA CERTIFICADOS */
+.cert-list{display:flex;flex-direction:column;gap:.7rem}
+.cert-item{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:1rem;display:flex;align-items:center;gap:.9rem}
+.cert-ico{width:40px;height:40px;border-radius:10px;background:rgba(0,102,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.cert-nm{font-weight:700;font-size:.88rem;color:#fff}
+.cert-meta{font-size:.72rem;color:var(--muted);margin-top:.15rem}
+.cert-actions{display:flex;gap:.4rem;margin-left:auto;flex-shrink:0}
+.bsm{padding:.3rem .7rem;border-radius:7px;border:none;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .2s}
+.bb{background:rgba(0,102,255,.2);color:#60b4ff}.bb:hover{background:rgba(0,102,255,.4)}
+.bp{background:rgba(124,58,237,.2);color:#c4b5fd}.bp:hover{background:rgba(124,58,237,.4)}
+.br{background:rgba(220,38,38,.15);color:#fca5a5}.br:hover{background:rgba(220,38,38,.3)}
+/* ALERT */
+.al{padding:.75rem 1rem;border-radius:9px;font-size:.8rem;margin-bottom:1rem;display:none}
+.al.show{display:block}
+.al-ok{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:#86efac}
+.al-err{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5}
+.empty{text-align:center;color:var(--muted);padding:2rem;font-size:.85rem}
+/* PRINT */
+@media print{
+  aside,.topbar,#form-col,.cert-actions,.al,h1,span{display:none!important}
+  body{background:#fff;overflow:auto}
+  .main{margin-left:0}
+  .cert-wrap{padding:1.5cm;border-radius:0;box-shadow:none}
+  .g2{grid-template-columns:1fr}
+}
+@media(max-width:900px){.g2{grid-template-columns:1fr}aside{display:none}.main{margin-left:0}}
+</style>
+</head>
+<body>
+<aside>
+  <a class="logo" href="../index.html" target="_blank"><div class="lm"></div><span class="lt">Azucena <em>Medical</em></span></a>
+  <div class="s-sec">Principal</div>
+  <a href="dashboard.html" class="si"><span class="sico">📊</span> Dashboard</a>
+  <a href="agenda.html"    class="si"><span class="sico">📅</span> Agenda</a>
+  <a href="citas.html"     class="si"><span class="sico">🩺</span> Citas</a>
+  <div class="s-sec">Gestión</div>
+  <a href="medicos.html"    class="si"><span class="sico">👨‍⚕️</span> Médicos</a>
+  <a href="servicios.html"  class="si"><span class="sico">🏥</span> Servicios</a>
+  <a href="pacientes.html"  class="si"><span class="sico">👥</span> Pacientes</a>
+  <a href="historias.html"  class="si"><span class="sico">📋</span> Historias Clínicas</a>
+  <a href="reporte.html"    class="si"><span class="sico">💰</span> Reporte Diario</a>
+  <a href="estudiantes.html"class="si"><span class="sico">🎓</span> Estudiantes</a>
+  <a href="certificados.html"class="si active"><span class="sico">📜</span> Certificados MSP</a>
+  <div class="s-sec">Personalización</div>
+  <a href="publicidad.html" class="si"><span class="sico">📢</span> Publicidad</a>
+  <a href="usuarios.html"   class="si"><span class="sico">👤</span> Usuarios</a>
+  <div class="s-sec">Cuenta</div>
+  <a href="../login.html?action=cambio" class="si"><span class="sico">🔑</span> Cambiar contraseña</a>
+  <button class="si" onclick="doLogout()"><span class="sico">🚪</span> Cerrar sesión</button>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="tb-l"><h1>📜 Certificados Médicos MSP</h1><span>Formulario SNS-MSP/HCU-form.117/2021</span></div>
+    <div class="tb-r">
+      <button onclick="window.print()" style="background:rgba(124,58,237,.2);color:#c4b5fd;border:1px solid rgba(124,58,237,.3);padding:.4rem .9rem;border-radius:20px;font-family:Outfit,sans-serif;font-size:.75rem;font-weight:600;cursor:pointer">🖨️ Imprimir certificado</button>
+      <button class="btn-out" onclick="doLogout()">🚪 Salir</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="al al-ok" id="al-ok"></div>
+    <div class="al al-err" id="al-err"></div>
+
+    <div class="g2">
+      <!-- FORMULARIO -->
+      <div id="form-col">
+        <div class="card">
+          <div class="chd"><div><div class="ctit">📝 Datos del certificado</div><div class="csub">Formulario MSP form.117/2021</div></div></div>
+
+          <div class="fg"><label>A. Institución / Establecimiento</label><input id="c-inst" value="AZUCENA MEDICAL CENTER" oninput="actualizarCert()"/></div>
+          <div class="frow">
+            <div class="fg"><label>N° Historia Clínica</label><input id="c-nhc" placeholder="Auto" oninput="actualizarCert()"/></div>
+            <div class="fg"><label>N° Archivo</label><input id="c-narc" oninput="actualizarCert()"/></div>
+          </div>
+
+          <div style="height:1px;background:var(--border);margin:.8rem 0"></div>
+          <div style="font-size:.72rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.75rem">B. Datos del paciente</div>
+
+          <div class="frow">
+            <div class="fg"><label>Primer apellido *</label><input id="c-ap1" oninput="actualizarCert()"/></div>
+            <div class="fg"><label>Segundo apellido</label><input id="c-ap2" oninput="actualizarCert()"/></div>
+          </div>
+          <div class="frow">
+            <div class="fg"><label>Primer nombre *</label><input id="c-nom1" oninput="actualizarCert()"/></div>
+            <div class="fg"><label>Segundo nombre</label><input id="c-nom2" oninput="actualizarCert()"/></div>
+          </div>
+          <div class="frow3">
+            <div class="fg"><label>Sexo</label><select id="c-sexo" onchange="actualizarCert()"><option>M</option><option>F</option></select></div>
+            <div class="fg"><label>Edad (años)</label><input type="number" id="c-edad" oninput="actualizarCert()"/></div>
+            <div class="fg"><label>Cédula</label><input id="c-ced" oninput="actualizarCert()"/></div>
+          </div>
+
+          <div style="height:1px;background:var(--border);margin:.8rem 0"></div>
+          <div style="font-size:.72rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.75rem">B. Atención</div>
+
+          <div class="fg"><label>Servicio de atención</label><select id="c-svc" onchange="actualizarCert()">
+            <option>Medicina General</option><option>Fisioterapia</option><option>Obstetricia</option>
+            <option>Traumatología</option><option>Odontología</option><option>Laboratorio</option><option>Especialidades</option>
+          </select></div>
+          <div class="frow">
+            <div class="fg"><label>Fecha de atención *</label><input type="date" id="c-fecha" oninput="actualizarCert()"/></div>
+            <div class="fg"><label>Hora desde</label><input type="time" id="c-hdesde" oninput="actualizarCert()"/></div>
+          </div>
+          <div class="fg"><label>Hora hasta</label><input type="time" id="c-hhasta" oninput="actualizarCert()"/></div>
+
+          <div style="height:1px;background:var(--border);margin:.8rem 0"></div>
+          <div style="font-size:.72rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.75rem">C. Reposo recomendado</div>
+
+          <div class="rep-toggle">
+            <button class="rep-btn sel" id="rep-si" onclick="setReposo(true)">✅ SÍ requiere reposo</button>
+            <button class="rep-btn" id="rep-no" onclick="setReposo(false)">❌ NO requiere reposo</button>
+          </div>
+          <div id="rep-fields">
+            <div class="frow">
+              <div class="fg"><label>Desde (fecha)</label><input type="date" id="c-rep-desde" oninput="actualizarCert()"/></div>
+              <div class="fg"><label>Hasta (fecha)</label><input type="date" id="c-rep-hasta" oninput="actualizarCert()"/></div>
+            </div>
+            <div class="fg"><label>Horas de reposo (en números)</label><input type="number" id="c-rep-horas" placeholder="48" oninput="actualizarCert()"/></div>
+          </div>
+
+          <div style="height:1px;background:var(--border);margin:.8rem 0"></div>
+          <div style="font-size:.72rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.75rem">D. Diagnóstico CIE</div>
+          <div class="fg"><label>Diagnóstico 1</label><textarea id="c-diag1" rows="2" oninput="actualizarCert()"></textarea></div>
+          <div class="fg"><label>Diagnóstico 2 (opcional)</label><textarea id="c-diag2" rows="2" oninput="actualizarCert()"></textarea></div>
+
+          <div style="height:1px;background:var(--border);margin:.8rem 0"></div>
+          <div style="font-size:.72rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.75rem">E. Profesional responsable</div>
+          <div class="frow">
+            <div class="fg"><label>Primer nombre médico *</label><input id="c-med-nom" oninput="actualizarCert()"/></div>
+            <div class="fg"><label>Apellido médico *</label><input id="c-med-ape" oninput="actualizarCert()"/></div>
+          </div>
+          <div class="fg"><label>N° Documento identificación</label><input id="c-med-ced" oninput="actualizarCert()"/></div>
+
+          <button class="btn-gen" id="btn-gen" onclick="guardarCertificado()">💾 Guardar e imprimir</button>
+        </div>
+      </div>
+
+      <!-- PREVIEW CERTIFICADO -->
+      <div>
+        <div class="card" style="padding:.75rem .75rem .5rem">
+          <div style="font-size:.72rem;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.75rem;text-align:center">Vista previa del certificado</div>
+          <div class="cert-wrap" id="cert-preview">
+            <div class="cert-header">
+              <h2 id="cp-inst">AZUCENA MEDICAL CENTER</h2>
+              <p>Pedro Guerrero &amp; E15F · Quito, Ecuador CP 170133</p>
+              <p>WhatsApp: +593 98 324 1556</p>
+              <span class="cert-sello">SNS-MSP/HCU-form.117/2021</span>
+            </div>
+
+            <div class="cert-section">
+              <div class="cert-section-title">A. Datos del establecimiento</div>
+              <div class="cert-row">
+                <div class="cert-field"><label>Institución</label><div class="val" id="cp-inst2">AZUCENA MEDICAL CENTER</div></div>
+                <div class="cert-field"><label>N° Historia Clínica</label><div class="val" id="cp-nhc">–</div></div>
+                <div class="cert-field"><label>N° Archivo</label><div class="val" id="cp-narc">–</div></div>
+              </div>
+            </div>
+
+            <div class="cert-section">
+              <div class="cert-section-title">B. Certifico que:</div>
+              <div class="cert-row">
+                <div class="cert-field"><label>Primer apellido</label><div class="val" id="cp-ap1">–</div></div>
+                <div class="cert-field"><label>Segundo apellido</label><div class="val" id="cp-ap2">–</div></div>
+                <div class="cert-field"><label>Primer nombre</label><div class="val" id="cp-nom1">–</div></div>
+                <div class="cert-field"><label>Segundo nombre</label><div class="val" id="cp-nom2">–</div></div>
+              </div>
+              <div class="cert-row">
+                <div class="cert-field"><label>Sexo</label><div class="val" id="cp-sexo">–</div></div>
+                <div class="cert-field"><label>Edad</label><div class="val" id="cp-edad">–</div></div>
+                <div class="cert-field"><label>Cédula</label><div class="val" id="cp-ced">–</div></div>
+              </div>
+              <div class="cert-row">
+                <div class="cert-field" style="flex:2"><label>Servicio de atención</label><div class="val" id="cp-svc">–</div></div>
+              </div>
+              <div class="cert-row">
+                <div class="cert-field"><label>Fecha de atención</label><div class="val" id="cp-fecha">–</div></div>
+                <div class="cert-field"><label>Hora desde</label><div class="val" id="cp-hdesde">–</div></div>
+                <div class="cert-field"><label>Hora hasta</label><div class="val" id="cp-hhasta">–</div></div>
+              </div>
+            </div>
+
+            <div class="cert-section" id="cp-rep-section">
+              <div class="cert-section-title">C. Se recomienda</div>
+              <div class="cert-row">
+                <div class="cert-field"><label>Reposo</label><div class="val" id="cp-reposo">SÍ</div></div>
+                <div class="cert-field"><label>Horas</label><div class="val" id="cp-horas">–</div></div>
+              </div>
+              <div class="cert-row">
+                <div class="cert-field"><label>Desde</label><div class="val" id="cp-rdesde">–</div></div>
+                <div class="cert-field"><label>Hasta</label><div class="val" id="cp-rhasta">–</div></div>
+              </div>
+            </div>
+
+            <div class="cert-section">
+              <div class="cert-section-title">D. Diagnóstico CIE</div>
+              <div class="cert-diag-box" id="cp-diag">–</div>
+            </div>
+
+            <div class="cert-section">
+              <div class="cert-section-title">E. Datos del profesional responsable</div>
+              <div class="cert-row">
+                <div class="cert-field" style="flex:2"><label>Nombre del profesional</label><div class="val" id="cp-medico">–</div></div>
+                <div class="cert-field"><label>N° Documento</label><div class="val" id="cp-med-ced">–</div></div>
+              </div>
+            </div>
+
+            <div class="cert-firma">
+              <div class="cert-firma-item"><div class="linea"></div><p>Firma del Profesional</p></div>
+              <div class="cert-firma-item"><div class="linea"></div><p>Sello del Establecimiento</p></div>
+              <div class="cert-firma-item"><div class="linea"></div><p>Firma del Paciente</p></div>
+            </div>
+
+            <div class="cert-footer">
+              SNS-MSP/HCU-form.117/2021 · CERTIFICADO MÉDICO<br/>
+              Centro Médico Azucena · Pedro Guerrero &amp; E15F, Quito, Ecuador
+            </div>
+          </div>
+        </div>
+
+        <!-- LISTA CERTIFICADOS EMITIDOS -->
+        <div class="card">
+          <div class="chd"><div><div class="ctit">📋 Certificados emitidos</div><div class="csub" id="c-count">Cargando...</div></div></div>
+          <div class="cert-list" id="cert-list"><div class="empty">Cargando...</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,addDoc,getDocs,doc,getDoc,deleteDoc,query,orderBy,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const FC={apiKey:"AIzaSyAwspV-1KcllVyRAbajVPLc0lwsWMOLIco",authDomain:"jadi-salud.firebaseapp.com",projectId:"jadi-salud",storageBucket:"jadi-salud.firebasestorage.app",messagingSenderId:"679691723583",appId:"1:679691723583:web:4235a2493d09a9196ea98a"};
+const app=initializeApp(FC);const db=getFirestore(app);const auth=getAuth(app);
+
+onAuthStateChanged(auth,async u=>{
+  if(!u){window.location.href='../login.html';return;}
+  try{const s=await getDoc(doc(db,'usuarios',u.uid));if(!s.exists()||!['admin','medico'].includes(s.data().rol)){window.location.href='../login.html';return;}}catch(e){}
+  init();loadCerts();
+});
+window.doLogout=async()=>{await signOut(auth);window.location.href='../login.html';};
+
+function showOk(m){const e=document.getElementById('al-ok');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),4000);}
+function showErr(m){const e=document.getElementById('al-err');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),5000);}
+function todayStr(){const n=new Date();return`${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;}
+
+let reposoSi=true;
+
+function init(){
+  document.getElementById('c-fecha').value=todayStr();
+  document.getElementById('c-rep-desde').value=todayStr();
+  const m=new Date();m.setDate(m.getDate()+1);
+  document.getElementById('c-rep-hasta').value=`${m.getFullYear()}-${String(m.getMonth()+1).padStart(2,'0')}-${String(m.getDate()).padStart(2,'0')}`;
+  actualizarCert();
+}
+
+window.setReposo=(si)=>{
+  reposoSi=si;
+  document.getElementById('rep-si').classList.toggle('sel',si);
+  document.getElementById('rep-no').classList.toggle('sel',!si);
+  document.getElementById('rep-fields').style.display=si?'':'none';
+  actualizarCert();
+};
+
+function g(id){return document.getElementById(id)?.value||'';}
+function s(id,v){const e=document.getElementById(id);if(e)e.textContent=v||'–';}
+
+window.actualizarCert=()=>{
+  s('cp-inst2',g('c-inst'));s('cp-nhc',g('c-nhc'));s('cp-narc',g('c-narc'));
+  s('cp-ap1',g('c-ap1'));s('cp-ap2',g('c-ap2'));s('cp-nom1',g('c-nom1'));s('cp-nom2',g('c-nom2'));
+  s('cp-sexo',g('c-sexo'));s('cp-edad',g('c-edad')?(g('c-edad')+' años'):'–');s('cp-ced',g('c-ced'));
+  s('cp-svc',g('c-svc'));
+  const f=g('c-fecha');s('cp-fecha',f?new Date(f+'T12:00:00').toLocaleDateString('es-EC',{year:'numeric',month:'long',day:'numeric'}):'–');
+  s('cp-hdesde',g('c-hdesde'));s('cp-hhasta',g('c-hhasta'));
+  s('cp-reposo',reposoSi?'SÍ':'NO');
+  s('cp-horas',g('c-rep-horas')||'–');
+  const rd=g('c-rep-desde'),rh=g('c-rep-hasta');
+  s('cp-rdesde',rd?new Date(rd+'T12:00:00').toLocaleDateString('es-EC',{year:'numeric',month:'long',day:'numeric'}):'–');
+  s('cp-rhasta',rh?new Date(rh+'T12:00:00').toLocaleDateString('es-EC',{year:'numeric',month:'long',day:'numeric'}):'–');
+  const diag=[g('c-diag1'),g('c-diag2')].filter(Boolean).join('\n');
+  s('cp-diag',diag||'–');
+  s('cp-medico',`${g('c-med-nom')} ${g('c-med-ape')}`.trim()||'–');
+  s('cp-med-ced',g('c-med-ced'));
+  document.getElementById('cp-inst').textContent=g('c-inst')||'AZUCENA MEDICAL CENTER';
+};
+
+window.guardarCertificado=async()=>{
+  if(!g('c-ap1')||!g('c-nom1')||!g('c-fecha')){showErr('Apellido, nombre y fecha de atención son obligatorios.');return;}
+  const btn=document.getElementById('btn-gen');btn.disabled=true;btn.innerHTML='⏳ Guardando...';
+  const data={
+    institucion:g('c-inst'),nHistoria:g('c-nhc'),nArchivo:g('c-narc'),
+    apellido1:g('c-ap1'),apellido2:g('c-ap2'),nombre1:g('c-nom1'),nombre2:g('c-nom2'),
+    sexo:g('c-sexo'),edad:g('c-edad'),cedula:g('c-ced'),
+    servicio:g('c-svc'),fechaAtencion:g('c-fecha'),horaDesde:g('c-hdesde'),horaHasta:g('c-hhasta'),
+    reposo:reposoSi,horasReposo:g('c-rep-horas'),
+    reposoDesde:g('c-rep-desde'),reposoHasta:g('c-rep-hasta'),
+    diagnostico1:g('c-diag1'),diagnostico2:g('c-diag2'),
+    medicoNombre:g('c-med-nom'),medicoApellido:g('c-med-ape'),medicoCedula:g('c-med-ced'),
+    creadoEn:serverTimestamp()
+  };
+  try{
+    await addDoc(collection(db,'certificados'),data);
+    showOk('✅ Certificado guardado. Usa el botón 🖨️ para imprimir.');
+    loadCerts();
+    setTimeout(()=>window.print(),800);
+  }catch(e){showErr('Error: '+e.message);}
+  btn.disabled=false;btn.innerHTML='💾 Guardar e imprimir';
+};
+
+async function loadCerts(){
+  try{
+    const snap=await getDocs(query(collection(db,'certificados'),orderBy('creadoEn','desc')));
+    const certs=snap.docs.map(d=>({id:d.id,...d.data()}));
+    document.getElementById('c-count').textContent=`${certs.length} certificados emitidos`;
+    const list=document.getElementById('cert-list');
+    if(certs.length===0){list.innerHTML='<div class="empty">Sin certificados emitidos aún</div>';return;}
+    list.innerHTML=certs.slice(0,15).map(c=>`
+      <div class="cert-item">
+        <div class="cert-ico">📜</div>
+        <div>
+          <div class="cert-nm">${c.nombre1||''} ${c.apellido1||''}</div>
+          <div class="cert-meta">${c.servicio||'–'} · ${c.fechaAtencion||'–'} · ${c.reposo?'Con reposo':'Sin reposo'}</div>
+        </div>
+        <div class="cert-actions">
+          <button class="bsm bb" onclick="cargarCert('${c.id}')">📋 Cargar</button>
+          <button class="bsm br" onclick="eliminarCert('${c.id}')">🗑</button>
+        </div>
+      </div>`).join('');
+    window._certs=certs;
+  }catch(e){document.getElementById('cert-list').innerHTML='<div class="empty">Error al cargar</div>';}
+}
+
+window.cargarCert=(id)=>{
+  const c=window._certs?.find(x=>x.id===id);if(!c)return;
+  const set=(i,v)=>{const e=document.getElementById(i);if(e)e.value=v||'';};
+  set('c-inst',c.institucion);set('c-nhc',c.nHistoria);set('c-narc',c.nArchivo);
+  set('c-ap1',c.apellido1);set('c-ap2',c.apellido2);set('c-nom1',c.nombre1);set('c-nom2',c.nombre2);
+  set('c-sexo',c.sexo);set('c-edad',c.edad);set('c-ced',c.cedula);
+  set('c-svc',c.servicio);set('c-fecha',c.fechaAtencion);set('c-hdesde',c.horaDesde);set('c-hhasta',c.horaHasta);
+  set('c-rep-horas',c.horasReposo);set('c-rep-desde',c.reposoDesde);set('c-rep-hasta',c.reposoHasta);
+  set('c-diag1',c.diagnostico1);set('c-diag2',c.diagnostico2);
+  set('c-med-nom',c.medicoNombre);set('c-med-ape',c.medicoApellido);set('c-med-ced',c.medicoCedula);
+  setReposo(c.reposo!==false);
+  actualizarCert();
+  showOk('Certificado cargado. Puedes imprimirlo o editarlo.');
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+
+window.eliminarCert=async(id)=>{
+  if(!confirm('¿Eliminar este certificado del historial?'))return;
+  try{await deleteDoc(doc(db,'certificados',id));showOk('🗑 Eliminado.');loadCerts();}
+  catch(e){showErr('Error: '+e.message);}
+};
+</script>
+</body>
+</html>
