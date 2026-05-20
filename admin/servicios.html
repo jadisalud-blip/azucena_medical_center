@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Servicios · Admin · Centro Médico Azucena</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--blue:#0066FF;--blue2:#0047B3;--card:#0a1628;--border:rgba(255,255,255,.07);--muted:#7B8CB0;--r:12px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:#080f1e;color:#fff;display:flex;min-height:100vh;overflow:hidden}
+aside{width:240px;background:#040B1C;border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:100vh;overflow-y:auto;position:fixed;top:0;left:0;z-index:100}
+.logo{display:flex;align-items:center;gap:.55rem;padding:1.4rem 1.2rem;border-bottom:1px solid var(--border);text-decoration:none}
+.lm{width:30px;height:30px;border-radius:7px;background:var(--blue);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.lm::before,.lm::after{content:'';position:absolute;background:#fff;border-radius:2px}
+.lm::before{width:3px;height:17px}.lm::after{width:17px;height:3px}
+.lt{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff}.lt em{font-style:normal;color:#60b4ff}
+.s-sec{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:.9rem 1.2rem .35rem}
+.si{display:flex;align-items:center;gap:.7rem;padding:.58rem 1.2rem;color:rgba(255,255,255,.55);text-decoration:none;font-size:.82rem;font-weight:500;transition:all .2s;cursor:pointer;border:none;background:none;width:100%;text-align:left;position:relative}
+.si:hover{background:rgba(255,255,255,.04);color:#fff}
+.si.active{background:rgba(0,102,255,.18);color:#60b4ff}
+.si.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);border-radius:0 3px 3px 0}
+.sico{width:18px;text-align:center;font-size:.9rem;flex-shrink:0}
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh;overflow-y:auto}
+.topbar{background:#040B1C;border-bottom:1px solid var(--border);padding:.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.tb-l h1{font-family:'Playfair Display',serif;font-size:1.25rem;color:#fff}
+.tb-l span{font-size:.72rem;color:var(--muted);display:block;margin-top:.1rem}
+.tb-r{display:flex;align-items:center;gap:.7rem}
+.btn-out{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;padding:.4rem .9rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer}
+.btn-add{background:var(--blue);color:#fff;border:none;padding:.45rem 1.1rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-add:hover{background:var(--blue2)}
+.btn-seed{background:rgba(202,138,4,.2);color:#fde047;border:1px solid rgba(202,138,4,.3);padding:.45rem 1rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-seed:hover{background:rgba(202,138,4,.4)}
+.content{padding:1.5rem 2rem;flex:1}
+.g2{display:grid;grid-template-columns:1fr 1.4fr;gap:1.4rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem;margin-bottom:1.2rem}
+.chd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.75rem}
+.ctit{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#fff}
+.csub{font-size:.72rem;color:var(--muted);margin-top:.1rem}
+/* FORMULARIO */
+.fg{display:flex;flex-direction:column;gap:.38rem;margin-bottom:.95rem}
+.fg label{font-size:.72rem;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px}
+.fg input,.fg select,.fg textarea{padding:.72rem .9rem;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;background:rgba(255,255,255,.05);color:#fff;font-family:'Outfit',sans-serif;font-size:.87rem;outline:none;transition:all .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);background:rgba(0,102,255,.08)}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,.25)}
+.fg select option{background:#0a1628;color:#fff}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.fg textarea{resize:vertical;min-height:65px}
+/* ICONOS PICKER */
+.ico-grid{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem}
+.ico-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all .2s}
+.ico-btn:hover{border-color:var(--blue);background:rgba(0,102,255,.1)}
+.ico-btn.sel{border-color:var(--blue);background:rgba(0,102,255,.2)}
+/* TOGGLE */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.toggle-lbl{font-size:.85rem;color:rgba(255,255,255,.75)}
+.toggle{position:relative;width:44px;height:24px}
+.toggle input{opacity:0;width:0;height:0}
+.slider{position:absolute;inset:0;background:rgba(255,255,255,.15);border-radius:24px;cursor:pointer;transition:.3s}
+.slider::before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
+.toggle input:checked+.slider{background:var(--blue)}
+.toggle input:checked+.slider::before{transform:translateX(20px)}
+.btn-save{width:100%;background:var(--blue);color:#fff;border:none;padding:.95rem;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(0,102,255,.35);transition:all .25s;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.btn-save:hover{background:var(--blue2);transform:translateY(-2px)}
+.btn-save:disabled{opacity:.6;cursor:not-allowed;transform:none}
+/* LISTA SERVICIOS */
+.svc-list{display:flex;flex-direction:column;gap:.7rem}
+.svc-item{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:1rem;display:flex;align-items:center;gap:.9rem;transition:border-color .2s;cursor:grab}
+.svc-item:hover{border-color:rgba(0,102,255,.3)}
+.svc-ico2{width:42px;height:42px;border-radius:10px;background:rgba(0,102,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.svc-info{flex:1;min-width:0}
+.svc-nm{font-weight:700;font-size:.88rem;color:#fff}
+.svc-desc{font-size:.73rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:.15rem}
+.svc-price{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#86efac;flex-shrink:0}
+.svc-actions{display:flex;gap:.4rem;flex-shrink:0}
+.bsm{padding:.3rem .7rem;border-radius:7px;border:none;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .2s}
+.bb{background:rgba(0,102,255,.2);color:#60b4ff}.bb:hover{background:rgba(0,102,255,.4)}
+.br{background:rgba(220,38,38,.15);color:#fca5a5}.br:hover{background:rgba(220,38,38,.3)}
+.by{background:rgba(202,138,4,.2);color:#fde047}.by:hover{background:rgba(202,138,4,.4)}
+/* PREVIEW */
+.preview-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;text-align:center;transition:all .2s}
+.prev-ico{font-size:2.5rem;margin-bottom:.6rem;display:block}
+.prev-price{display:inline-block;background:#e8f2ff;color:var(--blue);font-size:.72rem;font-weight:700;padding:.2rem .65rem;border-radius:50px;margin-bottom:.4rem}
+.prev-nm{font-weight:700;font-size:.95rem;margin-bottom:.3rem}
+.prev-desc{font-size:.78rem;color:var(--muted);line-height:1.6}
+/* ALERT */
+.al{padding:.75rem 1rem;border-radius:9px;font-size:.8rem;margin-bottom:1rem;display:none}
+.al.show{display:block}
+.al-ok{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:#86efac}
+.al-err{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5}
+.empty{text-align:center;color:var(--muted);padding:2rem;font-size:.85rem}
+@media(max-width:900px){.g2{grid-template-columns:1fr}aside{display:none}.main{margin-left:0}.frow{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<aside>
+  <a class="logo" href="../index.html" target="_blank"><div class="lm"></div><span class="lt">Azucena <em>Medical</em></span></a>
+  <div class="s-sec">Principal</div>
+  <a href="dashboard.html" class="si"><span class="sico">📊</span> Dashboard</a>
+  <a href="agenda.html"    class="si"><span class="sico">📅</span> Agenda</a>
+  <a href="citas.html"     class="si"><span class="sico">🩺</span> Citas</a>
+  <div class="s-sec">Gestión</div>
+  <a href="medicos.html"    class="si"><span class="sico">👨‍⚕️</span> Médicos</a>
+  <a href="servicios.html"  class="si active"><span class="sico">🏥</span> Servicios</a>
+  <a href="pacientes.html"  class="si"><span class="sico">👥</span> Pacientes</a>
+  <a href="historias.html"  class="si"><span class="sico">📋</span> Historias Clínicas</a>
+  <a href="reporte.html"    class="si"><span class="sico">💰</span> Reporte Diario</a>
+  <a href="estudiantes.html"class="si"><span class="sico">🎓</span> Estudiantes</a>
+  <a href="certificados.html"class="si"><span class="sico">📜</span> Certificados MSP</a>
+  <div class="s-sec">Personalización</div>
+  <a href="publicidad.html" class="si"><span class="sico">📢</span> Publicidad</a>
+  <a href="usuarios.html"   class="si"><span class="sico">👤</span> Usuarios</a>
+  <div class="s-sec">Cuenta</div>
+  <a href="../login.html?action=cambio" class="si"><span class="sico">🔑</span> Cambiar contraseña</a>
+  <button class="si" onclick="doLogout()"><span class="sico">🚪</span> Cerrar sesión</button>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="tb-l"><h1>🏥 Gestión de Servicios</h1><span>Los servicios activos aparecen en el index y en el formulario de citas</span></div>
+    <div class="tb-r">
+      <button class="btn-seed" onclick="cargarServiciosBase()">⚡ Cargar servicios base</button>
+      <button class="btn-out" onclick="doLogout()">🚪 Salir</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="al al-ok" id="al-ok"></div>
+    <div class="al al-err" id="al-err"></div>
+
+    <div class="g2">
+      <!-- FORMULARIO -->
+      <div>
+        <div class="card">
+          <div class="chd"><div><div class="ctit" id="form-tit">➕ Agregar servicio</div><div class="csub">Se muestra en el index y en el formulario de citas</div></div>
+            <button class="bsm bb" onclick="resetForm()" style="padding:.4rem .8rem">+ Nuevo</button>
+          </div>
+          <input type="hidden" id="edit-id"/>
+
+          <!-- PICKER DE ICONOS -->
+          <div class="fg"><label>Icono del servicio</label>
+            <div class="ico-grid" id="ico-grid">
+              <button class="ico-btn" data-ico="🩺" onclick="selIco(this)">🩺</button>
+              <button class="ico-btn" data-ico="🤸" onclick="selIco(this)">🤸</button>
+              <button class="ico-btn" data-ico="🤰" onclick="selIco(this)">🤰</button>
+              <button class="ico-btn" data-ico="🦴" onclick="selIco(this)">🦴</button>
+              <button class="ico-btn" data-ico="🦷" onclick="selIco(this)">🦷</button>
+              <button class="ico-btn" data-ico="🔬" onclick="selIco(this)">🔬</button>
+              <button class="ico-btn" data-ico="🏥" onclick="selIco(this)">🏥</button>
+              <button class="ico-btn" data-ico="📸" onclick="selIco(this)">📸</button>
+              <button class="ico-btn" data-ico="💉" onclick="selIco(this)">💉</button>
+              <button class="ico-btn" data-ico="🌡️" onclick="selIco(this)">🌡️</button>
+              <button class="ico-btn" data-ico="❤️" onclick="selIco(this)">❤️</button>
+              <button class="ico-btn" data-ico="🧠" onclick="selIco(this)">🧠</button>
+              <button class="ico-btn" data-ico="👁️" onclick="selIco(this)">👁️</button>
+              <button class="ico-btn" data-ico="👶" onclick="selIco(this)">👶</button>
+              <button class="ico-btn" data-ico="🦻" onclick="selIco(this)">🦻</button>
+              <button class="ico-btn" data-ico="🩸" onclick="selIco(this)">🩸</button>
+            </div>
+            <input type="text" id="m-ico" placeholder="O escribe un emoji..." oninput="actualizarPreview()" style="margin-top:.5rem"/>
+          </div>
+
+          <div class="fg"><label>Nombre del servicio *</label>
+            <input type="text" id="m-nom" placeholder="Ej: Medicina General" oninput="actualizarPreview()"/></div>
+          <div class="frow">
+            <div class="fg"><label>Precio *</label>
+              <input type="text" id="m-precio" placeholder="Ej: $10" oninput="actualizarPreview()"/></div>
+            <div class="fg"><label>Orden de aparición</label>
+              <input type="number" id="m-orden" placeholder="1" min="1"/></div>
+          </div>
+          <div class="fg"><label>Descripción</label>
+            <textarea id="m-desc" placeholder="Breve descripción del servicio..." oninput="actualizarPreview()"></textarea></div>
+
+          <div class="toggle-row">
+            <div class="toggle-lbl">¿Visible en el index?</div>
+            <label class="toggle"><input type="checkbox" id="m-activo" checked/><span class="slider"></span></label>
+          </div>
+
+          <!-- PREVIEW -->
+          <div style="font-size:.72rem;font-weight:600;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;margin-bottom:.6rem">Vista previa en el index</div>
+          <div class="preview-card" id="preview">
+            <span class="prev-ico" id="p-ico">🏥</span>
+            <div class="prev-price" id="p-price">$–</div>
+            <div class="prev-nm" id="p-nm">Nombre del servicio</div>
+            <div class="prev-desc" id="p-desc">Descripción del servicio...</div>
+          </div>
+
+          <button class="btn-save" id="btn-save" onclick="guardarServicio()" style="margin-top:1rem">💾 Guardar servicio</button>
+        </div>
+      </div>
+
+      <!-- LISTA DE SERVICIOS -->
+      <div class="card">
+        <div class="chd">
+          <div><div class="ctit">📋 Servicios registrados</div><div class="csub" id="csub-count">Cargando...</div></div>
+        </div>
+        <div class="svc-list" id="svc-list">
+          <div class="empty">Cargando servicios...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,addDoc,getDocs,doc,getDoc,updateDoc,deleteDoc,serverTimestamp,writeBatch}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const FC={apiKey:"AIzaSyAwspV-1KcllVyRAbajVPLc0lwsWMOLIco",authDomain:"jadi-salud.firebaseapp.com",projectId:"jadi-salud",storageBucket:"jadi-salud.firebasestorage.app",messagingSenderId:"679691723583",appId:"1:679691723583:web:4235a2493d09a9196ea98a"};
+const app=initializeApp(FC);const db=getFirestore(app);const auth=getAuth(app);
+
+onAuthStateChanged(auth,async u=>{
+  if(!u){window.location.href='../login.html';return;}
+  try{const s=await getDoc(doc(db,'usuarios',u.uid));if(!s.exists()||!['admin','medico'].includes(s.data().rol)){window.location.href='../login.html';return;}}catch(e){}
+  loadServicios();
+});
+window.doLogout=async()=>{await signOut(auth);window.location.href='../login.html';};
+
+function showOk(m){const e=document.getElementById('al-ok');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),4000);}
+function showErr(m){const e=document.getElementById('al-err');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),5000);}
+
+let allSvc=[];
+let icoSel='🏥';
+
+// ICONO PICKER
+window.selIco=(btn)=>{
+  document.querySelectorAll('.ico-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');icoSel=btn.dataset.ico;
+  document.getElementById('m-ico').value=icoSel;
+  actualizarPreview();
+};
+window.actualizarPreview=()=>{
+  const ico=document.getElementById('m-ico').value||icoSel||'🏥';
+  const nm=document.getElementById('m-nom').value||'Nombre del servicio';
+  const pr=document.getElementById('m-precio').value||'$–';
+  const ds=document.getElementById('m-desc').value||'Descripción del servicio...';
+  document.getElementById('p-ico').textContent=ico;
+  document.getElementById('p-nm').textContent=nm;
+  document.getElementById('p-price').textContent=pr;
+  document.getElementById('p-desc').textContent=ds;
+};
+
+async function loadServicios(){
+  try{const s=await getDocs(collection(db,'servicios'));allSvc=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.orden||99)-(b.orden||99));}
+  catch(e){allSvc=[];}
+  renderServicios();
+}
+
+function renderServicios(){
+  const list=document.getElementById('svc-list');
+  document.getElementById('csub-count').textContent=`${allSvc.length} servicios · ${allSvc.filter(s=>s.activo!==false).length} visibles en el index`;
+  if(allSvc.length===0){list.innerHTML='<div class="empty">Sin servicios. Usa "Cargar servicios base" o agrega uno manualmente.</div>';return;}
+  list.innerHTML=allSvc.map(s=>`
+    <div class="svc-item">
+      <div class="svc-ico2">${s.icono||'🏥'}</div>
+      <div class="svc-info">
+        <div class="svc-nm">${s.nombre}</div>
+        <div class="svc-desc">${s.descripcion||'Sin descripción'}</div>
+      </div>
+      <div class="svc-price">${s.precio||'–'}</div>
+      <div class="svc-actions">
+        <button class="bsm bb" onclick="editarSvc('${s.id}')">✏️</button>
+        <button class="bsm ${s.activo!==false?'by':'bg'}" onclick="toggleSvc('${s.id}',${s.activo!==false})" style="${s.activo===false?'background:rgba(22,163,74,.2);color:#86efac':''}">${s.activo!==false?'⏸':'▶'}</button>
+        <button class="bsm br" onclick="eliminarSvc('${s.id}')">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+window.resetForm=()=>{
+  document.getElementById('edit-id').value='';
+  document.getElementById('form-tit').textContent='➕ Agregar servicio';
+  ['m-nom','m-precio','m-desc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('m-orden').value='';
+  document.getElementById('m-ico').value='';
+  document.getElementById('m-activo').checked=true;
+  document.querySelectorAll('.ico-btn').forEach(b=>b.classList.remove('sel'));
+  icoSel='🏥';actualizarPreview();
+  document.getElementById('btn-save').innerHTML='💾 Guardar servicio';
+};
+
+window.editarSvc=(id)=>{
+  const s=allSvc.find(x=>x.id===id);if(!s)return;
+  document.getElementById('edit-id').value=id;
+  document.getElementById('form-tit').textContent='✏️ Editar servicio';
+  document.getElementById('m-nom').value=s.nombre||'';
+  document.getElementById('m-precio').value=s.precio||'';
+  document.getElementById('m-desc').value=s.descripcion||'';
+  document.getElementById('m-orden').value=s.orden||'';
+  document.getElementById('m-ico').value=s.icono||'';
+  document.getElementById('m-activo').checked=s.activo!==false;
+  icoSel=s.icono||'🏥';
+  document.querySelectorAll('.ico-btn').forEach(b=>b.classList.toggle('sel',b.dataset.ico===icoSel));
+  actualizarPreview();
+  document.getElementById('btn-save').innerHTML='💾 Actualizar servicio';
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+
+window.guardarServicio=async()=>{
+  const nom=document.getElementById('m-nom').value.trim();
+  const precio=document.getElementById('m-precio').value.trim();
+  if(!nom||!precio){showErr('Nombre y precio son obligatorios.');return;}
+  const btn=document.getElementById('btn-save');btn.disabled=true;btn.innerHTML='⏳ Guardando...';
+  const ico=document.getElementById('m-ico').value||icoSel||'🏥';
+  const data={
+    nombre:nom,precio,icono:ico,
+    descripcion:document.getElementById('m-desc').value.trim(),
+    orden:parseInt(document.getElementById('m-orden').value)||allSvc.length+1,
+    activo:document.getElementById('m-activo').checked,
+    updatedAt:serverTimestamp()
+  };
+  try{
+    const editId=document.getElementById('edit-id').value;
+    if(editId){await updateDoc(doc(db,'servicios',editId),data);showOk('✅ Servicio actualizado. Ya se ve en el index.');}
+    else{data.creadoEn=serverTimestamp();await addDoc(collection(db,'servicios'),data);showOk('✅ Servicio guardado. Ya aparece en el index.');}
+    resetForm();loadServicios();
+  }catch(e){showErr('Error: '+e.message);}
+  btn.disabled=false;btn.innerHTML='💾 Guardar servicio';
+};
+
+window.toggleSvc=async(id,activo)=>{
+  try{await updateDoc(doc(db,'servicios',id),{activo:!activo,updatedAt:serverTimestamp()});showOk(`Servicio ${!activo?'activado':'ocultado'} en el index.`);loadServicios();}
+  catch(e){showErr('Error: '+e.message);}
+};
+
+window.eliminarSvc=async(id)=>{
+  if(!confirm('¿Eliminar este servicio del index?'))return;
+  try{await deleteDoc(doc(db,'servicios',id));showOk('🗑 Servicio eliminado.');loadServicios();}
+  catch(e){showErr('Error: '+e.message);}
+};
+
+// CARGAR SERVICIOS BASE (del archivo PRECIOS  de MATRIZ_ENERO_2026.xlsx)
+const SVC_BASE=[
+  {icono:'🩺',nombre:'Medicina General',precio:'$10',descripcion:'Consulta general, diagnóstico y tratamiento de enfermedades comunes.',orden:1},
+  {icono:'🤸',nombre:'Fisioterapia',precio:'$10 – $20',descripcion:'Primera consulta $10 · Seguimiento $15–$20. Rehabilitación física y manejo del dolor.',orden:2},
+  {icono:'🤰',nombre:'Obstetricia',precio:'$20',descripcion:'Control prenatal, salud femenina. PAP test $20.',orden:3},
+  {icono:'🦴',nombre:'Traumatología',precio:'$20',descripcion:'Lesiones musculoesqueléticas, fracturas e infiltraciones. Previo valoración.',orden:4},
+  {icono:'🦷',nombre:'Odontología',precio:'$20',descripcion:'Salud dental integral. Sutura de punto y retiro de puntos incluidos.',orden:5},
+  {icono:'🔬',nombre:'Laboratorio',precio:'Varía',descripcion:'Análisis clínicos completos con resultados digitales en línea.',orden:6},
+  {icono:'🏥',nombre:'Especialidades',precio:'$20',descripcion:'Diversas especialidades médicas certificadas.',orden:7},
+  {icono:'📸',nombre:'Rayos X',precio:'$20 c/toma',descripcion:'Diagnóstico por imagen digital. Cada toma $20 (conv. Lcdo. Walter Morán).',orden:8},
+  {icono:'💉',nombre:'Inyecciones',precio:'$2 – $5',descripcion:'IM $2 · IV $5. Suero Complejo B + Vitamina C $40.',orden:9},
+  {icono:'🌡️',nombre:'Procedimientos',precio:'Varía',descripcion:'T/A $2 · Glucosa capilar $5 · Nebulización $8 · Lavado oído $10.',orden:10},
+];
+
+window.cargarServiciosBase=async()=>{
+  if(!confirm(`¿Cargar los ${SVC_BASE.length} servicios base del centro? Esto agregará los que no existan todavía.`))return;
+  const btn=document.querySelector('.btn-seed');btn.textContent='⏳ Cargando...';
+  try{
+    let agregados=0;
+    for(const s of SVC_BASE){
+      const existe=allSvc.some(x=>x.nombre===s.nombre);
+      if(!existe){await addDoc(collection(db,'servicios'),{...s,activo:true,creadoEn:serverTimestamp()});agregados++;}
+    }
+    showOk(`✅ ${agregados} servicios cargados. ${SVC_BASE.length-agregados} ya existían.`);
+    loadServicios();
+  }catch(e){showErr('Error: '+e.message);}
+  btn.textContent='⚡ Cargar servicios base';
+};
+</script>
+</body>
+</html>
