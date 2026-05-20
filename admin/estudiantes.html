@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Estudiantes · Admin · Centro Médico Azucena</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--blue:#0066FF;--blue2:#0047B3;--card:#0a1628;--border:rgba(255,255,255,.07);--muted:#7B8CB0;--grn:#16a34a;--red:#dc2626;--r:12px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:#080f1e;color:#fff;display:flex;min-height:100vh;overflow:hidden}
+aside{width:240px;background:#040B1C;border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:100vh;overflow-y:auto;position:fixed;top:0;left:0;z-index:100}
+.logo{display:flex;align-items:center;gap:.55rem;padding:1.4rem 1.2rem;border-bottom:1px solid var(--border);text-decoration:none}
+.lm{width:30px;height:30px;border-radius:7px;background:var(--blue);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.lm::before,.lm::after{content:'';position:absolute;background:#fff;border-radius:2px}
+.lm::before{width:3px;height:17px}.lm::after{width:17px;height:3px}
+.lt{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff}.lt em{font-style:normal;color:#60b4ff}
+.s-sec{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:.9rem 1.2rem .35rem}
+.si{display:flex;align-items:center;gap:.7rem;padding:.58rem 1.2rem;color:rgba(255,255,255,.55);text-decoration:none;font-size:.82rem;font-weight:500;transition:all .2s;cursor:pointer;border:none;background:none;width:100%;text-align:left;position:relative}
+.si:hover{background:rgba(255,255,255,.04);color:#fff}
+.si.active{background:rgba(0,102,255,.18);color:#60b4ff}
+.si.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);border-radius:0 3px 3px 0}
+.sico{width:18px;text-align:center;font-size:.9rem;flex-shrink:0}
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh;overflow-y:auto}
+.topbar{background:#040B1C;border-bottom:1px solid var(--border);padding:.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.tb-l h1{font-family:'Playfair Display',serif;font-size:1.25rem;color:#fff}
+.tb-l span{font-size:.72rem;color:var(--muted);display:block;margin-top:.1rem}
+.tb-r{display:flex;align-items:center;gap:.7rem}
+.btn-out{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;padding:.4rem .9rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer}
+.btn-add{background:var(--blue);color:#fff;border:none;padding:.4rem 1rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-add:hover{background:var(--blue2)}
+.btn-exp{background:rgba(22,163,74,.2);color:#86efac;border:1px solid rgba(22,163,74,.3);padding:.4rem .9rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer}
+.content{padding:1.5rem 2rem;flex:1}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem;margin-bottom:1.2rem}
+.chd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.75rem}
+.ctit{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#fff}
+.csub{font-size:.72rem;color:var(--muted);margin-top:.1rem}
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;margin-bottom:1.2rem}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem;position:relative;overflow:hidden}
+.kpi-bar{position:absolute;top:0;left:0;right:0;height:3px}
+.kpi-v{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;color:#fff}
+.kpi-l{font-size:.7rem;color:var(--muted);margin-top:.2rem}
+/* TABS */
+.tabs{display:flex;gap:.5rem;margin-bottom:1.2rem}
+.tab{padding:.5rem 1.2rem;border-radius:50px;border:1.5px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-size:.8rem;font-weight:600;cursor:pointer;background:none;font-family:'Outfit',sans-serif;transition:all .2s}
+.tab.active{background:var(--blue);border-color:var(--blue);color:#fff}
+/* CARDS ESTUDIANTES */
+.est-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+.est-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;transition:border-color .2s}
+.est-card:hover{border-color:rgba(0,102,255,.3)}
+.est-top{display:flex;align-items:center;gap:.9rem;margin-bottom:1rem}
+.est-av{width:44px;height:44px;border-radius:50%;background:rgba(124,58,237,.3);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.est-nm{font-weight:700;font-size:.93rem;color:#fff}
+.est-sub{font-size:.72rem;color:var(--muted);margin-top:.12rem}
+.est-badge{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .65rem;border-radius:20px;font-size:.68rem;font-weight:700;margin-bottom:.75rem}
+.eb-in{background:rgba(22,163,74,.18);color:#86efac}
+.eb-out{background:rgba(220,38,38,.18);color:#fca5a5}
+.eb-none{background:rgba(202,138,4,.18);color:#fde047}
+/* REGISTRO HOY */
+.reg-hoy{background:rgba(0,102,255,.08);border:1px solid rgba(0,102,255,.2);border-radius:9px;padding:.8rem;margin-bottom:.75rem;font-size:.8rem}
+.reg-row{display:flex;justify-content:space-between;margin-bottom:.3rem}
+.reg-lbl{color:var(--muted)}
+.reg-val{color:#fff;font-weight:600}
+/* BOTONES REGISTRO */
+.btn-entrada{background:rgba(22,163,74,.2);color:#86efac;border:1px solid rgba(22,163,74,.3);padding:.5rem 1rem;border-radius:9px;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;width:100%;margin-bottom:.4rem;transition:all .2s}
+.btn-entrada:hover{background:rgba(22,163,74,.4)}
+.btn-salida{background:rgba(220,38,38,.15);color:#fca5a5;border:1px solid rgba(220,38,38,.3);padding:.5rem 1rem;border-radius:9px;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;width:100%;transition:all .2s}
+.btn-salida:hover{background:rgba(220,38,38,.3)}
+.btn-disabled{opacity:.4;cursor:not-allowed}
+/* TABLA HISTORIAL */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{text-align:left;font-size:.67rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);padding:.6rem .75rem;border-bottom:1px solid var(--border)}
+.tbl td{padding:.7rem .75rem;font-size:.82rem;border-bottom:1px solid rgba(255,255,255,.04)}
+.tbl tr:last-child td{border-bottom:none}
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:#0a1628;border:1px solid rgba(255,255,255,.1);border-radius:18px;width:min(580px,95vw);max-height:90vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:mIn .3s ease}
+@keyframes mIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.mhd{padding:1.5rem 1.8rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between}
+.mtit{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#fff}
+.msub{font-size:.72rem;color:var(--muted);margin-top:.15rem}
+.mx{background:none;border:none;cursor:pointer;font-size:1.3rem;color:var(--muted)}
+.mx:hover{color:#fff}
+.mbdy{padding:1.4rem 1.8rem 1.8rem}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.fg{display:flex;flex-direction:column;gap:.38rem;margin-bottom:.95rem}
+.fg label{font-size:.72rem;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px}
+.fg input,.fg select,.fg textarea{padding:.72rem .9rem;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;background:rgba(255,255,255,.05);color:#fff;font-family:'Outfit',sans-serif;font-size:.87rem;outline:none;transition:all .2s}
+.fg input:focus,.fg select:focus{border-color:var(--blue);background:rgba(0,102,255,.08)}
+.fg input::placeholder{color:rgba(255,255,255,.25)}
+.fg select option{background:#0a1628;color:#fff}
+.btn-save{width:100%;background:var(--blue);color:#fff;border:none;padding:.95rem;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(0,102,255,.35);transition:all .25s;margin-top:.5rem;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.btn-save:hover{background:var(--blue2);transform:translateY(-2px)}
+.btn-save:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.al{padding:.75rem 1rem;border-radius:9px;font-size:.8rem;margin-bottom:1rem;display:none}
+.al.show{display:block}
+.al-ok{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:#86efac}
+.al-err{background:rgba(220,38,34,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5}
+.empty{text-align:center;color:var(--muted);padding:2.5rem;font-size:.85rem}
+@media(max-width:768px){aside{display:none}.main{margin-left:0}.kpi-row{grid-template-columns:1fr 1fr}.frow{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<aside>
+  <a class="logo" href="../index.html" target="_blank"><div class="lm"></div><span class="lt">Azucena <em>Medical</em></span></a>
+  <div class="s-sec">Principal</div>
+  <a href="dashboard.html" class="si"><span class="sico">📊</span> Dashboard</a>
+  <a href="agenda.html"    class="si"><span class="sico">📅</span> Agenda</a>
+  <a href="citas.html"     class="si"><span class="sico">🩺</span> Citas</a>
+  <div class="s-sec">Gestión</div>
+  <a href="medicos.html"    class="si"><span class="sico">👨‍⚕️</span> Médicos</a>
+  <a href="servicios.html"  class="si"><span class="sico">🏥</span> Servicios</a>
+  <a href="pacientes.html"  class="si"><span class="sico">👥</span> Pacientes</a>
+  <a href="historias.html"  class="si"><span class="sico">📋</span> Historias Clínicas</a>
+  <a href="reporte.html"    class="si"><span class="sico">💰</span> Reporte Diario</a>
+  <a href="estudiantes.html"class="si active"><span class="sico">🎓</span> Estudiantes</a>
+  <a href="certificados.html"class="si"><span class="sico">📜</span> Certificados MSP</a>
+  <div class="s-sec">Personalización</div>
+  <a href="publicidad.html" class="si"><span class="sico">📢</span> Publicidad</a>
+  <a href="usuarios.html"   class="si"><span class="sico">👤</span> Usuarios</a>
+  <div class="s-sec">Cuenta</div>
+  <a href="../login.html?action=cambio" class="si"><span class="sico">🔑</span> Cambiar contraseña</a>
+  <button class="si" onclick="doLogout()"><span class="sico">🚪</span> Cerrar sesión</button>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="tb-l">
+      <h1>🎓 Estudiantes en Prácticas</h1>
+      <span id="tb-fecha">–</span>
+    </div>
+    <div class="tb-r">
+      <button class="btn-add" onclick="abrirModal()">➕ Registrar estudiante</button>
+      <button class="btn-exp" onclick="exportarCSV()">⬇️ Exportar CSV</button>
+      <button class="btn-out" onclick="doLogout()">🚪 Salir</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="al al-ok" id="al-ok"></div>
+    <div class="al al-err" id="al-err"></div>
+
+    <!-- KPIs -->
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-bar" style="background:linear-gradient(90deg,#7c3aed,#a855f7)"></div><div class="kpi-v" id="k-total">–</div><div class="kpi-l">Total registrados</div></div>
+      <div class="kpi"><div class="kpi-bar" style="background:linear-gradient(90deg,#16a34a,#22c55e)"></div><div class="kpi-v" id="k-hoy">–</div><div class="kpi-l">Presentes hoy</div></div>
+      <div class="kpi"><div class="kpi-bar" style="background:linear-gradient(90deg,#0066FF,#00C2FF)"></div><div class="kpi-v" id="k-activos">–</div><div class="kpi-l">Activos en programa</div></div>
+      <div class="kpi"><div class="kpi-bar" style="background:linear-gradient(90deg,#ca8a04,#f59e0b)"></div><div class="kpi-v" id="k-inst">–</div><div class="kpi-l">Instituciones</div></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('hoy',this)">📅 Asistencia de hoy</button>
+      <button class="tab" onclick="showTab('todos',this)">👥 Todos los estudiantes</button>
+      <button class="tab" onclick="showTab('historial',this)">📋 Historial de registros</button>
+    </div>
+
+    <!-- PANEL HOY -->
+    <div id="panel-hoy">
+      <div class="card">
+        <div class="chd">
+          <div><div class="ctit">📅 Control de asistencia — <span id="fecha-hoy-label">hoy</span></div>
+            <div class="csub">Registra entrada y salida de cada estudiante</div></div>
+          <input type="date" id="fecha-asistencia" style="padding:.45rem .8rem;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;background:rgba(255,255,255,.05);color:#fff;font-family:Outfit,sans-serif;font-size:.82rem;outline:none" onchange="renderHoy()"/>
+        </div>
+        <div class="est-grid" id="est-grid-hoy">
+          <div class="empty">Cargando estudiantes...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL TODOS -->
+    <div id="panel-todos" style="display:none">
+      <div class="card">
+        <div class="chd">
+          <div><div class="ctit">👥 Todos los estudiantes</div><div class="csub">Estudiantes registrados en el programa</div></div>
+          <input type="text" id="buscar-est" placeholder="🔍 Buscar nombre, cédula..." onInput="renderTodos()" style="padding:.45rem .85rem;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;background:rgba(255,255,255,.05);color:#fff;font-family:Outfit,sans-serif;font-size:.82rem;outline:none;min-width:220px"/>
+        </div>
+        <table class="tbl" id="tbl-todos">
+          <thead><tr><th>Nombre</th><th>Cédula</th><th>Institución</th><th>Carrera</th><th>Tutor</th><th>Estado</th><th>Acciones</th></tr></thead>
+          <tbody id="tbody-todos"><tr><td colspan="7" class="empty">Cargando...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PANEL HISTORIAL -->
+    <div id="panel-hist" style="display:none">
+      <div class="card">
+        <div class="chd">
+          <div><div class="ctit">📋 Historial de asistencias</div><div class="csub">Todos los registros de entrada/salida</div></div>
+          <div style="display:flex;gap:.6rem">
+            <input type="month" id="mes-hist" style="padding:.45rem .8rem;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;background:rgba(255,255,255,.05);color:#fff;font-family:Outfit,sans-serif;font-size:.82rem;outline:none" onchange="renderHistorial()"/>
+          </div>
+        </div>
+        <table class="tbl">
+          <thead><tr><th>Fecha</th><th>Estudiante</th><th>Institución</th><th>Entrada</th><th>Salida</th><th>Horas</th><th>Observación</th></tr></thead>
+          <tbody id="tbody-hist"><tr><td colspan="7" class="empty">Cargando...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL NUEVO ESTUDIANTE -->
+<div class="modal-bg" id="mbg">
+  <div class="modal">
+    <div class="mhd">
+      <div><div class="mtit" id="m-tit">🎓 Registrar estudiante</div><div class="msub">Datos del estudiante en prácticas</div></div>
+      <button class="mx" onclick="cerrarModal()">✕</button>
+    </div>
+    <div class="mbdy">
+      <input type="hidden" id="edit-id"/>
+      <div class="frow">
+        <div class="fg"><label>Nombre completo *</label><input type="text" id="m-nom" placeholder="Juan Pérez"/></div>
+        <div class="fg"><label>Apellido *</label><input type="text" id="m-ape" placeholder="García"/></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Cédula *</label><input type="text" id="m-ced" placeholder="1712345678"/></div>
+        <div class="fg"><label>Teléfono</label><input type="tel" id="m-tel" placeholder="+593 99 xxx xxxx"/></div>
+      </div>
+      <div class="fg"><label>Institución educativa *</label><input type="text" id="m-inst" placeholder="Universidad Central del Ecuador"/></div>
+      <div class="frow">
+        <div class="fg"><label>Carrera</label><input type="text" id="m-car" placeholder="Medicina, Enfermería, etc."/></div>
+        <div class="fg"><label>Tutor / supervisor</label><input type="text" id="m-tut" placeholder="Dr. García"/></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Fecha inicio prácticas</label><input type="date" id="m-ini"/></div>
+        <div class="fg"><label>Fecha fin prácticas</label><input type="date" id="m-fin"/></div>
+      </div>
+      <div class="fg"><label>Observaciones</label>
+        <textarea id="m-obs" placeholder="Notas adicionales sobre el estudiante..."></textarea></div>
+      <button class="btn-save" id="btn-save" onclick="guardarEstudiante()">💾 Guardar estudiante</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,addDoc,getDocs,doc,getDoc,updateDoc,deleteDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const FC={apiKey:"AIzaSyAwspV-1KcllVyRAbajVPLc0lwsWMOLIco",authDomain:"jadi-salud.firebaseapp.com",projectId:"jadi-salud",storageBucket:"jadi-salud.firebasestorage.app",messagingSenderId:"679691723583",appId:"1:679691723583:web:4235a2493d09a9196ea98a"};
+const app=initializeApp(FC);const db=getFirestore(app);const auth=getAuth(app);
+
+const DIAS=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const now=new Date();
+document.getElementById('tb-fecha').textContent=`${DIAS[now.getDay()]}, ${now.getDate()} de ${MESES[now.getMonth()]} de ${now.getFullYear()}`;
+function todayStr(){const n=new Date();return`${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;}
+function horaStr(){const n=new Date();return`${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;}
+document.getElementById('fecha-asistencia').value=todayStr();
+document.getElementById('m-ini').value=todayStr();
+const mesNow=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+document.getElementById('mes-hist').value=mesNow;
+
+onAuthStateChanged(auth,async u=>{
+  if(!u){window.location.href='../login.html';return;}
+  try{const s=await getDoc(doc(db,'usuarios',u.uid));if(!s.exists()||!['admin','medico'].includes(s.data().rol)){window.location.href='../login.html';return;}}catch(e){}
+  loadAll();
+});
+window.doLogout=async()=>{await signOut(auth);window.location.href='../login.html';};
+
+function showOk(m){const e=document.getElementById('al-ok');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),4000);}
+function showErr(m){const e=document.getElementById('al-err');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),5000);}
+
+let allEst=[];
+
+async function loadAll(){
+  try{
+    const snap=await getDocs(collection(db,'estudiantes'));
+    allEst=snap.docs.map(d=>({id:d.id,...d.data()}));
+  }catch(e){allEst=[];}
+  calcKpis();renderHoy();renderTodos();renderHistorial();
+}
+
+function calcKpis(){
+  const today=todayStr();
+  const activos=allEst.filter(e=>e.activo!==false);
+  const hoy=activos.filter(e=>(e.registros||[]).some(r=>r.fecha===today));
+  const insts=new Set(allEst.map(e=>e.institucion).filter(Boolean));
+  document.getElementById('k-total').textContent=allEst.length;
+  document.getElementById('k-hoy').textContent=hoy.length;
+  document.getElementById('k-activos').textContent=activos.length;
+  document.getElementById('k-inst').textContent=insts.size;
+}
+
+// TABS
+window.showTab=(t,btn)=>{
+  ['panel-hoy','panel-todos','panel-hist'].forEach(p=>document.getElementById(p).style.display='none');
+  document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
+  document.getElementById('panel-'+t).style.display='';
+  btn.classList.add('active');
+  if(t==='hoy')renderHoy();
+  else if(t==='todos')renderTodos();
+  else renderHistorial();
+};
+
+// RENDER HOY
+window.renderHoy=()=>{
+  const fecha=document.getElementById('fecha-asistencia').value||todayStr();
+  const d=new Date(fecha+'T12:00:00');
+  document.getElementById('fecha-hoy-label').textContent=`${DIAS[d.getDay()]} ${d.getDate()} de ${MESES[d.getMonth()]}`;
+  const activos=allEst.filter(e=>e.activo!==false);
+  const grid=document.getElementById('est-grid-hoy');
+  if(activos.length===0){grid.innerHTML='<div class="empty" style="grid-column:1/-1">No hay estudiantes registrados. <button onclick="abrirModal()" style="background:none;border:none;color:#60b4ff;cursor:pointer;font-size:.85rem">Registrar uno →</button></div>';return;}
+  grid.innerHTML=activos.map(e=>{
+    const regs=e.registros||[];
+    const regHoy=regs.find(r=>r.fecha===fecha);
+    const tieneEntrada=!!regHoy?.entrada;
+    const tieneSalida=!!regHoy?.salida;
+    let badgeHtml,horas='–';
+    if(tieneSalida){
+      if(regHoy.entrada&&regHoy.salida){
+        const [hE,mE]=regHoy.entrada.split(':').map(Number);
+        const [hS,mS]=regHoy.salida.split(':').map(Number);
+        const diff=((hS*60+mS)-(hE*60+mE));
+        horas=diff>0?`${Math.floor(diff/60)}h ${diff%60}m`:'–';
+      }
+      badgeHtml='<span class="est-badge eb-out">✅ Completó práctica</span>';
+    }else if(tieneEntrada){
+      badgeHtml='<span class="est-badge eb-in">🟢 En práctica</span>';
+    }else{
+      badgeHtml='<span class="est-badge eb-none">⏳ Sin registrar</span>';
+    }
+    return`<div class="est-card">
+      <div class="est-top">
+        <div class="est-av">🎓</div>
+        <div>
+          <div class="est-nm">${e.nombre} ${e.apellido||''}</div>
+          <div class="est-sub">${e.institucion||'–'} · ${e.carrera||'–'}</div>
+        </div>
+      </div>
+      ${badgeHtml}
+      ${regHoy?`<div class="reg-hoy">
+        <div class="reg-row"><span class="reg-lbl">🟢 Entrada</span><span class="reg-val">${regHoy.entrada||'–'}</span></div>
+        <div class="reg-row"><span class="reg-lbl">🔴 Salida</span><span class="reg-val">${regHoy.salida||'–'}</span></div>
+        <div class="reg-row"><span class="reg-lbl">⏱ Horas</span><span class="reg-val">${horas}</span></div>
+      </div>`:''}
+      <button class="btn-entrada ${tieneEntrada?'btn-disabled':''}"
+        onclick="${tieneEntrada?'':'registrarEntrada(\''+e.id+'\',\''+fecha+'\')'}"
+        ${tieneEntrada?'disabled':''}>
+        🟢 ${tieneEntrada?'Entrada registrada':'Registrar entrada'}
+      </button>
+      <button class="btn-salida ${(!tieneEntrada||tieneSalida)?'btn-disabled':''}"
+        onclick="${(tieneEntrada&&!tieneSalida)?'registrarSalida(\''+e.id+'\',\''+fecha+'\')':''}"
+        ${(!tieneEntrada||tieneSalida)?'disabled':''}>
+        🔴 ${tieneSalida?'Salida registrada':'Registrar salida'}
+      </button>
+    </div>`;
+  }).join('');
+};
+
+window.registrarEntrada=async(id,fecha)=>{
+  const hora=horaStr();
+  const e=allEst.find(x=>x.id===id);if(!e)return;
+  const regs=[...(e.registros||[])];
+  const idx=regs.findIndex(r=>r.fecha===fecha);
+  if(idx>=0)regs[idx]={...regs[idx],entrada:hora};
+  else regs.push({fecha,entrada:hora,salida:'',observacion:''});
+  try{
+    await updateDoc(doc(db,'estudiantes',id),{registros:regs,updatedAt:serverTimestamp()});
+    showOk(`✅ Entrada registrada: ${hora}`);
+    const ei=allEst.findIndex(x=>x.id===id);if(ei>=0)allEst[ei].registros=regs;
+    calcKpis();renderHoy();
+  }catch(err){showErr('Error: '+err.message);}
+};
+
+window.registrarSalida=async(id,fecha)=>{
+  const hora=horaStr();
+  const e=allEst.find(x=>x.id===id);if(!e)return;
+  const regs=[...(e.registros||[])];
+  const idx=regs.findIndex(r=>r.fecha===fecha);
+  if(idx>=0)regs[idx]={...regs[idx],salida:hora};
+  else regs.push({fecha,entrada:'',salida:hora,observacion:''});
+  try{
+    await updateDoc(doc(db,'estudiantes',id),{registros:regs,updatedAt:serverTimestamp()});
+    showOk(`✅ Salida registrada: ${hora}`);
+    const ei=allEst.findIndex(x=>x.id===id);if(ei>=0)allEst[ei].registros=regs;
+    calcKpis();renderHoy();
+  }catch(err){showErr('Error: '+err.message);}
+};
+
+// RENDER TODOS
+window.renderTodos=()=>{
+  const buscar=(document.getElementById('buscar-est').value||'').toLowerCase();
+  const filtrados=allEst.filter(e=>{
+    if(!buscar)return true;
+    return`${e.nombre||''} ${e.apellido||''} ${e.cedula||''} ${e.institucion||''}`.toLowerCase().includes(buscar);
+  });
+  const tbody=document.getElementById('tbody-todos');
+  if(filtrados.length===0){tbody.innerHTML='<tr><td colspan="7" class="empty">Sin resultados</td></tr>';return;}
+  tbody.innerHTML=filtrados.map(e=>`
+    <tr>
+      <td style="font-weight:600">${e.nombre} ${e.apellido||''}</td>
+      <td style="font-family:monospace;font-size:.78rem">${e.cedula||'–'}</td>
+      <td>${e.institucion||'–'}</td>
+      <td>${e.carrera||'–'}</td>
+      <td>${e.tutor||'–'}</td>
+      <td><span style="background:${e.activo!==false?'rgba(22,163,74,.18)':'rgba(220,38,38,.18)'};color:${e.activo!==false?'#86efac':'#fca5a5'};padding:.2rem .55rem;border-radius:6px;font-size:.7rem;font-weight:700">${e.activo!==false?'Activo':'Inactivo'}</span></td>
+      <td style="display:flex;gap:.3rem">
+        <button style="background:rgba(0,102,255,.2);color:#60b4ff;border:none;padding:.2rem .55rem;border-radius:6px;font-size:.7rem;cursor:pointer" onclick="editarEst('${e.id}')">✏️</button>
+        <button style="background:rgba(220,38,38,.15);color:#fca5a5;border:none;padding:.2rem .55rem;border-radius:6px;font-size:.7rem;cursor:pointer" onclick="toggleActivo('${e.id}',${e.activo!==false})">${e.activo!==false?'⏸':'▶'}</button>
+      </td>
+    </tr>`).join('');
+};
+
+// RENDER HISTORIAL
+window.renderHistorial=()=>{
+  const mes=document.getElementById('mes-hist').value;
+  const tbody=document.getElementById('tbody-hist');
+  const rows=[];
+  allEst.forEach(e=>{
+    (e.registros||[]).filter(r=>r.fecha&&r.fecha.startsWith(mes)).forEach(r=>{
+      let horas='–';
+      if(r.entrada&&r.salida){
+        const[hE,mE]=r.entrada.split(':').map(Number);const[hS,mS]=r.salida.split(':').map(Number);
+        const diff=(hS*60+mS)-(hE*60+mE);horas=diff>0?`${Math.floor(diff/60)}h ${diff%60}m`:'–';
+      }
+      rows.push({fecha:r.fecha,nombre:`${e.nombre} ${e.apellido||''}`,inst:e.institucion||'–',entrada:r.entrada||'–',salida:r.salida||'–',horas,obs:r.observacion||'–'});
+    });
+  });
+  rows.sort((a,b)=>b.fecha.localeCompare(a.fecha));
+  if(rows.length===0){tbody.innerHTML='<tr><td colspan="7" class="empty">Sin registros para este mes</td></tr>';return;}
+  tbody.innerHTML=rows.map(r=>`
+    <tr>
+      <td style="white-space:nowrap">${r.fecha}</td>
+      <td style="font-weight:600">${r.nombre}</td>
+      <td>${r.inst}</td>
+      <td style="color:#86efac">${r.entrada}</td>
+      <td style="color:#fca5a5">${r.salida}</td>
+      <td style="color:#60b4ff;font-weight:600">${r.horas}</td>
+      <td style="font-size:.78rem">${r.obs}</td>
+    </tr>`).join('');
+};
+
+// MODAL
+window.abrirModal=()=>{
+  document.getElementById('edit-id').value='';
+  document.getElementById('m-tit').textContent='🎓 Registrar estudiante';
+  ['m-nom','m-ape','m-ced','m-tel','m-inst','m-car','m-tut','m-obs'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('m-fin').value='';
+  document.getElementById('m-ini').value=todayStr();
+  document.getElementById('btn-save').innerHTML='💾 Guardar estudiante';
+  document.getElementById('mbg').classList.add('open');document.body.style.overflow='hidden';
+};
+window.cerrarModal=()=>{document.getElementById('mbg').classList.remove('open');document.body.style.overflow='';};
+document.getElementById('mbg').addEventListener('click',e=>{if(e.target===document.getElementById('mbg'))window.cerrarModal();});
+
+window.editarEst=(id)=>{
+  const e=allEst.find(x=>x.id===id);if(!e)return;
+  document.getElementById('edit-id').value=id;
+  document.getElementById('m-tit').textContent='✏️ Editar estudiante';
+  document.getElementById('m-nom').value=e.nombre||'';
+  document.getElementById('m-ape').value=e.apellido||'';
+  document.getElementById('m-ced').value=e.cedula||'';
+  document.getElementById('m-tel').value=e.telefono||'';
+  document.getElementById('m-inst').value=e.institucion||'';
+  document.getElementById('m-car').value=e.carrera||'';
+  document.getElementById('m-tut').value=e.tutor||'';
+  document.getElementById('m-ini').value=e.fechaInicio||'';
+  document.getElementById('m-fin').value=e.fechaFin||'';
+  document.getElementById('m-obs').value=e.observaciones||'';
+  document.getElementById('btn-save').innerHTML='💾 Actualizar';
+  document.getElementById('mbg').classList.add('open');document.body.style.overflow='hidden';
+};
+
+window.guardarEstudiante=async()=>{
+  const nom=document.getElementById('m-nom').value.trim();
+  const ape=document.getElementById('m-ape').value.trim();
+  const ced=document.getElementById('m-ced').value.trim();
+  if(!nom||!ced){showErr('Nombre y cédula son obligatorios.');return;}
+  const btn=document.getElementById('btn-save');btn.disabled=true;btn.innerHTML='⏳ Guardando...';
+  const data={nombre:nom,apellido:ape,cedula:ced,
+    telefono:document.getElementById('m-tel').value.trim(),
+    institucion:document.getElementById('m-inst').value.trim(),
+    carrera:document.getElementById('m-car').value.trim(),
+    tutor:document.getElementById('m-tut').value.trim(),
+    fechaInicio:document.getElementById('m-ini').value,
+    fechaFin:document.getElementById('m-fin').value,
+    observaciones:document.getElementById('m-obs').value.trim(),
+    activo:true,updatedAt:serverTimestamp()};
+  try{
+    const editId=document.getElementById('edit-id').value;
+    if(editId){await updateDoc(doc(db,'estudiantes',editId),data);showOk('✅ Estudiante actualizado.');}
+    else{data.registros=[];data.creadoEn=serverTimestamp();await addDoc(collection(db,'estudiantes'),data);showOk('✅ Estudiante registrado.');}
+    cerrarModal();await loadAll();
+  }catch(e){showErr('Error: '+e.message);}
+  btn.disabled=false;btn.innerHTML='💾 Guardar estudiante';
+};
+
+window.toggleActivo=async(id,activo)=>{
+  try{await updateDoc(doc(db,'estudiantes',id),{activo:!activo,updatedAt:serverTimestamp()});
+    showOk(`Estudiante ${!activo?'activado':'desactivado'}.`);await loadAll();}
+  catch(e){showErr('Error: '+e.message);}
+};
+
+window.exportarCSV=()=>{
+  const mes=document.getElementById('mes-hist').value;
+  const rows=[];
+  allEst.forEach(e=>{
+    (e.registros||[]).filter(r=>r.fecha&&r.fecha.startsWith(mes)).forEach(r=>{
+      rows.push([e.nombre+' '+(e.apellido||''),e.cedula,e.institucion,e.carrera,r.fecha,r.entrada,r.salida,r.observacion].map(v=>`"${v||''}"`).join(','));
+    });
+  });
+  const csv=['Nombre,Cédula,Institución,Carrera,Fecha,Entrada,Salida,Observación',...rows].join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`estudiantes_${mes}.csv`;a.click();URL.revokeObjectURL(url);
+  showOk('✅ CSV exportado.');
+};
+</script>
+</body>
+</html>
