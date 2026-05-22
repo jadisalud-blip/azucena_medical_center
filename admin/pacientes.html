@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Pacientes · Admin · Centro Médico Azucena</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--blue:#0066FF;--blue2:#0047B3;--card:#0a1628;--border:rgba(255,255,255,.07);--muted:#7B8CB0;--grn:#16a34a;--red:#dc2626;--r:12px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:#080f1e;color:#fff;display:flex;min-height:100vh;overflow:hidden}
+aside{width:240px;background:#040B1C;border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:100vh;overflow-y:auto;position:fixed;top:0;left:0;z-index:100}
+.logo{display:flex;align-items:center;gap:.55rem;padding:1.4rem 1.2rem;border-bottom:1px solid var(--border);text-decoration:none}
+.lm{width:30px;height:30px;border-radius:7px;background:var(--blue);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.lm::before,.lm::after{content:'';position:absolute;background:#fff;border-radius:2px}
+.lm::before{width:3px;height:17px}.lm::after{width:17px;height:3px}
+.lt{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff}.lt em{font-style:normal;color:#60b4ff}
+.s-sec{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:.9rem 1.2rem .35rem}
+.si{display:flex;align-items:center;gap:.7rem;padding:.58rem 1.2rem;color:rgba(255,255,255,.55);text-decoration:none;font-size:.82rem;font-weight:500;transition:all .2s;cursor:pointer;border:none;background:none;width:100%;text-align:left;position:relative}
+.si:hover{background:rgba(255,255,255,.04);color:#fff}
+.si.active{background:rgba(0,102,255,.18);color:#60b4ff}
+.si.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);border-radius:0 3px 3px 0}
+.sico{width:18px;text-align:center;font-size:.9rem;flex-shrink:0}
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh;overflow-y:auto}
+.topbar{background:#040B1C;border-bottom:1px solid var(--border);padding:.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.tb-l h1{font-family:'Playfair Display',serif;font-size:1.25rem;color:#fff}
+.tb-l span{font-size:.72rem;color:var(--muted);display:block;margin-top:.1rem}
+.tb-r{display:flex;align-items:center;gap:.7rem}
+.btn-out{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;padding:.4rem .9rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer}
+.btn-add{background:var(--blue);color:#fff;border:none;padding:.45rem 1.1rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-add:hover{background:var(--blue2)}
+.btn-exp{background:rgba(22,163,74,.2);color:#86efac;border:1px solid rgba(22,163,74,.3);padding:.45rem 1rem;border-radius:20px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer}
+.content{padding:1.5rem 2rem;flex:1}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;margin-bottom:1.2rem}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem;position:relative;overflow:hidden;transition:transform .2s}
+.kpi:hover{transform:translateY(-2px)}
+.kpi-bar{position:absolute;top:0;left:0;right:0;height:3px}
+.kpi-v{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;color:#fff}
+.kpi-l{font-size:.7rem;color:var(--muted);margin-top:.2rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem;margin-bottom:1.2rem}
+.chd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.75rem}
+.ctit{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#fff}
+.csub{font-size:.72rem;color:var(--muted);margin-top:.1rem}
+.filtros{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.2rem;align-items:center}
+.f-inp{padding:.52rem .9rem;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;background:rgba(255,255,255,.05);color:#fff;font-family:'Outfit',sans-serif;font-size:.82rem;outline:none;transition:all .2s}
+.f-inp:focus{border-color:var(--blue)}
+.f-inp::placeholder{color:rgba(255,255,255,.3)}
+.tbl-wrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;min-width:800px}
+.tbl th{text-align:left;font-size:.67rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);padding:.6rem .85rem;border-bottom:1px solid var(--border);white-space:nowrap}
+.tbl td{padding:.75rem .85rem;font-size:.82rem;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:rgba(255,255,255,.025)}
+.act-group{display:flex;gap:.35rem;flex-wrap:wrap}
+.btn-a{padding:.28rem .65rem;border-radius:6px;border:none;font-family:'Outfit',sans-serif;font-size:.7rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:.25rem}
+.bb{background:rgba(0,102,255,.2);color:#60b4ff}.bb:hover{background:rgba(0,102,255,.4)}
+.bw{background:#25D366;color:#fff}.bw:hover{background:#1da851}
+.br{background:rgba(220,38,38,.1);color:#fca5a5}.br:hover{background:rgba(220,38,38,.25)}
+.modal-bg{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);align-items:flex-start;justify-content:center;overflow-y:auto;padding:1.5rem}
+.modal-bg.open{display:flex}
+.modal{background:#0a1628;border:1px solid rgba(255,255,255,.1);border-radius:18px;width:min(740px,100%);margin:auto;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:mIn .3s ease}
+@keyframes mIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.mhd{padding:1.5rem 1.8rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;position:sticky;top:0;background:#0a1628;border-radius:18px 18px 0 0;z-index:5}
+.mtit{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#fff}
+.msub{font-size:.72rem;color:var(--muted);margin-top:.15rem}
+.mx{background:none;border:none;cursor:pointer;font-size:1.3rem;color:var(--muted)}
+.mx:hover{color:#fff}
+.mbdy{padding:1.4rem 1.8rem 2rem}
+.ftabs{display:flex;gap:.5rem;margin-bottom:1.4rem;border-bottom:1px solid var(--border);padding-bottom:0}
+.ftab{padding:.6rem 1.1rem;border-radius:9px 9px 0 0;border:none;background:transparent;color:rgba(255,255,255,.45);font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;border-bottom:2px solid transparent;margin-bottom:-1px}
+.ftab:hover{color:#fff}
+.ftab.active{color:#60b4ff;border-bottom-color:var(--blue)}
+.fpanel{display:none}.fpanel.active{display:block}
+.p-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:1rem}
+.p-item{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:9px;padding:.85rem}
+.p-lbl{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.3rem}
+.p-val{font-size:.87rem;color:#fff}
+.p-full{grid-column:1/-1}
+.hc-item{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:9px;padding:.9rem 1rem;margin-bottom:.65rem;display:flex;align-items:center;gap:.9rem}
+.hc-ico{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.hc-esp{font-weight:600;font-size:.85rem;color:#fff}
+.hc-meta{font-size:.72rem;color:var(--muted);margin-top:.12rem}
+.badge{display:inline-flex;align-items:center;padding:.22rem .65rem;border-radius:20px;font-size:.68rem;font-weight:700}
+.bp{background:rgba(202,138,4,.18);color:#fde047}
+.bc{background:rgba(22,163,74,.18);color:#86efac}
+.bx{background:rgba(220,38,38,.18);color:#fca5a5}
+.ba{background:rgba(0,102,255,.18);color:#93c5fd}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.fg{display:flex;flex-direction:column;gap:.38rem;margin-bottom:.95rem}
+.fg label{font-size:.72rem;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px}
+.fg input,.fg select,.fg textarea{padding:.72rem .9rem;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;background:rgba(255,255,255,.05);color:#fff;font-family:'Outfit',sans-serif;font-size:.87rem;outline:none;transition:all .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);background:rgba(0,102,255,.08)}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,.25)}
+.fg select option{background:#0a1628}
+.fg textarea{resize:vertical;min-height:70px}
+.btn-save{width:100%;background:var(--blue);color:#fff;border:none;padding:.92rem;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.93rem;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(0,102,255,.35);transition:all .25s;display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:.5rem}
+.btn-save:hover{background:var(--blue2);transform:translateY(-2px)}
+.btn-save:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.al{padding:.75rem 1rem;border-radius:9px;font-size:.8rem;margin-bottom:1rem;display:none}
+.al.show{display:block}
+.al-ok{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:#86efac}
+.al-err{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5}
+.empty{text-align:center;color:var(--muted);padding:2.5rem;font-size:.85rem}
+.conteo{font-size:.75rem;color:var(--muted);margin-top:.75rem}
+@media(max-width:1100px){.kpi-row{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){aside{display:none}.main{margin-left:0}.frow{grid-template-columns:1fr}.kpi-row{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<aside>
+  <a class="logo" href="../index.html" target="_blank"><div class="lm"></div><span class="lt">Azucena <em>Medical</em></span></a>
+  <div class="s-sec">Principal</div>
+  <a href="dashboard.html" class="si"><span class="sico">📊</span> Dashboard</a>
+  <a href="agenda.html"    class="si"><span class="sico">📅</span> Agenda</a>
+  <a href="citas.html"     class="si"><span class="sico">🩺</span> Citas</a>
+  <div class="s-sec">Gestión</div>
+  <a href="medicos.html"    class="si"><span class="sico">👨‍⚕️</span> Médicos</a>
+  <a href="servicios.html"  class="si"><span class="sico">🏥</span> Servicios</a>
+  <a href="pacientes.html"  class="si active"><span class="sico">👥</span> Pacientes</a>
+  <a href="historias.html"  class="si"><span class="sico">📋</span> Historias Clínicas</a>
+  <a href="reporte.html"    class="si"><span class="sico">💰</span> Reporte Diario</a>
+  <a href="estudiantes.html"class="si"><span class="sico">🎓</span> Estudiantes</a>
+  <a href="certificados.html"class="si"><span class="sico">📜</span> Certificados MSP</a>
+  <div class="s-sec">Personalización</div>
+  <a href="publicidad.html" class="si"><span class="sico">📢</span> Publicidad</a>
+  <a href="usuarios.html"   class="si"><span class="sico">👤</span> Usuarios</a>
+  <div class="s-sec">Cuenta</div>
+  <a href="../login.html?action=cambio" class="si"><span class="sico">🔑</span> Cambiar contraseña</a>
+  <button class="si" onclick="doLogout()"><span class="sico">🚪</span> Cerrar sesión</button>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="tb-l"><h1>👥 Pacientes</h1><span>Directorio completo de pacientes registrados</span></div>
+    <div class="tb-r">
+      <button class="btn-add" onclick="abrirNuevo()">➕ Agregar paciente</button>
+      <button class="btn-exp" onclick="exportarCSV()">⬇️ Exportar CSV</button>
+      <button class="btn-out" onclick="doLogout()">🚪 Salir</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="al al-ok" id="al-ok"></div>
+    <div class="al al-err" id="al-err"></div>
+
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-bar" style="background:linear-gradient(90deg,#0066FF,#00C2FF)"></div><div class="kpi-v" id="k-total">–</div><div class="kpi-l">Total pacientes</div></div>
+      <div class="kpi"><div class="kpi-bar" style="background:linear-gradient(90deg,#16a34a,#22c55e)"></div><div class="kpi-v" id="k-mes">–</div><div class="kpi-l">Nuevos este mes</div></div>
+      <div class="kpi"><div class="kpi-bar" style="background:linear-gradient(90deg,#7c3aed,#a855f7)"></div><div class="kpi-v" id="k-citas">–</div><div class="kpi-l">Con citas activas</div></div>
+      <div class="kpi"><div class="kpi-bar" style="background:linear-gradient(90deg,#ca8a04,#f59e0b)"></div><div class="kpi-v" id="k-hist">–</div><div class="kpi-l">Con historia clínica</div></div>
+    </div>
+
+    <div class="card">
+      <div class="chd">
+        <div><div class="ctit">👥 Directorio de pacientes</div><div class="csub">Incluye pacientes del sistema + registros manuales + desde citas</div></div>
+      </div>
+      <div class="filtros">
+        <input type="text" class="f-inp" id="f-bus" placeholder="🔍 Buscar nombre, cédula, teléfono..." oninput="renderPacs()" style="min-width:260px"/>
+        <select class="f-inp" id="f-ord" onchange="renderPacs()">
+          <option value="nombre">Ordenar: Nombre A-Z</option>
+          <option value="reciente">Más recientes</option>
+          <option value="citas">Más citas</option>
+        </select>
+        <button onclick="document.getElementById('f-bus').value='';renderPacs()" style="background:rgba(255,255,255,.07);color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.1);padding:.5rem .9rem;border-radius:9px;font-family:Outfit,sans-serif;font-size:.8rem;cursor:pointer">✕ Limpiar</button>
+        <button onclick="loadAll()" style="background:rgba(0,102,255,.2);color:#60b4ff;border:1px solid rgba(0,102,255,.3);padding:.5rem .9rem;border-radius:9px;font-family:Outfit,sans-serif;font-size:.8rem;cursor:pointer">🔄 Actualizar</button>
+      </div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr>
+            <th>Paciente</th><th>Cédula</th><th>Teléfono</th><th>Email</th>
+            <th>Citas</th><th>Historias</th><th>Origen</th><th>Acciones</th>
+          </tr></thead>
+          <tbody id="tbody-pacs"><tr><td colspan="8" class="empty">Cargando pacientes...</td></tr></tbody>
+        </table>
+      </div>
+      <div class="conteo" id="conteo">–</div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FICHA -->
+<div class="modal-bg" id="mbg">
+  <div class="modal">
+    <div class="mhd">
+      <div><div class="mtit" id="m-tit">👤 Ficha del paciente</div><div class="msub" id="m-sub">–</div></div>
+      <button class="mx" onclick="cerrarModal()">✕</button>
+    </div>
+    <div class="mbdy">
+      <div class="ftabs">
+        <button class="ftab active" onclick="showFTab('datos',this)">📋 Datos</button>
+        <button class="ftab" onclick="showFTab('citas',this)">🩺 Citas</button>
+        <button class="ftab" onclick="showFTab('historias',this)">📂 Historias</button>
+        <button class="ftab" onclick="showFTab('editar',this)">✏️ Editar</button>
+      </div>
+      <div class="fpanel active" id="fp-datos"><div id="datos-content">Cargando...</div></div>
+      <div class="fpanel" id="fp-citas"><div id="citas-content"><div class="empty">Cargando...</div></div></div>
+      <div class="fpanel" id="fp-historias"><div id="hist-content"><div class="empty">Cargando...</div></div></div>
+      <div class="fpanel" id="fp-editar">
+        <input type="hidden" id="edit-id"/>
+        <div class="frow">
+          <div class="fg"><label>Nombre *</label><input id="e-nom"/></div>
+          <div class="fg"><label>Apellido *</label><input id="e-ape"/></div>
+        </div>
+        <div class="frow">
+          <div class="fg"><label>Cédula</label><input id="e-ced"/></div>
+          <div class="fg"><label>Teléfono / WhatsApp</label><input id="e-tel"/></div>
+        </div>
+        <div class="fg"><label>Correo electrónico</label><input type="email" id="e-email"/></div>
+        <div class="frow">
+          <div class="fg"><label>Fecha de nacimiento</label><input type="date" id="e-fn"/></div>
+          <div class="fg"><label>Sexo</label><select id="e-sexo"><option value="">–</option><option>M</option><option>F</option></select></div>
+        </div>
+        <div class="frow">
+          <div class="fg"><label>Dirección</label><input id="e-dir"/></div>
+          <div class="fg"><label>Ocupación</label><input id="e-ocu"/></div>
+        </div>
+        <div class="fg"><label>Alergias conocidas</label><input id="e-aler" placeholder="Ej: Penicilina, aspirina..."/></div>
+        <div class="fg"><label>Observaciones / antecedentes</label><textarea id="e-obs"></textarea></div>
+        <button class="btn-save" id="btn-edit" onclick="guardarEdicion()">💾 Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NUEVO -->
+<div class="modal-bg" id="mbg-new">
+  <div class="modal">
+    <div class="mhd">
+      <div><div class="mtit">➕ Agregar paciente</div><div class="msub">Registro manual en el sistema</div></div>
+      <button class="mx" onclick="cerrarNew()">✕</button>
+    </div>
+    <div class="mbdy">
+      <div class="frow">
+        <div class="fg"><label>Nombre *</label><input id="n-nom" placeholder="Juan"/></div>
+        <div class="fg"><label>Apellido *</label><input id="n-ape" placeholder="Pérez"/></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Cédula *</label><input id="n-ced" placeholder="1712345678"/></div>
+        <div class="fg"><label>Teléfono / WhatsApp *</label><input id="n-tel" placeholder="+593 99 xxx xxxx"/></div>
+      </div>
+      <div class="fg"><label>Correo electrónico</label><input type="email" id="n-email" placeholder="correo@ejemplo.com"/></div>
+      <div class="frow">
+        <div class="fg"><label>Fecha de nacimiento</label><input type="date" id="n-fn"/></div>
+        <div class="fg"><label>Sexo</label><select id="n-sexo"><option value="">–</option><option>M</option><option>F</option></select></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Dirección</label><input id="n-dir" placeholder="Dirección..."/></div>
+        <div class="fg"><label>Ocupación</label><input id="n-ocu" placeholder="Ocupación..."/></div>
+      </div>
+      <div class="fg"><label>Alergias conocidas</label><input id="n-aler" placeholder="Ej: Penicilina, aspirina..."/></div>
+      <div class="fg"><label>Observaciones</label><textarea id="n-obs" placeholder="Antecedentes o notas..."></textarea></div>
+      <button class="btn-save" id="btn-new" onclick="guardarNuevo()">💾 Registrar paciente</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,addDoc,getDocs,doc,getDoc,updateDoc,deleteDoc,
+        query,where,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const FC={apiKey:"AIzaSyAwspV-1KcllVyRAbajVPLc0lwsWMOLIco",authDomain:"jadi-salud.firebaseapp.com",
+  projectId:"jadi-salud",storageBucket:"jadi-salud.firebasestorage.app",
+  messagingSenderId:"679691723583",appId:"1:679691723583:web:4235a2493d09a9196ea98a"};
+const app=initializeApp(FC);const db=getFirestore(app);const auth=getAuth(app);
+
+onAuthStateChanged(auth,async u=>{
+  if(!u){window.location.href='../login.html';return;}
+  try{const s=await getDoc(doc(db,'usuarios',u.uid));
+    if(!s.exists()||!['admin','medico'].includes(s.data().rol)){window.location.href='../login.html';return;}
+  }catch(e){}
+  loadAll();
+});
+window.doLogout=async()=>{await signOut(auth);window.location.href='../login.html';};
+
+function showOk(m){const e=document.getElementById('al-ok');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),4000);}
+function showErr(m){const e=document.getElementById('al-err');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),5000);}
+function todayStr(){const n=new Date();return`${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;}
+function calcEdad(fn){if(!fn)return'';const n=new Date(),f=new Date(fn+'T12:00:00');let e=n.getFullYear()-f.getFullYear();if(n.getMonth()<f.getMonth()||(n.getMonth()===f.getMonth()&&n.getDate()<f.getDate()))e--;return e;}
+
+let allPacs=[],allCitasDB=[],allHistDB=[];
+
+window.loadAll=async()=>{
+  try{
+    const [snapU,snapP,snapC,snapH]=await Promise.all([
+      getDocs(query(collection(db,'usuarios'),where('rol','==','paciente'))),
+      getDocs(collection(db,'pacientes')),
+      getDocs(collection(db,'citas')),
+      getDocs(collection(db,'historias'))
+    ]);
+    allCitasDB=snapC.docs.map(d=>({id:d.id,...d.data()}));
+    allHistDB=snapH.docs.map(d=>({id:d.id,...d.data()}));
+    const mapa={};
+    snapU.docs.forEach(d=>{const u=d.data();const k=u.cedula||d.id;
+      mapa[k]={id:d.id,nombre:u.nombre||'',apellido:u.apellido||'',cedula:u.cedula||'',
+        telefono:u.telefono||'',email:u.email||'',fn:u.fn||'',sexo:u.sexo||'',
+        direccion:u.direccion||'',ocupacion:u.ocupacion||'',alergias:u.alergias||'',
+        observaciones:u.observaciones||'',origen:'sistema',creadoEn:u.creadoEn};});
+    snapP.docs.forEach(d=>{const p=d.data();const k=p.cedula||d.id;
+      if(!mapa[k])mapa[k]={id:d.id,nombre:p.nombre||'',apellido:p.apellido||'',cedula:p.cedula||'',
+        telefono:p.telefono||'',email:p.email||'',fn:p.fn||'',sexo:p.sexo||'',
+        direccion:p.direccion||'',ocupacion:p.ocupacion||'',alergias:p.alergias||'',
+        observaciones:p.observaciones||'',origen:'manual',creadoEn:p.creadoEn};});
+    allCitasDB.forEach(c=>{
+      const nom=c.pacienteNombre||c.nombre||'';const ced=c.cedula||'';
+      if(nom&&!mapa[ced||nom]){
+        mapa[ced||nom]={id:'cita-'+c.id,nombre:nom.split(' ')[0]||nom,
+          apellido:nom.split(' ').slice(1).join(' ')||'',cedula:ced,
+          telefono:c.telefono||'',email:c.email||'',fn:'',sexo:'',
+          direccion:'',ocupacion:'',alergias:'',observaciones:'',
+          origen:'cita',creadoEn:c.creadoEn};}});
+    allPacs=Object.values(mapa);
+    calcKpis();renderPacs();
+  }catch(e){showErr('Error: '+e.message);}
+};
+
+function calcKpis(){
+  const mes=todayStr().slice(0,7);
+  const conC=new Set(allCitasDB.map(c=>c.cedula||c.pacienteNombre).filter(Boolean));
+  const conH=new Set(allHistDB.map(h=>h.cedula).filter(Boolean));
+  document.getElementById('k-total').textContent=allPacs.length;
+  document.getElementById('k-mes').textContent=allPacs.filter(p=>{
+    const ts=p.creadoEn?.toDate?.();return ts&&ts.toISOString().slice(0,7)===mes;}).length;
+  document.getElementById('k-citas').textContent=conC.size;
+  document.getElementById('k-hist').textContent=conH.size;
+}
+
+window.renderPacs=()=>{
+  const bus=(document.getElementById('f-bus').value||'').toLowerCase();
+  const ord=document.getElementById('f-ord').value;
+  let f=allPacs.filter(p=>!bus||`${p.nombre} ${p.apellido} ${p.cedula} ${p.telefono} ${p.email}`.toLowerCase().includes(bus));
+  if(ord==='nombre')f.sort((a,b)=>`${a.nombre} ${a.apellido}`.localeCompare(`${b.nombre} ${b.apellido}`));
+  else if(ord==='reciente')f.sort((a,b)=>(b.creadoEn?.seconds||0)-(a.creadoEn?.seconds||0));
+  else if(ord==='citas')f.sort((a,b)=>{
+    const ca=allCitasDB.filter(c=>c.cedula===a.cedula||(c.pacienteNombre||'').toLowerCase().includes(a.nombre.toLowerCase())).length;
+    const cb=allCitasDB.filter(c=>c.cedula===b.cedula||(c.pacienteNombre||'').toLowerCase().includes(b.nombre.toLowerCase())).length;
+    return cb-ca;});
+  document.getElementById('conteo').textContent=`Mostrando ${f.length} de ${allPacs.length} pacientes`;
+  const tbody=document.getElementById('tbody-pacs');
+  if(f.length===0){tbody.innerHTML='<tr><td colspan="8" class="empty">No se encontraron pacientes.</td></tr>';return;}
+  const origenTag={
+    sistema:'<span style="background:rgba(0,102,255,.18);color:#93c5fd;font-size:.66rem;font-weight:700;padding:.15rem .5rem;border-radius:20px">Sistema</span>',
+    manual:'<span style="background:rgba(202,138,4,.18);color:#fde047;font-size:.66rem;font-weight:700;padding:.15rem .5rem;border-radius:20px">Manual</span>',
+    cita:'<span style="background:rgba(22,163,74,.18);color:#86efac;font-size:.66rem;font-weight:700;padding:.15rem .5rem;border-radius:20px">Cita</span>'
+  };
+  tbody.innerHTML=f.map(p=>{
+    const nc=allCitasDB.filter(c=>c.cedula===p.cedula||(c.pacienteNombre||'').toLowerCase().includes(p.nombre.toLowerCase())).length;
+    const nh=allHistDB.filter(h=>h.cedula===p.cedula).length;
+    const edad=p.fn?` · ${calcEdad(p.fn)} años`:'';
+    const waLink=`https://wa.me/${(p.telefono||'').replace(/\D/g,'')}`;
+    return`<tr>
+      <td><div style="display:flex;align-items:center;gap:.7rem">
+        <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#0066FF,#0047B3);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0">${p.sexo==='F'?'👩':'👤'}</div>
+        <div><div style="font-weight:600">${p.nombre} ${p.apellido}</div><div style="font-size:.7rem;color:var(--muted)">${p.sexo||'–'}${edad}</div></div>
+      </div></td>
+      <td style="font-family:monospace;font-size:.78rem">${p.cedula||'–'}</td>
+      <td style="white-space:nowrap">${p.telefono||'–'}</td>
+      <td style="font-size:.78rem;color:var(--muted);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.email||'–'}</td>
+      <td style="text-align:center"><span style="background:rgba(0,102,255,.15);color:#93c5fd;padding:.2rem .6rem;border-radius:6px;font-size:.75rem;font-weight:700">${nc}</span></td>
+      <td style="text-align:center"><span style="background:rgba(124,58,237,.15);color:#c4b5fd;padding:.2rem .6rem;border-radius:6px;font-size:.75rem;font-weight:700">${nh}</span></td>
+      <td>${origenTag[p.origen]||origenTag.manual}</td>
+      <td><div class="act-group">
+        <button class="btn-a bb" onclick="abrirFicha('${p.id}','${p.cedula}','${p.nombre}','${p.apellido}')">📋 Ficha</button>
+        ${p.telefono?`<a href="${waLink}" target="_blank" class="btn-a bw">💬 WA</a>`:''}
+        ${p.origen!=='cita'?`<button class="btn-a br" onclick="eliminarPac('${p.id}','${p.origen}')">🗑</button>`:''}
+      </div></td>
+    </tr>`;}).join('');
+};
+
+window.abrirFicha=(id,cedula,nombre,apellido)=>{
+  document.getElementById('m-tit').textContent=`👤 ${nombre} ${apellido}`;
+  document.getElementById('m-sub').textContent=`Cédula: ${cedula||'–'}`;
+  document.querySelectorAll('.ftab').forEach((t,i)=>t.classList.toggle('active',i===0));
+  document.querySelectorAll('.fpanel').forEach((p,i)=>p.classList.toggle('active',i===0));
+  const p=allPacs.find(x=>x.id===id);
+  // DATOS
+  if(p){
+    const nc=allCitasDB.filter(c=>c.cedula===cedula||(c.pacienteNombre||'').toLowerCase().includes(nombre.toLowerCase())).length;
+    const nh=allHistDB.filter(h=>h.cedula===cedula).length;
+    document.getElementById('datos-content').innerHTML=`
+      <div class="p-grid">
+        <div class="p-item"><div class="p-lbl">Nombre completo</div><div class="p-val">${p.nombre} ${p.apellido}</div></div>
+        <div class="p-item"><div class="p-lbl">Cédula</div><div class="p-val">${p.cedula||'–'}</div></div>
+        <div class="p-item"><div class="p-lbl">Teléfono / WhatsApp</div><div class="p-val">${p.telefono?`<a href="https://wa.me/${p.telefono.replace(/\D/g,'')}" target="_blank" style="color:#25D366;text-decoration:none">${p.telefono}</a>`:'–'}</div></div>
+        <div class="p-item"><div class="p-lbl">Email</div><div class="p-val">${p.email||'–'}</div></div>
+        <div class="p-item"><div class="p-lbl">Fecha nacimiento</div><div class="p-val">${p.fn||'–'}${p.fn?` (${calcEdad(p.fn)} años)`:''}</div></div>
+        <div class="p-item"><div class="p-lbl">Sexo</div><div class="p-val">${p.sexo==='M'?'Masculino':p.sexo==='F'?'Femenina':'–'}</div></div>
+        <div class="p-item"><div class="p-lbl">Dirección</div><div class="p-val">${p.direccion||'–'}</div></div>
+        <div class="p-item"><div class="p-lbl">Ocupación</div><div class="p-val">${p.ocupacion||'–'}</div></div>
+        ${p.alergias?`<div class="p-item p-full"><div class="p-lbl">⚠️ Alergias</div><div class="p-val" style="color:#fde047">${p.alergias}</div></div>`:''}
+        ${p.observaciones?`<div class="p-item p-full"><div class="p-lbl">Observaciones</div><div class="p-val">${p.observaciones}</div></div>`:''}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-top:.5rem">
+        <div style="background:rgba(0,102,255,.1);border:1px solid rgba(0,102,255,.2);border-radius:9px;padding:1rem;text-align:center">
+          <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700">${nc}</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem">🩺 Citas registradas</div>
+        </div>
+        <div style="background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);border-radius:9px;padding:1rem;text-align:center">
+          <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700">${nh}</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem">📋 Historias clínicas</div>
+        </div>
+      </div>`;
+    // CITAS
+    const citas=allCitasDB.filter(c=>c.cedula===cedula||(c.pacienteNombre||'').toLowerCase().includes(nombre.toLowerCase())).sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
+    const estBadge={pendiente:'<span class="badge bp">⏳ Pendiente</span>',confirmada:'<span class="badge bc">✅ Confirmada</span>',atendida:'<span class="badge ba">🏥 Atendida</span>',cancelada:'<span class="badge bx">❌ Cancelada</span>'};
+    document.getElementById('citas-content').innerHTML=citas.length===0?'<div class="empty">Sin citas registradas.</div>':citas.map(c=>`
+      <div class="hc-item">
+        <div class="hc-ico" style="background:rgba(0,102,255,.2)">🩺</div>
+        <div style="flex:1"><div class="hc-esp">${c.especialidad||'–'}</div><div class="hc-meta">${c.fecha||'–'} ${c.hora||''}</div></div>
+        ${estBadge[c.estado]||''}
+      </div>`).join('');
+    // HISTORIAS
+    const hists=allHistDB.filter(h=>h.cedula===cedula).sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
+    const tipoBg={medicina:'rgba(0,102,255,.15)',fisioterapia:'rgba(22,163,74,.15)',odontologia:'rgba(202,138,4,.15)'};
+    const tipoIco={medicina:'🩺',fisioterapia:'🤸',odontologia:'🦷'};
+    document.getElementById('hist-content').innerHTML=hists.length===0?'<div class="empty">Sin historias clínicas.</div>':hists.map(h=>`
+      <div class="hc-item">
+        <div class="hc-ico" style="background:${tipoBg[h.tipo]||'rgba(0,102,255,.15)'}">${tipoIco[h.tipo]||'📋'}</div>
+        <div style="flex:1"><div class="hc-esp">${h.tipo?.charAt(0).toUpperCase()+h.tipo?.slice(1)||'–'}</div><div class="hc-meta">Fecha: ${h.fecha||'–'} · Dr. ${h.medico||'–'}</div></div>
+      </div>`).join('');
+    // EDITAR
+    document.getElementById('edit-id').value=id;
+    ['nom','ape','ced','tel','email','fn','dir','ocu','aler','obs'].forEach(k=>{
+      const keys={nom:'nombre',ape:'apellido',ced:'cedula',tel:'telefono',email:'email',fn:'fn',dir:'direccion',ocu:'ocupacion',aler:'alergias',obs:'observaciones'};
+      const el=document.getElementById('e-'+k);if(el)el.value=p[keys[k]]||'';});
+    const sexEl=document.getElementById('e-sexo');if(sexEl)sexEl.value=p.sexo||'';
+  }
+  document.getElementById('mbg').classList.add('open');
+};
+
+window.showFTab=(t,btn)=>{
+  document.querySelectorAll('.ftab').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.fpanel').forEach(e=>e.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('fp-'+t).classList.add('active');
+};
+
+window.guardarEdicion=async()=>{
+  const id=document.getElementById('edit-id').value;
+  const p=allPacs.find(x=>x.id===id);if(!p)return;
+  const nom=document.getElementById('e-nom').value.trim();
+  if(!nom){showErr('El nombre es obligatorio.');return;}
+  const btn=document.getElementById('btn-edit');btn.disabled=true;btn.innerHTML='⏳ Guardando...';
+  const data={nombre:nom,apellido:document.getElementById('e-ape').value.trim(),
+    cedula:document.getElementById('e-ced').value.trim(),telefono:document.getElementById('e-tel').value.trim(),
+    email:document.getElementById('e-email').value.trim(),fn:document.getElementById('e-fn').value,
+    sexo:document.getElementById('e-sexo').value,direccion:document.getElementById('e-dir').value.trim(),
+    ocupacion:document.getElementById('e-ocu').value.trim(),alergias:document.getElementById('e-aler').value.trim(),
+    observaciones:document.getElementById('e-obs').value.trim(),updatedAt:serverTimestamp()};
+  try{
+    const colNom=p.origen==='sistema'?'usuarios':'pacientes';
+    await updateDoc(doc(db,colNom,id),data);
+    showOk('✅ Datos actualizados.');
+    const idx=allPacs.findIndex(x=>x.id===id);if(idx>=0)Object.assign(allPacs[idx],data);
+    cerrarModal();renderPacs();
+  }catch(e){showErr('Error: '+e.message);}
+  btn.disabled=false;btn.innerHTML='💾 Guardar cambios';
+};
+
+window.cerrarModal=()=>document.getElementById('mbg').classList.remove('open');
+document.getElementById('mbg').addEventListener('click',e=>{if(e.target===document.getElementById('mbg'))window.cerrarModal();});
+
+window.abrirNuevo=()=>{document.getElementById('mbg-new').classList.add('open');document.body.style.overflow='hidden';};
+window.cerrarNew=()=>{document.getElementById('mbg-new').classList.remove('open');document.body.style.overflow='';};
+document.getElementById('mbg-new').addEventListener('click',e=>{if(e.target===document.getElementById('mbg-new'))window.cerrarNew();});
+
+window.guardarNuevo=async()=>{
+  const nom=document.getElementById('n-nom').value.trim();
+  const ced=document.getElementById('n-ced').value.trim();
+  if(!nom||!ced){showErr('Nombre y cédula son obligatorios.');return;}
+  const btn=document.getElementById('btn-new');btn.disabled=true;btn.innerHTML='⏳ Guardando...';
+  try{
+    await addDoc(collection(db,'pacientes'),{nombre:nom,apellido:document.getElementById('n-ape').value.trim(),
+      cedula:ced,telefono:document.getElementById('n-tel').value.trim(),
+      email:document.getElementById('n-email').value.trim(),fn:document.getElementById('n-fn').value,
+      sexo:document.getElementById('n-sexo').value,direccion:document.getElementById('n-dir').value.trim(),
+      ocupacion:document.getElementById('n-ocu').value.trim(),alergias:document.getElementById('n-aler').value.trim(),
+      observaciones:document.getElementById('n-obs').value.trim(),origen:'manual',activo:true,creadoEn:serverTimestamp()});
+    showOk('✅ Paciente registrado.');cerrarNew();loadAll();
+  }catch(e){showErr('Error: '+e.message);}
+  btn.disabled=false;btn.innerHTML='💾 Registrar paciente';
+};
+
+window.eliminarPac=async(id,origen)=>{
+  if(!confirm('¿Eliminar este paciente?'))return;
+  try{await deleteDoc(doc(db,origen==='sistema'?'usuarios':'pacientes',id));showOk('🗑 Eliminado.');loadAll();}
+  catch(e){showErr('Error: '+e.message);}
+};
+
+window.exportarCSV=()=>{
+  const h=['Nombre','Apellido','Cédula','Teléfono','Email','F/N','Sexo','Dirección','Alergias','Origen'];
+  const r=allPacs.map(p=>[p.nombre,p.apellido,p.cedula,p.telefono,p.email,p.fn,p.sexo,p.direccion,p.alergias,p.origen].map(v=>`"${v||''}"`).join(','));
+  const csv=[h.join(','),...r].join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`pacientes_azucena_${todayStr()}.csv`;a.click();
+  URL.revokeObjectURL(url);showOk('✅ CSV exportado.');
+};
+</script>
+</body>
+</html>
